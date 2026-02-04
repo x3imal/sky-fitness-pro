@@ -1,12 +1,18 @@
-import type { Metadata } from "next";
 import "./globals.css";
-import React from "react";
-import ReduxProvider from "../store/ReduxProvider";
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
 import Header from "@/components/Header/Header";
+import React from "react";
+
+const roboto = Roboto({
+    subsets: ["latin", "cyrillic"],
+    weight: ["400", "500", "700", "900"],
+    display: "swap",
+});
 
 export const metadata: Metadata = {
     title: "SkyFitnessPro",
-    description: "Fitness courses",
+    description: "Онлайн-тренировки для дома",
 };
 
 export default function RootLayout({
@@ -16,11 +22,11 @@ export default function RootLayout({
 }) {
     return (
         <html lang="ru">
-        <body>
-        <ReduxProvider>
+        <body className={roboto.className}>
+        <div className="container">
             <Header />
-            <main style={{ padding: "24px" }}>{children}</main>
-        </ReduxProvider>
+            <main>{children}</main>
+        </div>
         </body>
         </html>
     );

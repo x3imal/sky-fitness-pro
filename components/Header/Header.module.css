@@ -1,0 +1,53 @@
+.header {
+    position: static;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    margin-bottom: 60px;
+}
+
+.inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    color: #000;
+}
+
+.logoImage {
+    margin-bottom: 15px;
+}
+
+.logoSub {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.55);
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.loginBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 103px;
+    height: 52px;
+    padding: 16px 26px;
+    background: #bcec30;
+    color: #000;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.loginBtn:hover {
+    background: #a8d92a;
+}
