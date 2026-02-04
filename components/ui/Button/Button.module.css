@@ -1,0 +1,78 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.08s ease, opacity 0.2s ease;
+}
+
+.button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.button:disabled,
+.button.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Варианты */
+.variant-primary {
+    background: #bcec30;
+    color: #000000;
+}
+
+.variant-primary:hover:not(:disabled) {
+    background: #a8d92a;
+}
+
+.variant-secondary {
+    background: #f3f4f6;
+    color: #000000;
+}
+
+.variant-secondary:hover:not(:disabled) {
+    background: #e5e7eb;
+}
+
+.variant-outline {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #000000;
+}
+
+.variant-outline:hover:not(:disabled) {
+    background: #f9fafb;
+}
+
+.variant-ghost {
+    background: transparent;
+    color: #000000;
+}
+
+.variant-ghost:hover:not(:disabled) {
+    background: #f3f4f6;
+}
+
+/* Размеры */
+.size-sm {
+    height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+}
+
+.size-md {
+    height: 44px;
+    padding: 0 24px;
+    font-size: 16px;
+}
+
+.size-lg {
+    height: 52px;
+    padding: 0 32px;
+    font-size: 18px;
+}

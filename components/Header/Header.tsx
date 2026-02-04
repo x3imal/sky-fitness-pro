@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Header.module.css";
+import {Button} from "@/components/ui/Button/Button";
 
 export default function Header() {
     return (
@@ -22,8 +23,10 @@ export default function Header() {
                     </div>
                 </Link>
 
-                <Link href="/auth" className={styles.loginBtn}>
-                    Войти
+                <Link href="/auth">
+                    <Button variant="primary" size="md">
+                        Войти
+                    </Button>
                 </Link>
             </div>
         </header>

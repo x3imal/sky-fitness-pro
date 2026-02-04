@@ -1,3 +1,6 @@
+"use client";
+
+import { Button } from "@/components/ui/Button/Button";
 import styles from "./page.module.css";
 import Image from "next/image";
 
@@ -19,7 +22,7 @@ export default function Home() {
                     и улучшите качество жизни
                 </h1>
                 <Image
-                    src="/Group 1597880551.svg"
+                    src="/Massage.svg"
                     alt="Dsdsd"
                     width={288}
                     height={120}
@@ -45,9 +48,14 @@ export default function Home() {
             </div>
 
             <div className={styles.toTop}>
-                <button className={`${styles.btn} ${styles.toTopBtn}`}>
+                <Button
+                    variant="primary"
+
+                    size="lg"
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                >
                     Наверх ↑
-                </button>
+                </Button>
             </div>
         </>
     );
