@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './CourseCard.module.css';
+import {Course} from "@/shared/types/course";
 
 interface CourseCardProps {
-    title: string;
-    imageSrc?: string;
-    days: string;
-    time: string;
+    course: Course;
 }
 
-export function CourseCard({ title, imageSrc, days, time }: CourseCardProps) {
+export function CourseCard({ course }: CourseCardProps) {
+    const { title, imageSrc, days, timeMin, timeMax } = course;
+
     return (
         <article className={styles.card}>
             <div className={styles.imageContainer}>
@@ -46,7 +46,6 @@ export function CourseCard({ title, imageSrc, days, time }: CourseCardProps) {
                 <h3 className={styles.title}>{title}</h3>
 
                 <div className={styles.meta}>
-                    {/* ВЕРХНИЙ РЯД: календарь + время на одном уровне */}
                     <div className={styles.metaTop}>
                         <div className={styles.metaRow}>
                             <Image
@@ -56,7 +55,7 @@ export function CourseCard({ title, imageSrc, days, time }: CourseCardProps) {
                                 height={18}
                                 className={styles.metaIcon}
                             />
-                            <span className={styles.metaText}>{days}</span>
+                            <span className={styles.metaText}>{days} дней</span>
                         </div>
 
                         <div className={styles.metaRow}>
@@ -67,11 +66,10 @@ export function CourseCard({ title, imageSrc, days, time }: CourseCardProps) {
                                 height={18}
                                 className={styles.metaIcon}
                             />
-                            <span className={styles.metaText}>{time}</span>
+                            <span className={styles.metaText}>{timeMin}-{timeMax} мин/день</span>
                         </div>
                     </div>
 
-                    {/* НИЖНИЙ РЯД: сложность ниже */}
                     <div className={styles.metaRow}>
                         <Image
                             src="/icons/complexity.svg"

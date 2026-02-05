@@ -4,53 +4,7 @@ import { Button } from "@/components/ui/Button/Button";
 import styles from "./page.module.css";
 import Image from "next/image";
 import {CourseCard} from "@/components/CourseCard/CourseCard";
-
-type Course = {
-    id: string;
-    title: string;
-    imageSrc: string;
-    days: string;
-    time: string;
-};
-
-
-const COURSES: Course[] = [
-    {
-        id: 'yoga',
-        title: 'Йога',
-        imageSrc: '/images/courses/yoga.png',
-        days: '25 дней',
-        time: '20–50 мин/день',
-    },
-    {
-        id: 'stretching',
-        title: 'Стретчинг',
-        imageSrc: '/images/courses/stretching.png',
-        days: '18 дней',
-        time: '15–30 мин/день',
-    },
-    {
-        id: 'fitness',
-        title: 'Фитнес',
-        imageSrc: '/images/courses/fitness.png',
-        days: '30 дней',
-        time: '10–25 мин/день',
-    },
-    {
-        id: 'step',
-        title: 'Степ-аэробика',
-        imageSrc: '/images/courses/step.png',
-        days: '18 дней',
-        time: '15–30 мин/день',
-    },
-    {
-        id: 'bodyflex',
-        title: 'Бодифлекс',
-        imageSrc: '/images/courses/bodyflex.png',
-        days: '22 дней',
-        time: '12–25 мин/день',
-    },
-];
+import {COURSES} from "@/shared/data/courses";
 
 
 export default function Home() {
@@ -72,13 +26,7 @@ export default function Home() {
 
             <div className={styles.grid}>
                 {COURSES.map((course) => (
-                    <CourseCard
-                        key={course.id}
-                        title={course.title}
-                        imageSrc={course.imageSrc}
-                        days={course.days}
-                        time={course.time}
-                    />
+                    <CourseCard key={course.id} course={course} />
                 ))}
             </div>
 
