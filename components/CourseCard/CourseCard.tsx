@@ -27,10 +27,9 @@ export function CourseCard({
                         fill
                         sizes="(max-width: 768px) 100vw, 360px"
                         className={styles.courseImage}
-                        priority={false} // или true для первых 2–3 карточек
+                        priority={false}
                     />
                 ) : (
-                    // заглушка, если картинки пока нет
                     <div className={styles.imagePlaceholder} />
                 )}
 

@@ -1,5 +1,5 @@
 :root {
-  --bg: #ffffff;
+  --bg: #FAFAFA;
   --text: #0b0b0b;
   --muted: #6b7280;
   --accent: #bcec30;
@@ -34,7 +34,8 @@ a {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 50px 140px;
+  padding: 0 140px;
+    padding-bottom: 50px;
 }
 
 h1 {

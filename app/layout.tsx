@@ -23,8 +23,8 @@ export default function RootLayout({
     return (
         <html lang="ru">
         <body className={roboto.className}>
+        <Header />
         <div className="container">
-            <Header />
             <main>{children}</main>
         </div>
         </body>
