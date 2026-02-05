@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/Button/Button";
 import styles from "./page.module.css";
 import Image from "next/image";
+import {CourseCard} from "@/components/CourseCard/CourseCard";
 
 const courses = [
     { title: "Йога", color: "#ffca28", days: "25 дней", time: "20-50 мин/день" },
@@ -31,19 +32,13 @@ export default function Home() {
 
             <div className={styles.grid}>
                 {courses.map((course) => (
-                    <div key={course.title} className={styles.card}>
-                        <div className={styles.media} style={{ backgroundColor: course.color }}>
-                            <button className={styles.plus}>+</button>
-                        </div>
-                        <div className={styles.content}>
-                            <h3>{course.title}</h3>
-                            <div className={styles.meta}>
-                                <span>🗓 {course.days}</span>
-                                <span>⏱ {course.time}</span>
-                            </div>
-                            <div className={styles.difficulty}>★ Сложность</div>
-                        </div>
-                    </div>
+                    <CourseCard
+                        key={course.title}
+                        title={course.title}
+                        color={course.color}
+                        days={course.days}
+                        time={course.time}
+                    />
                 ))}
             </div>
 
