@@ -7,7 +7,7 @@
     background: #FAFAFA;
     backdrop-filter: blur(12px);
     margin-bottom: 40px;
-    padding-top: 35px;
+    padding-top: 30px;
 }
 
 .inner {
@@ -37,6 +37,7 @@
 .inner {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 
 }
 

@@ -5,13 +5,53 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import {CourseCard} from "@/components/CourseCard/CourseCard";
 
-const courses = [
-    { title: "Йога", color: "#ffca28", days: "25 дней", time: "20-50 мин/день" },
-    { title: "Стретчинг", color: "#2196f3", days: "25 дней", time: "20-50 мин/день" },
-    { title: "Фитнес", color: "#ff9800", days: "25 дней", time: "20-50 мин/день" },
-    { title: "Степ-аэробика", color: "#ff5722", days: "25 дней", time: "20-50 мин/день" },
-    { title: "Бодифлекс", color: "#9c27b0", days: "25 дней", time: "20-50 мин/день" },
+type Course = {
+    id: string;
+    title: string;
+    imageSrc: string;
+    days: string;
+    time: string;
+};
+
+
+const COURSES: Course[] = [
+    {
+        id: 'yoga',
+        title: 'Йога',
+        imageSrc: '/images/courses/yoga.png',
+        days: '25 дней',
+        time: '20–50 мин/день',
+    },
+    {
+        id: 'stretching',
+        title: 'Стретчинг',
+        imageSrc: '/images/courses/stretching.png',
+        days: '18 дней',
+        time: '15–30 мин/день',
+    },
+    {
+        id: 'fitness',
+        title: 'Фитнес',
+        imageSrc: '/images/courses/fitness.png',
+        days: '30 дней',
+        time: '10–25 мин/день',
+    },
+    {
+        id: 'step',
+        title: 'Степ-аэробика',
+        imageSrc: '/images/courses/step.png',
+        days: '18 дней',
+        time: '15–30 мин/день',
+    },
+    {
+        id: 'bodyflex',
+        title: 'Бодифлекс',
+        imageSrc: '/images/courses/bodyflex.png',
+        days: '22 дней',
+        time: '12–25 мин/день',
+    },
 ];
+
 
 export default function Home() {
     return (
@@ -31,11 +71,11 @@ export default function Home() {
             </div>
 
             <div className={styles.grid}>
-                {courses.map((course) => (
+                {COURSES.map((course) => (
                     <CourseCard
-                        key={course.title}
+                        key={course.id}
                         title={course.title}
-                        color={course.color}
+                        imageSrc={course.imageSrc}
                         days={course.days}
                         time={course.time}
                     />

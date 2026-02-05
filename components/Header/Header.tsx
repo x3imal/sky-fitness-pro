@@ -24,7 +24,7 @@ export default function Header() {
                 </Link>
 
                 <Link href="/auth">
-                    <Button variant="primary" size="md">
+                    <Button variant="primary" size="lg">
                         Войти
                     </Button>
                 </Link>
