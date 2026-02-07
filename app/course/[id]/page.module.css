@@ -1,7 +1,6 @@
 .container {
     max-width: 1440px;
     margin: 0 auto;
-    padding: 0 140px 90px;
 }
 
 /* HERO */
@@ -11,7 +10,7 @@
 
 .heroCard {
     position: relative;
-    height: 220px;
+    height: 310px;
     border-radius: 30px;
     overflow: hidden;
     background: #FFC700;
@@ -24,19 +23,19 @@
     top: 28px;
     z-index: 2;
     margin: 0;
-    font-size: 44px;
-    font-weight: 600;
+    font-size: 60px;
+    font-weight: 500;
     color: #fff;
 }
 
 .heroImage {
     position: absolute;
-    right: 0;
+    right: 100px;
     bottom: 0;
-    top: -81px;
+    top: -50px;
     width: 360px;
     height: 325px;
-    transform: scale(0.87);
+    transform: scale(1.23);
 }
 
 /* SECTIONS */
@@ -46,7 +45,7 @@
 
 .sectionTitle {
     margin: 0 0 18px 0;
-    font-size: 22px;
+    font-size: 40px;
     font-weight: 600;
     color: #0b0b0b;
 }
@@ -54,53 +53,72 @@
 /* FITTING */
 .fittingGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
     gap: 18px;
 }
 
 .fittingCard {
     display: flex;
-    gap: 14px;
+    gap: 25px;
     align-items: center;
     background: #1f2937;
     color: #fff;
-    padding: 16px 18px;
+    padding: 20px;
     border-radius: 18px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
+.fittingCard:nth-child(2) {
+    z-index: 1;
+    transform: scale(1.03);
+}
+
 .fittingIndex {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    background: #bcec30;
-    color: #0b0b0b;
-    display: flex;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 75px;
+    line-height: 135%;
+    letter-spacing: 0;
+
+    color: #bcec30;
+
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+
+    width: 35px;
+    height: 101px;
 }
+
 
 .fittingText {
     margin: 0;
-    font-size: 14px;
-    line-height: 1.35;
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 400;
 }
 
 /* DIRECTIONS */
 .directions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 34px;
     background: #bcec30;
-    padding: 18px 18px;
-    border-radius: 18px;
+    padding: 30px;
+    border-radius: 28px;
+    max-width: 1160px;
+    min-height: 146px;
 }
 
 .directionChip {
-    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
     color: #0b0b0b;
-    font-weight: 500;
+    font-weight: 400;
+    /*line-height: 1.1;*/
+    width: 284px;
 }
 
 /* DESCRIPTION */

@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import { getCourseById } from '@/shared/util/getCourseById';
@@ -54,10 +53,6 @@ export default async function CoursePage({ params }: PageProps) {
 
             <CourseCTA />
 
-            <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>Описание</h2>
-                <p className={styles.description}>{course.description}</p>
-            </section>
         </div>
     );
 }

@@ -26,7 +26,7 @@ export default function Home() {
 
             <div className={styles.grid}>
                 {COURSES.map((course) => (
-                    <CourseCard key={course.id} course={course} />
+                    <CourseCard key={course.slug} course={course} />
                 ))}
             </div>
 

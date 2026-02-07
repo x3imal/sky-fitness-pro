@@ -4,16 +4,20 @@
 }
 
 .card {
+    margin: 102px auto 0;
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: auto 1fr;
     gap: 24px;
+    width: 1160px;
 
-    padding: 26px;
+    padding: 40px;
     border-radius: 24px;
     background: #fff;
 
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
+    overflow: visible;
+
+    position: relative; /* ✅ ДОБАВИЛИ */
 }
 
 .left {
@@ -24,55 +28,79 @@
 
 .title {
     margin: 0;
-    font-size: 30px;
-    font-weight: 700;
+    font-size: 60px;
+    font-weight: 500;
+    line-height: 1.1;
+    max-width: 398px;
 }
 
 .list {
     margin: 0;
     padding-left: 18px;
     color: rgba(0, 0, 0, 0.7);
-    line-height: 1.55;
-    font-size: 14px;
+    font-size: 24px;
+    line-height: 1.5;
 }
 
 .button {
     display: inline-flex;
-    width: fit-content;
+    width: 437px;
     align-items: center;
     justify-content: center;
 
-    height: 44px;
+    height: 52px;
     padding: 0 18px;
 
     border-radius: 999px;
     background: #bcec30;
     color: #0b0b0b;
 
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 500;
     text-decoration: none;
 }
 
 .right {
     position: relative;
-    min-height: 260px;
 }
 
 .right :global(img) {
     object-fit: contain;
 }
 
+.imageWrap {
+    position: absolute;
+    inset: 0;
+    left: 140px;
+    width: 487px;
+    height: 560px;
+    transform: translateY(-150px);
+
+    z-index: 2; /* ✅ чтобы спортсмен был поверх линии */
+}
+
+.image {
+    object-fit: contain;
+}
+
 /* Слой линии */
+.lineClip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 24px;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .line {
     position: absolute;
-    right: 20px;
-    bottom: -40px;
-    width: 360px;
-    height: 220px;
-    z-index: 0;
-    pointer-events: none;
-    /*transform: rotate(-12deg);*/
+    right: 0;
+    bottom: -50px;
+    width: 690px;
+    height: 390px;
+    transform: rotate(3deg);
+    transform-origin: right bottom;
 }
 
 .lineImg {
@@ -80,3 +108,9 @@
 }
 
 
+/* ✅ контент поверх линии */
+.left,
+.right {
+    position: relative;
+    z-index: 1;
+}

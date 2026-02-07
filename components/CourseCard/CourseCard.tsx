@@ -12,8 +12,12 @@ export function CourseCard({course}: CourseCardProps) {
 
     return (
         <article className={styles.card}>
-            <Link href={`/course/${slug}`} className={styles.cardLink} aria-label={`Открыть курс: ${nameRU}`}>
-                <div className={styles.imageContainer}>
+            <div className={styles.imageContainer}>
+                <Link
+                    href={`/course/${slug}`}
+                    className={styles.cardLink}
+                    aria-label={`Открыть курс: ${nameRU}`}
+                >
                     {imageSrc ? (
                         <Image
                             src={imageSrc}
@@ -26,26 +30,31 @@ export function CourseCard({course}: CourseCardProps) {
                     ) : (
                         <div className={styles.imagePlaceholder}/>
                     )}
+                </Link>
 
-                    <Link
-                        href="/auth"
-                        className={styles.plusButton}
-                        aria-label="Добавить тренировку"
-                    >
-                        <Image
-                            src="/icons/plus.svg"
-                            alt="Добавить"
-                            width={26}
-                            height={26}
-                            className={styles.plusIcon}
-                        />
-                    </Link>
-
-                </div>
-            </Link>
+                <Link
+                    href="/auth"
+                    className={styles.plusButton}
+                    aria-label="Добавить тренировку"
+                >
+                    <Image
+                        src="/icons/plus.svg"
+                        alt="Добавить"
+                        width={26}
+                        height={26}
+                        className={styles.plusIcon}
+                    />
+                </Link>
+            </div>
 
             <div className={styles.content}>
-                <h3 className={styles.title}>{nameRU}</h3>
+                <Link
+                    href={`/course/${slug}`}
+                    className={styles.titleLink}
+                    aria-label={`Открыть курс: ${nameRU}`}
+                >
+                    <h3 className={styles.title}>{nameRU}</h3>
+                </Link>
 
                 <div className={styles.meta}>
                     <div className={styles.metaTop}>

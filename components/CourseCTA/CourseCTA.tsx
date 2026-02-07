@@ -6,6 +6,19 @@ export function CourseCTA() {
     return (
         <section className={styles.cta}>
             <div className={styles.card}>
+                {/* ✅ lineClip перенесён на уровень card, чтобы резало по краю карточки */}
+                <span className={styles.lineClip} aria-hidden>
+                    <span className={styles.line}>
+                        <Image
+                            src="/images/cta/line-cta.png"
+                            alt=""
+                            fill
+                            sizes="690px"
+                            className={styles.lineImg}
+                        />
+                    </span>
+                </span>
+
                 <div className={styles.left}>
                     <h2 className={styles.title}>Начните путь к новому телу</h2>
 
@@ -23,16 +36,6 @@ export function CourseCTA() {
                 </div>
 
                 <div className={styles.right}>
-  <span className={styles.line} aria-hidden>
-    <Image
-        src="/images/cta/line-cta.png"
-        alt=""
-        fill
-        sizes="300px"
-        className={styles.lineImg}
-    />
-  </span>
-
                     <div className={styles.imageWrap}>
                         <Image
                             src="/images/cta/common-cta.png"
@@ -44,7 +47,6 @@ export function CourseCTA() {
                         />
                     </div>
                 </div>
-
             </div>
         </section>
     );
