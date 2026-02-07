@@ -1,11 +1,23 @@
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export type DifficultyRU = 'легкий' | 'средний' | 'сложный';
+
+export type DailyDurationInMinutes = {
+    from: number;
+    to: number;
+};
 
 export type Course = {
-    id: string;
-    title: string;
+    _id: string;
+    nameRU: string;
+    nameEN: string;
+    description: string;
+    directions: string[];
+    fitting: string[];
+    difficulty: DifficultyRU;
+    durationInDays: number;
+    dailyDurationInMinutes: DailyDurationInMinutes;
+    workouts: string[];
+
+    slug: string;
     imageSrc: string;
-    days: number;
-    timeMin: number;
-    timeMax: number;
-    difficulty: Difficulty;
+    ctaImageSrc?: string;
 };

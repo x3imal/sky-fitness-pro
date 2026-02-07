@@ -7,43 +7,45 @@ interface CourseCardProps {
     course: Course;
 }
 
-export function CourseCard({ course }: CourseCardProps) {
-    const { title, imageSrc, days, timeMin, timeMax } = course;
+export function CourseCard({course}: CourseCardProps) {
+    const {slug, nameRU, imageSrc, durationInDays, dailyDurationInMinutes, difficulty} = course;
 
     return (
         <article className={styles.card}>
-            <div className={styles.imageContainer}>
-                {imageSrc ? (
-                    <Image
-                        src={imageSrc}
-                        alt={title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 360px"
-                        className={styles.courseImage}
-                        priority={false}
-                    />
-                ) : (
-                    <div className={styles.imagePlaceholder} />
-                )}
+            <Link href={`/course/${slug}`} className={styles.cardLink} aria-label={`Открыть курс: ${nameRU}`}>
+                <div className={styles.imageContainer}>
+                    {imageSrc ? (
+                        <Image
+                            src={imageSrc}
+                            alt={nameRU}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 360px"
+                            className={styles.courseImage}
+                            priority={false}
+                        />
+                    ) : (
+                        <div className={styles.imagePlaceholder}/>
+                    )}
 
-                <Link
-                    href="/auth"
-                    className={styles.plusButton}
-                    aria-label="Добавить тренировку"
-                >
-                    <Image
-                        src="/icons/plus.svg"
-                        alt="Добавить"
-                        width={26}
-                        height={26}
-                        className={styles.plusIcon}
-                    />
-                </Link>
+                    <Link
+                        href="/auth"
+                        className={styles.plusButton}
+                        aria-label="Добавить тренировку"
+                    >
+                        <Image
+                            src="/icons/plus.svg"
+                            alt="Добавить"
+                            width={26}
+                            height={26}
+                            className={styles.plusIcon}
+                        />
+                    </Link>
 
-            </div>
+                </div>
+            </Link>
 
             <div className={styles.content}>
-                <h3 className={styles.title}>{title}</h3>
+                <h3 className={styles.title}>{nameRU}</h3>
 
                 <div className={styles.meta}>
                     <div className={styles.metaTop}>
@@ -55,7 +57,7 @@ export function CourseCard({ course }: CourseCardProps) {
                                 height={18}
                                 className={styles.metaIcon}
                             />
-                            <span className={styles.metaText}>{days} дней</span>
+                            <span className={styles.metaText}>{durationInDays} дней</span>
                         </div>
 
                         <div className={styles.metaRow}>
@@ -66,7 +68,9 @@ export function CourseCard({ course }: CourseCardProps) {
                                 height={18}
                                 className={styles.metaIcon}
                             />
-                            <span className={styles.metaText}>{timeMin}-{timeMax} мин/день</span>
+                            <span className={styles.metaText}>
+                {dailyDurationInMinutes.from}-{dailyDurationInMinutes.to} мин/день
+              </span>
                         </div>
                     </div>
 
@@ -78,7 +82,7 @@ export function CourseCard({ course }: CourseCardProps) {
                             height={18}
                             className={styles.metaIcon}
                         />
-                        <span className={styles.metaText}>Сложность</span>
+                        <span className={styles.metaText}>{difficulty}</span>
                     </div>
                 </div>
             </div>

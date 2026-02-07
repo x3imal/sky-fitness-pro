@@ -1,0 +1,82 @@
+/* CTA */
+.cta {
+    margin-top: 34px;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 24px;
+
+    padding: 26px;
+    border-radius: 24px;
+    background: #fff;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.list {
+    margin: 0;
+    padding-left: 18px;
+    color: rgba(0, 0, 0, 0.7);
+    line-height: 1.55;
+    font-size: 14px;
+}
+
+.button {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+
+    height: 44px;
+    padding: 0 18px;
+
+    border-radius: 999px;
+    background: #bcec30;
+    color: #0b0b0b;
+
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.right {
+    position: relative;
+    min-height: 260px;
+}
+
+.right :global(img) {
+    object-fit: contain;
+}
+
+/* Слой линии */
+.line {
+    position: absolute;
+    right: 20px;
+    bottom: -40px;
+    width: 360px;
+    height: 220px;
+    z-index: 0;
+    pointer-events: none;
+    /*transform: rotate(-12deg);*/
+}
+
+.lineImg {
+    object-fit: contain;
+}
+
+

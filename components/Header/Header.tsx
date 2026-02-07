@@ -11,7 +11,7 @@ export default function Header() {
             <div className={styles.inner}>
                 <Link href="/" className={styles.logoWrapper} aria-label="SkyFitnessPro">
                     <Image
-                        src="/logo.png"
+                        src="/logo.svg"
                         alt="SkyFitnessPro"
                         width={225}
                         height={35}

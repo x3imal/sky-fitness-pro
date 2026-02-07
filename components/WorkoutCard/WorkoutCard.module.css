@@ -1,0 +1,26 @@
+.card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    text-decoration: none;
+    color: inherit;
+}
+
+.index {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #bcec30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.name {
+    font-size: 18px;
+}
