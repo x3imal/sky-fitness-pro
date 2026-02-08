@@ -20,7 +20,7 @@ export const COURSES: Course[] = [
         difficulty: 'средний',
         durationInDays: 20,
         dailyDurationInMinutes: { from: 20, to: 40 },
-        workouts: ['w1', 'w2', 'w3'],
+        workouts: ['yoga_w1', 'yoga_w2', 'yoga_w3'],
     },
 
     {
@@ -38,7 +38,7 @@ export const COURSES: Course[] = [
         difficulty: 'легкий',
         durationInDays: 14,
         dailyDurationInMinutes: { from: 15, to: 30 },
-        workouts: ['w2', 'w4'],
+        workouts: ['stretching_w1', 'stretching_w2', 'stretching_w3'],
     },
 
     {
@@ -56,7 +56,7 @@ export const COURSES: Course[] = [
         difficulty: 'средний',
         durationInDays: 18,
         dailyDurationInMinutes: { from: 25, to: 45 },
-        workouts: ['w1', 'w3', 'w4'],
+        workouts: ['fitness_w1', 'fitness_w2', 'fitness_w3'],
     },
 
     {
@@ -74,7 +74,7 @@ export const COURSES: Course[] = [
         difficulty: 'средний',
         durationInDays: 16,
         dailyDurationInMinutes: { from: 20, to: 35 },
-        workouts: ['w2', 'w3'],
+        workouts: ['step_w1', 'step_w2', 'step_w3'],
     },
 
     {
@@ -92,6 +92,6 @@ export const COURSES: Course[] = [
         difficulty: 'сложный',
         durationInDays: 15,
         dailyDurationInMinutes: { from: 50, to: 70 },
-        workouts: ['xlpkqy', '17oz5f', 'pyvaec'],
+        workouts: ['bodyflex_w1', 'bodyflex_w2', 'bodyflex_w3'],
     },
 ];

@@ -9,7 +9,7 @@ interface Props {
 
 export function WorkoutCard({ workout, index }: Props) {
     return (
-        <Link href={`/workout/${workout.id}`} className={styles.card}>
+        <Link href={`/workout/${workout._id}`} className={styles.card}>
             <span className={styles.index}>{index}</span>
             <span className={styles.name}>{workout.name}</span>
         </Link>
