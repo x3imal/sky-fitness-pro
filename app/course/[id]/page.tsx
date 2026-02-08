@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import { getCourseById } from '@/shared/util/getCourseById';
 import {CourseCTA} from "@/components/CourseCTA/CourseCTA";
+import { getCourseTheme } from "@/shared/util/getCourseTheme";
 
 type PageProps = {
     params: Promise<{ id: string }>;
@@ -13,6 +14,7 @@ export default async function CoursePage({ params }: PageProps) {
 
     const course = getCourseById(id);
     if (!course) notFound();
+    const theme = getCourseTheme(id);
 
     return (
         <div className={styles.container}>
@@ -21,7 +23,15 @@ export default async function CoursePage({ params }: PageProps) {
                     <h1 className={styles.heroTitle}>{course.nameRU}</h1>
 
                     <div className={styles.heroImage}>
-                        <Image src={course.imageSrc} alt={course.nameRU} fill priority sizes="(max-width: 768px) 100vw, 1200px" />
+                        <Image
+                            src={theme.heroImageSrc}
+                            alt={course.nameRU}
+                            fill
+                            priority
+                            sizes="(max-width: 768px) 100vw, 1200px"
+                            className={styles.heroImageImg}
+                            style={{ objectPosition: theme.heroObjectPosition ?? "center" }}
+                        />
                     </div>
                 </div>
             </section>
