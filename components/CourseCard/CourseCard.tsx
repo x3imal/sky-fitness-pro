@@ -5,9 +5,12 @@ import {Course} from "@/shared/types/course";
 
 interface CourseCardProps {
     course: Course;
+    progress?: number;
+    actionText?: string;
+    showAddButton?: boolean;
 }
 
-export function CourseCard({course}: CourseCardProps) {
+export function CourseCard({ course, progress, actionText, showAddButton = true }: CourseCardProps) {
     const {slug, nameRU, imageSrc, durationInDays, dailyDurationInMinutes, difficulty} = course;
 
     return (
@@ -32,19 +35,21 @@ export function CourseCard({course}: CourseCardProps) {
                     )}
                 </Link>
 
-                <Link
-                    href="/auth"
-                    className={styles.plusButton}
-                    aria-label="Добавить тренировку"
-                >
-                    <Image
-                        src="/icons/plus.svg"
-                        alt="Добавить"
-                        width={26}
-                        height={26}
-                        className={styles.plusIcon}
-                    />
-                </Link>
+                {showAddButton && (
+                    <Link
+                        href="/auth"
+                        className={styles.plusButton}
+                        aria-label="Добавить тренировку"
+                    >
+                        <Image
+                            src="/icons/plus.svg"
+                            alt="Добавить"
+                            width={26}
+                            height={26}
+                            className={styles.plusIcon}
+                        />
+                    </Link>
+                )}
             </div>
 
             <div className={styles.content}>
@@ -94,6 +99,21 @@ export function CourseCard({course}: CourseCardProps) {
                         <span className={styles.metaText}>{difficulty}</span>
                     </div>
                 </div>
+
+                {typeof progress === "number" && (
+                    <div className={styles.progressBlock}>
+                        <div className={styles.progressLabel}>Прогресс {progress}%</div>
+                        <div className={styles.progressBar} aria-hidden="true">
+                            <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+                        </div>
+                    </div>
+                )}
+
+                {actionText && (
+                    <button type="button" className={styles.actionButton}>
+                        {actionText}
+                    </button>
+                )}
             </div>
         </article>
     );

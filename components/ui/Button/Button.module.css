@@ -7,7 +7,7 @@
     font-family: inherit;
     font-weight: 400;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.08s ease, opacity 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
 }
 
 .button:active:not(:disabled) {
@@ -16,7 +16,6 @@
 
 .button:disabled,
 .button.disabled {
-    opacity: 0.6;
     cursor: not-allowed;
 }
 
@@ -30,13 +29,34 @@
     background: #a8d92a;
 }
 
-.variant-secondary {
+.variant-primary:active:not(:disabled) {
+    background: #0b0b0b;
+    color: #ffffff;
+}
+
+.variant-primary:disabled {
     background: #f3f4f6;
+    color: #9ca3af;
+}
+
+.variant-secondary {
+    background: #ffffff;
+    border: 1px solid #0b0b0b;
     color: #000000;
 }
 
 .variant-secondary:hover:not(:disabled) {
+    background: #f9fafb;
+}
+
+.variant-secondary:active:not(:disabled) {
     background: #e5e7eb;
+}
+
+.variant-secondary:disabled {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #9ca3af;
 }
 
 .variant-outline {

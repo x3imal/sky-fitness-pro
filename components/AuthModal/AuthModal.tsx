@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./AuthModal.module.css";
 import {
@@ -9,6 +9,7 @@ import {
     type AuthErrors,
     type AuthValues,
 } from "@/shared/util/authValidation";
+import { Button } from "@/components/ui/Button/Button";
 
 type Mode = "login" | "signup";
 
@@ -74,19 +75,21 @@ export default function AuthModal({
                             {errors.password && <div className={styles.errorText}>{errors.password}</div>}
 
                             <div className={styles.actions}>
-                                <button type="submit" className={styles.primaryButton}>
+                                <Button type="submit" variant="primary" size="lg" className={styles.actionButton}>
                                     Войти
-                                </button>
-                                <button
+                                </Button>
+                                <Button
                                     type="button"
-                                    className={styles.secondaryButton}
+                                    variant="secondary"
+                                    size="lg"
+                                    className={styles.actionButton}
                                     onClick={() => {
                                         setMode("signup");
                                         setErrors({});
                                     }}
                                 >
                                     Зарегистрироваться
-                                </button>
+                                </Button>
                             </div>
                         </>
                     ) : (
@@ -121,19 +124,21 @@ export default function AuthModal({
                             )}
 
                             <div className={styles.actions}>
-                                <button type="submit" className={styles.primaryButton}>
+                                <Button type="submit" variant="primary" size="lg" className={styles.actionButton}>
                                     Зарегистрироваться
-                                </button>
-                                <button
+                                </Button>
+                                <Button
                                     type="button"
-                                    className={styles.secondaryButton}
+                                    variant="secondary"
+                                    size="lg"
+                                    className={styles.actionButton}
                                     onClick={() => {
                                         setMode("login");
                                         setErrors({});
                                     }}
                                 >
                                     Войти
-                                </button>
+                                </Button>
                             </div>
                         </>
                     )}
