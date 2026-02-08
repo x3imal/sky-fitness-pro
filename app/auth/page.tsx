@@ -1,3 +1,5 @@
+import AuthModal from "@/components/AuthModal/AuthModal";
+
 export default function AuthPage() {
-    return <div>Авторизация / регистрация (временно страницей)</div>;
+    return <AuthModal showOverlay={false} showClose={false} />;
 }
