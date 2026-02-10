@@ -153,6 +153,10 @@
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .actionButton:hover {

@@ -1,6 +1,7 @@
 export type Exercise = {
     _id: string;
     name: string;
+    progress?: number;
 };
 
 export type Workout = {
@@ -8,4 +9,5 @@ export type Workout = {
     name: string;
     video: string;
     exercises: Exercise[];
+    completed?: boolean;
 };

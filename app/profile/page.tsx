@@ -65,6 +65,7 @@ export default function ProfilePage() {
                                 course={course}
                                 progress={state?.progress}
                                 actionText={state?.actionText}
+                                actionHref={`/workouts/${course.slug}`}
                                 showAddButton={false}
                             />
                         );

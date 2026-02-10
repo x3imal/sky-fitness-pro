@@ -7,10 +7,11 @@ interface CourseCardProps {
     course: Course;
     progress?: number;
     actionText?: string;
+    actionHref?: string;
     showAddButton?: boolean;
 }
 
-export function CourseCard({ course, progress, actionText, showAddButton = true }: CourseCardProps) {
+export function CourseCard({ course, progress, actionText, actionHref, showAddButton = true }: CourseCardProps) {
     const {slug, nameRU, imageSrc, durationInDays, dailyDurationInMinutes, difficulty} = course;
 
     return (
@@ -109,11 +110,16 @@ export function CourseCard({ course, progress, actionText, showAddButton = true 
                     </div>
                 )}
 
-                {actionText && (
-                    <button type="button" className={styles.actionButton}>
-                        {actionText}
-                    </button>
-                )}
+                {actionText &&
+                    (actionHref ? (
+                        <Link href={actionHref} className={styles.actionButton}>
+                            {actionText}
+                        </Link>
+                    ) : (
+                        <button type="button" className={styles.actionButton}>
+                            {actionText}
+                        </button>
+                    ))}
             </div>
         </article>
     );
