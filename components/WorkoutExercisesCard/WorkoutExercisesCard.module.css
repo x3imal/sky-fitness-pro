@@ -1,0 +1,77 @@
+.exercisesCard {
+    background: #fff;
+    border-radius: 18px;
+    padding: 40px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    margin-top: 40px;
+}
+
+.exercisesTitle {
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.exerciseGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 320px);
+    column-gap: 60px;
+    row-gap: 14px;
+    width: 1080px;
+    margin-bottom: 40px;
+}
+
+.exerciseItem {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.75);
+    font-weight: 400;
+}
+
+.exerciseRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.exerciseName {
+    max-width: 320px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.exerciseProgress {
+    color: rgba(0, 0, 0, 0.6);
+    white-space: nowrap;
+}
+
+.exerciseBar {
+    height: 6px;
+    background: #f7f7f7;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.exerciseBarFill {
+    display: block;
+    height: 100%;
+    width: var(--progress, 0%);
+    background: #1da1ff;
+    border-radius: 999px;
+}
+
+.fillButtonLink {
+    display: inline-flex;
+    text-decoration: none;
+}
+
+.fillButton {
+    width: 320px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 400;
+}

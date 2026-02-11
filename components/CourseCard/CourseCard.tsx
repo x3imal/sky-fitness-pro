@@ -1,7 +1,13 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './CourseCard.module.css';
 import {Course} from "@/shared/types/course";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { addCourseToCurrentUser, removeCourseFromCurrentUser } from "@/store/slices/authSlice";
+import { selectHasCourse, selectIsAuthenticated } from "@/store/selectors";
+import { useRouter } from "next/navigation";
 
 interface CourseCardProps {
     course: Course;
@@ -12,7 +18,11 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course, progress, actionText, actionHref, showAddButton = true }: CourseCardProps) {
+    const router = useRouter();
+    const dispatch = useAppDispatch();
+    const isAuthenticated = useAppSelector(selectIsAuthenticated);
     const {slug, nameRU, imageSrc, durationInDays, dailyDurationInMinutes, difficulty} = course;
+    const hasCourse = useAppSelector(state => selectHasCourse(state, slug));
 
     return (
         <article className={styles.card}>
@@ -37,19 +47,30 @@ export function CourseCard({ course, progress, actionText, actionHref, showAddBu
                 </Link>
 
                 {showAddButton && (
-                    <Link
-                        href="/auth"
+                    <button
+                        type="button"
                         className={styles.plusButton}
-                        aria-label="Добавить тренировку"
+                        aria-label={hasCourse ? "Удалить тренировку" : "Добавить тренировку"}
+                        onClick={() => {
+                            if (!isAuthenticated) {
+                                router.push("/auth");
+                                return;
+                            }
+                            if (hasCourse) {
+                                dispatch(removeCourseFromCurrentUser({ slug }));
+                            } else {
+                                dispatch(addCourseToCurrentUser({ slug }));
+                            }
+                        }}
                     >
                         <Image
                             src="/icons/plus.svg"
                             alt="Добавить"
                             width={26}
                             height={26}
-                            className={styles.plusIcon}
+                            className={`${styles.plusIcon} ${hasCourse ? styles.plusIconActive : ""}`}
                         />
-                    </Link>
+                    </button>
                 )}
             </div>
 

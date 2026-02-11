@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./AuthModal.module.css";
+import { useRouter } from "next/navigation";
 import {
     validateLogin,
     validateSignup,
@@ -10,6 +11,9 @@ import {
     type AuthValues,
 } from "@/shared/util/authValidation";
 import { Button } from "@/components/ui/Button/Button";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { loginUser, registerUser } from "@/store/slices/authSlice";
+import { selectUsers } from "@/store/selectors";
 
 type Mode = "login" | "signup";
 
@@ -23,8 +27,12 @@ type Props = {
 export default function AuthModal({
     initialMode = "login",
     showOverlay = true,
-
+    showClose = false,
+    onClose,
 }: Props) {
+    const router = useRouter();
+    const dispatch = useAppDispatch();
+    const users = useAppSelector(selectUsers);
     const [mode, setMode] = useState<Mode>(initialMode);
     const [values, setValues] = useState<AuthValues>({
         login: "",
@@ -41,13 +49,80 @@ export default function AuthModal({
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const nextErrors = isLogin ? validateLogin(values) : validateSignup(values);
+        const nextErrors: AuthErrors = isLogin ? validateLogin(values) : validateSignup(values);
+
+        if (isLogin && Object.keys(nextErrors).length === 0) {
+            const loginValue = values.login.trim().toLowerCase();
+            const matchedUser = users.find(
+                user =>
+                    user.login.toLowerCase() === loginValue ||
+                    user.email.toLowerCase() === loginValue
+            );
+
+            if (!matchedUser || matchedUser.password !== values.password.trim()) {
+                nextErrors.password = "Логин или пароль введены неверно";
+            } else {
+                dispatch(loginUser({ login: matchedUser.login }));
+                if (onClose) {
+                    onClose();
+                } else {
+                    router.push("/profile");
+                }
+                return;
+            }
+        }
+
+        if (!isLogin && Object.keys(nextErrors).length === 0) {
+            const email = values.email.trim().toLowerCase();
+            const hasEmail = users.some(user => user.email.toLowerCase() === email);
+
+            if (hasEmail) {
+                nextErrors.email = "Данная почта уже используется";
+            } else {
+                const baseLogin = email.split("@")[0] || "user";
+                let nextLogin = baseLogin;
+                let suffix = 1;
+                while (users.some(user => user.login.toLowerCase() === nextLogin.toLowerCase())) {
+                    suffix += 1;
+                    nextLogin = `${baseLogin}${suffix}`;
+                }
+
+                dispatch(
+                    registerUser({
+                        login: nextLogin,
+                        email,
+                        password: values.password.trim(),
+                        myCourseSlugs: [],
+                    })
+                );
+                if (onClose) {
+                    onClose();
+                } else {
+                    router.push("/profile");
+                }
+                return;
+            }
+        }
+
         setErrors(nextErrors);
     };
 
     return (
         <div className={showOverlay ? styles.overlay : styles.pageWrap}>
             <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Авторизация">
+                {showClose && (
+                    <button
+                        type="button"
+                        className={styles.close}
+                        onClick={() => {
+                            if (onClose) onClose();
+                            else router.back();
+                        }}
+                        aria-label="Закрыть"
+                    >
+                        ×
+                    </button>
+                )}
 
                 <div className={styles.logoRow}>
                     <Image src="/logo.svg" alt="SkyFitnessPro" width={220} height={35} />

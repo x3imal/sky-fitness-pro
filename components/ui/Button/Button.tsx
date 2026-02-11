@@ -7,7 +7,7 @@ const cn = (...classes: (string | undefined | null | false)[]) =>
 export interface ButtonProps
     extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: "primary" | "secondary" | "outline" | "ghost";
-    size?: "sm" | "md" | "lg";
+    size?: "sm" | "md" | "lg" | "menu";
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(

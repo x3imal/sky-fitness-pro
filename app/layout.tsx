@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import Header from "@/components/Header/Header";
 import React from "react";
+import ReduxProvider from "@/store/ReduxProvider";
 
 const roboto = Roboto({
     subsets: ["latin", "cyrillic"],
@@ -25,11 +26,13 @@ export default function RootLayout({
     return (
         <html lang="ru">
         <body className={roboto.className}>
-        <Header />
-        <div className="container">
-            <main>{children}</main>
-        </div>
-        {modal}
+        <ReduxProvider>
+            <Header />
+            <div className="container">
+                <main>{children}</main>
+            </div>
+            {modal}
+        </ReduxProvider>
         </body>
         </html>
     );

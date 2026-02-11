@@ -14,17 +14,14 @@
     letter-spacing: -0.02em;
 }
 
-/* User card */
 .userCard {
     height: 257px;
     display: grid;
     grid-template-columns: 197px 1fr;
     gap: 33px;
-
     padding: 30px;
     border-radius: 22px;
     background: #ffffff;
-
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
     margin-bottom: 26px;
 }
@@ -82,7 +79,6 @@
     width: 192px;
     height: 52px;
     border-radius: 999px;
-
     border: 1px solid rgba(0, 0, 0, 0.35);
     background: transparent;
     font-size: 18px;
@@ -93,7 +89,6 @@
     border-color: rgba(0, 0, 0, 0.55);
 }
 
-/* Section */
 .sectionTitle {
     margin: 10px 0 16px;
     font-size: 26px;
@@ -101,178 +96,26 @@
     letter-spacing: -0.01em;
 }
 
-/* Courses grid */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 26px;
 }
 
-.courseCard {
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 26px 30px;
     border-radius: 22px;
     background: #ffffff;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
-    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
 }
 
-.cover {
-    position: relative;
-    height: 210px;
-    border-bottom-left-radius: 22px;
-    border-bottom-right-radius: 22px;
-    overflow: hidden;
-}
-
-/* Фоны обложек как на скрине */
-.cover_yoga {
-    background: #f8b400;
-}
-.cover_stretching {
-    background: #2a94d6;
-}
-.cover_fitness {
-    background: #f39a00;
-}
-
-/* Заглушка фото (потом заменишь на реальную картинку) */
-.coverPhotoStub {
-    position: absolute;
-    inset: 0;
-    background:
-            radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.22), transparent 45%),
-            radial-gradient(circle at 70% 55%, rgba(0, 0, 0, 0.10), transparent 45%);
-    opacity: 0.55;
-}
-
-/* Remove button with tooltip */
-.removeBtn {
-    position: absolute;
-    right: 14px;
-    top: 14px;
-
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 0;
-    background: rgba(255, 255, 255, 0.9);
-    cursor: pointer;
-
-    display: grid;
-    place-items: center;
-}
-
-.removeBtn:hover {
-    background: rgba(255, 255, 255, 1);
-}
-
-.removeMinus {
-    width: 10px;
-    height: 2px;
-    background: rgba(0, 0, 0, 0.55);
-    border-radius: 2px;
-}
-
-.tooltip {
-    position: absolute;
-    right: -6px;
-    top: 28px;
-    transform: translateX(100%);
-
-    font-size: 12px;
-    padding: 6px 10px;
-    border-radius: 10px;
-    background: #ffffff;
-    color: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.12s ease;
-}
-
-.removeBtn:hover .tooltip {
-    opacity: 1;
-}
-
-/* Card body */
-.cardBody {
-    padding: 16px 16px 14px;
-}
-
-.courseTitle {
-    margin: 0 0 10px;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.metaRow {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 12px;
+.emptyText {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 400;
     color: rgba(0, 0, 0, 0.75);
-}
-
-.metaItem {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.metaItemSingle {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.75);
-    margin-bottom: 10px;
-}
-
-.metaIcon {
-    opacity: 0.75;
-}
-
-/* Progress */
-.progressBlock {
-    margin: 6px 0 12px;
-}
-
-.progressLabel {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.75);
-    margin-bottom: 6px;
-}
-
-.progressBar {
-    width: 100%;
-    height: 3px;
-    background: rgba(0, 140, 255, 0.18);
-    border-radius: 999px;
-    overflow: hidden;
-}
-
-.progressFill {
-    height: 100%;
-    background: #1da1ff;
-    border-radius: 999px;
-}
-
-/* Action button */
-.actionBtn {
-    width: 100%;
-    height: 38px;
-    border: 0;
-    border-radius: 999px;
-
-    background: #c9f12b;
-    color: rgba(0, 0, 0, 0.9);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.actionBtn:hover {
-    filter: brightness(0.97);
 }

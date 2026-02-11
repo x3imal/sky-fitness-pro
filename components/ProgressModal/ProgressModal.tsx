@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { Workout } from "@/shared/types/workout";
 import { Button } from "@/components/ui/Button/Button";
 import styles from "./ProgressModal.module.css";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { saveWorkoutProgress } from "@/store/slices/progressSlice";
+import { selectWorkoutExerciseProgress } from "@/store/selectors";
 
 type Props = {
     workout: Workout;
@@ -18,12 +21,15 @@ export default function ProgressModal({
     showClose = true,
 }: Props) {
     const router = useRouter();
+    const dispatch = useAppDispatch();
+    const savedMap = useAppSelector(state => selectWorkoutExerciseProgress(state, workout._id));
+
     const initialValues = useMemo(
         () =>
             Object.fromEntries(
-                workout.exercises.map(ex => [ex._id, String(ex.progress ?? 0)])
+                workout.exercises.map(ex => [ex._id, String(savedMap[ex._id] ?? ex.progress ?? 0)])
             ) as Record<string, string>,
-        [workout.exercises]
+        [savedMap, workout.exercises]
     );
     const [values, setValues] = useState<Record<string, string>>(initialValues);
 
@@ -34,6 +40,11 @@ export default function ProgressModal({
     };
 
     const onSave = () => {
+        const parsed = Object.entries(values).reduce<Record<string, number>>((acc, [id, value]) => {
+            acc[id] = Number(value || 0);
+            return acc;
+        }, {});
+        dispatch(saveWorkoutProgress({ workoutId: workout._id, values: parsed }));
         router.push(`/workout/${workout._id}`);
     };
 

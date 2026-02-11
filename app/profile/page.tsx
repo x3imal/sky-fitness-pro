@@ -1,15 +1,60 @@
+"use client";
+
 import styles from "./page.module.css";
 import { CourseCard } from "@/components/CourseCard/CourseCard";
 import { COURSES } from "@/shared/data/courses";
 import Image from "next/image";
-
-const profileCourseState: Record<string, { progress: number; actionText: string }> = {
-    yoga: { progress: 40, actionText: "Продолжить" },
-    stretching: { progress: 0, actionText: "Начать тренировки" },
-    fitness: { progress: 100, actionText: "Начать заново" },
-};
+import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+    selectCourseActionText,
+    selectCourseProgress,
+    selectCurrentUser,
+    selectMyCourseSlugs
+} from "@/store/selectors";
+import { logoutUser } from "@/store/slices/authSlice";
+import { Button } from "@/components/ui/Button/Button";
 
 export default function ProfilePage() {
+    const dispatch = useAppDispatch();
+    const currentUser = useAppSelector(selectCurrentUser);
+    const myCourseSlugs = useAppSelector(selectMyCourseSlugs);
+    const myCourses = COURSES.filter(course => myCourseSlugs.includes(course.slug));
+    const courseUiBySlug = useAppSelector(state =>
+        Object.fromEntries(
+            COURSES.map(course => [
+                course.slug,
+                {
+                    progress: selectCourseProgress(state, course.slug),
+                    actionText: selectCourseActionText(state, course.slug),
+                },
+            ])
+        )
+    );
+
+    if (!currentUser) {
+        return (
+            <main className={styles.page}>
+                <div className={styles.container}>
+                    <h1 className={styles.title}>Профиль</h1>
+                    <section className={styles.userCard} aria-label="Требуется авторизация">
+                        <div className={styles.userInfo}>
+                            <div className={styles.userName}>Требуется вход</div>
+                            <div className={styles.userLogin}>
+                                Чтобы открыть профиль, войдите в аккаунт.
+                            </div>
+                            <Link href="/auth">
+                                <Button variant="primary" size="lg">
+                                    Войти
+                                </Button>
+                            </Link>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        );
+    }
+
     return (
         <main className={styles.page}>
             <div className={styles.container}>
@@ -42,12 +87,18 @@ export default function ProfilePage() {
                     </div>
 
                     <div className={styles.userInfo}>
-                        <div className={styles.userName}>Сергей</div>
+                        <div className={styles.userName}>{currentUser.login}</div>
                         <div className={styles.userLogin}>
-                            Логин: <span className={styles.userLoginValue}>sergey.petrov96</span>
+                            Логин: <span className={styles.userLoginValue}>{currentUser.login}</span>
                         </div>
 
-                        <button className={styles.logoutBtn} type="button">
+                        <button
+                            className={styles.logoutBtn}
+                            type="button"
+                            onClick={() => {
+                                dispatch(logoutUser());
+                            }}
+                        >
                             Выйти
                         </button>
                     </div>
@@ -56,21 +107,32 @@ export default function ProfilePage() {
                 <h2 className={styles.sectionTitle}>Мои курсы</h2>
 
                 {/* Courses */}
-                <section className={styles.grid} aria-label="Мои курсы">
-                    {COURSES.map((course) => {
-                        const state = profileCourseState[course.slug];
-                        return (
-                            <CourseCard
-                                key={course.slug}
-                                course={course}
-                                progress={state?.progress}
-                                actionText={state?.actionText}
-                                actionHref={`/workouts/${course.slug}`}
-                                showAddButton={false}
-                            />
-                        );
-                    })}
-                </section>
+                {myCourses.length === 0 ? (
+                    <section className={styles.emptyState} aria-label="Мои курсы пусты">
+                        <p className={styles.emptyText}>У вас пока нет добавленных курсов</p>
+                        <Link href="/">
+                            <Button variant="primary" size="lg">
+                                Перейти к курсам
+                            </Button>
+                        </Link>
+                    </section>
+                ) : (
+                    <section className={styles.grid} aria-label="Мои курсы">
+                        {myCourses.map((course) => {
+                            const courseUi = courseUiBySlug[course.slug];
+                            return (
+                                <CourseCard
+                                    key={course.slug}
+                                    course={course}
+                                    progress={courseUi?.progress ?? 0}
+                                    actionText={courseUi?.actionText ?? "Начать тренировки"}
+                                    actionHref={`/workouts/${course.slug}`}
+                                    showAddButton
+                                />
+                            );
+                        })}
+                    </section>
+                )}
             </div>
         </main>
     );

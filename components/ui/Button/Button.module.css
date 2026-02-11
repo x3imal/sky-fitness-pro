@@ -98,3 +98,11 @@
     padding: 0 32px;
     font-size: 18px;
 }
+
+.size-menu {
+    height: 52px;
+    width: 206px;
+    padding: 0 18px;
+    font-size: 18px;
+    font-weight: 400;
+}

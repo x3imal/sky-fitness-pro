@@ -9,10 +9,9 @@ import { Button } from "@/components/ui/Button/Button";
 type Props = {
     courseTitle: string;
     workouts: Workout[];
-    onClose?: () => void;
 };
 
-export default function WorkoutSelect({ courseTitle, workouts, onClose }: Props) {
+export default function WorkoutSelect({ courseTitle, workouts }: Props) {
     const router = useRouter();
     const initialId = workouts[0]?._id ?? "";
     const [selectedId, setSelectedId] = useState<string>(initialId);

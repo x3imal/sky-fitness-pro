@@ -45,6 +45,9 @@
     top: 24px;
     right: 24px;
     z-index: 2;
+    border: 0;
+    background: transparent;
+    padding: 0;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -56,6 +59,10 @@
 
 .plusIcon {
     display: block;
+}
+
+.plusIconActive {
+    transform: rotate(45deg);
 }
 
 .content {

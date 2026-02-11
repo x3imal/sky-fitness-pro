@@ -60,3 +60,58 @@
     line-height: 1.3;
     white-space: nowrap;
 }
+
+.userMenuWrap {
+    position: relative;
+    z-index: 120;
+}
+
+.userBtn {
+    width: auto !important;
+    min-width: 103px;
+    max-width: 240px;
+    padding: 0 20px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    border: 0;
+    background: transparent;
+    z-index: 110;
+}
+
+.userMenu {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    width: 266px;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    padding: 36px 30px;
+    z-index: 121;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menuName {
+    font-size: 18px;
+    line-height: 1.05;
+    font-weight: 400;
+}
+
+.menuEmail {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 10px;
+    margin-bottom: 34px;
+}
+
+.menuButton {
+    margin-top: 10px;
+}
