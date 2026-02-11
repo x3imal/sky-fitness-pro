@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getWorkoutById } from "@/shared/util/getWorkoutById";
 import { getCourseByWorkoutId } from "@/shared/util/getCourseByWorkoutId";
 import { Button } from "@/components/ui/Button/Button";
+import Link from "next/link";
 
 type PageProps = {
     params: Promise<{ id: string }>;
@@ -51,9 +52,11 @@ export default async function WorkoutPage({ params }: PageProps) {
                         ))}
                     </div>
 
-                    <Button variant="primary" size="lg" className={styles.fillButton}>
-                        Заполнить свой прогресс
-                    </Button>
+                    <Link href={`/workout/${id}/progress`} className={styles.fillButtonLink}>
+                        <Button variant="primary" size="lg" className={styles.fillButton}>
+                            Заполнить свой прогресс
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </div>
