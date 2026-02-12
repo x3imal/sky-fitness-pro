@@ -3,10 +3,13 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/Button/Button";
 import { CourseCard } from "@/components/CourseCard/CourseCard";
-import { COURSES } from "@/shared/data/courses";
 import styles from "@/app/page.module.css";
+import { useAppSelector } from "@/store/hooks";
+import { selectCourses } from "@/store/selectors";
 
 export default function HomePageContent() {
+    const courses = useAppSelector(selectCourses);
+
     return (
         <>
             <div className={styles.hero}>
@@ -19,7 +22,7 @@ export default function HomePageContent() {
             </div>
 
             <div className={styles.grid}>
-                {COURSES.map((course) => (
+                {courses.map((course) => (
                     <CourseCard key={course.slug} course={course} />
                 ))}
             </div>

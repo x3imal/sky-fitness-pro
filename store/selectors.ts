@@ -1,8 +1,13 @@
 import { RootState } from "./store";
-import { workoutsByCourseSlug } from "@/shared/data/workouts";
 
 const average = (values: number[]) =>
     values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
+
+export const selectCourses = (state: RootState) => state.catalog.courses;
+export const selectWorkoutsByCourseSlug = (state: RootState) => state.catalog.workoutsByCourseSlug;
+export const selectCatalogStatus = (state: RootState) => state.catalog.status;
+export const selectCatalogError = (state: RootState) => state.catalog.error;
+export const selectCatalogSource = (state: RootState) => state.catalog.source;
 
 export const selectWorkoutExerciseProgress = (state: RootState, workoutId: string) =>
     state.progress.exerciseProgressByWorkout[workoutId] ?? {};
@@ -13,7 +18,7 @@ export const selectWorkoutProgress = (state: RootState, workoutId: string) => {
 };
 
 export const selectCourseProgress = (state: RootState, slug: string) => {
-    const workouts = workoutsByCourseSlug[slug] ?? [];
+    const workouts = selectWorkoutsByCourseSlug(state)[slug] ?? [];
     const values = workouts.map(workout => selectWorkoutProgress(state, workout._id));
     return Math.round(average(values));
 };
@@ -41,6 +46,15 @@ export const selectMyCourseSlugs = (state: RootState) => {
 
 export const selectHasCourse = (state: RootState, slug: string) =>
     selectMyCourseSlugs(state).includes(slug);
+
+export const selectCourseBySlug = (state: RootState, slug: string) =>
+    selectCourses(state).find(course => course.slug === slug);
+
+export const selectWorkoutsForCourse = (state: RootState, slug: string) =>
+    selectWorkoutsByCourseSlug(state)[slug] ?? [];
+
+export const selectWorkoutById = (state: RootState, id: string) =>
+    Object.values(selectWorkoutsByCourseSlug(state)).flat().find(workout => workout._id === id);
 
 export const selectCurrentUserLabel = (state: RootState) => {
     const user = selectCurrentUser(state);

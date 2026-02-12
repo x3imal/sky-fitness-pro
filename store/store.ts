@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import progressReducer from "./slices/progressSlice";
 import authReducer from "./slices/authSlice";
+import catalogReducer from "./slices/catalogSlice";
 import {
     FLUSH,
     PAUSE,
@@ -32,13 +33,14 @@ const storage = typeof window !== "undefined"
 const rootReducer = combineReducers({
     progress: progressReducer,
     auth: authReducer,
+    catalog: catalogReducer,
 });
 
 const persistConfig = {
     key: "root",
     version: 1,
     storage,
-    whitelist: ["progress", "auth"],
+    whitelist: ["progress", "auth", "catalog"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

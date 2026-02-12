@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
-import { getCourseById } from '@/shared/util/getCourseById';
 import {CourseCTA} from "@/components/CourseCTA/CourseCTA";
 import { getCourseTheme } from "@/shared/util/getCourseTheme";
+import { getCourseByIdAsync } from "@/shared/util/catalogQueries";
 
 type PageProps = {
     params: Promise<{ id: string }>;
@@ -12,7 +12,7 @@ type PageProps = {
 export default async function CoursePage({ params }: PageProps) {
     const { id } = await params;
 
-    const course = getCourseById(id);
+    const course = await getCourseByIdAsync(id);
     if (!course) notFound();
     const theme = getCourseTheme(id);
 

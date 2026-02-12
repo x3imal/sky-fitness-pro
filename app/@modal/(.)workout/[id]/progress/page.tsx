@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import ProgressModal from "@/components/ProgressModal/ProgressModal";
-import { getWorkoutById } from "@/shared/util/getWorkoutById";
 import AuthGuard from "@/components/AuthGuard/AuthGuard";
+import { getWorkoutByIdAsync } from "@/shared/util/catalogQueries";
 
 type PageProps = {
     params: Promise<{ id: string }>;
@@ -9,7 +9,7 @@ type PageProps = {
 
 export default async function WorkoutProgressModalPage({ params }: PageProps) {
     const { id } = await params;
-    const workout = getWorkoutById(id);
+    const workout = await getWorkoutByIdAsync(id);
     if (!workout) notFound();
 
     return (

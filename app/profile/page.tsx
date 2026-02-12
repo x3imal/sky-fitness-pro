@@ -2,10 +2,10 @@
 
 import styles from "./page.module.css";
 import { CourseCard } from "@/components/CourseCard/CourseCard";
-import { COURSES } from "@/shared/data/courses";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
+    selectCourses,
     selectCourseActionText,
     selectCourseProgress,
     selectCurrentUser,
@@ -16,12 +16,13 @@ import AuthGuard from "@/components/AuthGuard/AuthGuard";
 
 export default function ProfilePage() {
     const dispatch = useAppDispatch();
+    const courses = useAppSelector(selectCourses);
     const currentUser = useAppSelector(selectCurrentUser);
     const myCourseSlugs = useAppSelector(selectMyCourseSlugs);
-    const myCourses = COURSES.filter(course => myCourseSlugs.includes(course.slug));
+    const myCourses = courses.filter(course => myCourseSlugs.includes(course.slug));
     const courseUiBySlug = useAppSelector(state =>
         Object.fromEntries(
-            COURSES.map(course => [
+            courses.map(course => [
                 course.slug,
                 {
                     progress: selectCourseProgress(state, course.slug),

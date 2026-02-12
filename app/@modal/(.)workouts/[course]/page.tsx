@@ -4,9 +4,9 @@ import { use } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import WorkoutSelect from "@/components/WorkoutSelect/WorkoutSelect";
-import { getWorkoutsByCourseSlug } from "@/shared/util/getWorkoutsByCourseSlug";
-import { getCourseById } from "@/shared/util/getCourseById";
 import AuthGuard from "@/components/AuthGuard/AuthGuard";
+import { useAppSelector } from "@/store/hooks";
+import { selectCourseBySlug, selectWorkoutsForCourse } from "@/store/selectors";
 
 type PageProps = {
     params: Promise<{ course: string }>;
@@ -15,8 +15,8 @@ type PageProps = {
 export default function WorkoutsModalPage({ params }: PageProps) {
     const router = useRouter();
     const { course } = use(params);
-    const courseData = getCourseById(course);
-    const workouts = getWorkoutsByCourseSlug(course);
+    const courseData = useAppSelector(state => selectCourseBySlug(state, course));
+    const workouts = useAppSelector(state => selectWorkoutsForCourse(state, course));
 
     if (!courseData) return null;
 

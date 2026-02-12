@@ -1,9 +1,8 @@
 import styles from "./page.module.css";
 import WorkoutSelect from "@/components/WorkoutSelect/WorkoutSelect";
-import { getWorkoutsByCourseSlug } from "@/shared/util/getWorkoutsByCourseSlug";
-import { getCourseById } from "@/shared/util/getCourseById";
 import { notFound } from "next/navigation";
 import AuthGuard from "@/components/AuthGuard/AuthGuard";
+import { getCourseByIdAsync, getWorkoutsByCourseSlugAsync } from "@/shared/util/catalogQueries";
 
 type PageProps = {
     params: Promise<{ course: string }>;
@@ -11,10 +10,10 @@ type PageProps = {
 
 export default async function WorkoutsPage({ params }: PageProps) {
     const { course } = await params;
-    const courseData = getCourseById(course);
+    const courseData = await getCourseByIdAsync(course);
     if (!courseData) notFound();
 
-    const workouts = getWorkoutsByCourseSlug(course);
+    const workouts = await getWorkoutsByCourseSlugAsync(course);
 
     return (
         <AuthGuard>
