@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./AuthModal.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
     validateLogin,
     validateSignup,
@@ -31,6 +31,7 @@ export default function AuthModal({
     onClose,
 }: Props) {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const dispatch = useAppDispatch();
     const users = useAppSelector(selectUsers);
     const [mode, setMode] = useState<Mode>(initialMode);
@@ -43,6 +44,15 @@ export default function AuthModal({
     const [errors, setErrors] = useState<AuthErrors>({});
     const isLogin = mode === "login";
 
+    const handleClose = () => {
+        if (onClose) {
+            onClose();
+            return;
+        }
+
+        router.push("/");
+    };
+
     const onChange = (field: keyof AuthValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues(prev => ({ ...prev, [field]: e.target.value }));
     };
@@ -50,6 +60,7 @@ export default function AuthModal({
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const nextErrors: AuthErrors = isLogin ? validateLogin(values) : validateSignup(values);
+        const nextUrl = searchParams.get("next") || "/profile";
 
         if (isLogin && Object.keys(nextErrors).length === 0) {
             const loginValue = values.login.trim().toLowerCase();
@@ -66,7 +77,7 @@ export default function AuthModal({
                 if (onClose) {
                     onClose();
                 } else {
-                    router.push("/profile");
+                    router.push(nextUrl);
                 }
                 return;
             }
@@ -98,7 +109,7 @@ export default function AuthModal({
                 if (onClose) {
                     onClose();
                 } else {
-                    router.push("/profile");
+                    router.push(nextUrl);
                 }
                 return;
             }
@@ -108,16 +119,20 @@ export default function AuthModal({
     };
 
     return (
-        <div className={showOverlay ? styles.overlay : styles.pageWrap}>
+        <div
+            className={showOverlay ? styles.overlay : styles.pageWrap}
+            onClick={showOverlay ? (e) => {
+                if (e.target === e.currentTarget) {
+                    handleClose();
+                }
+            } : undefined}
+        >
             <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Авторизация">
                 {showClose && (
                     <button
                         type="button"
                         className={styles.close}
-                        onClick={() => {
-                            if (onClose) onClose();
-                            else router.back();
-                        }}
+                        onClick={handleClose}
                         aria-label="Закрыть"
                     >
                         ×

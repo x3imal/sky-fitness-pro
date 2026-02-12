@@ -9,7 +9,7 @@ export default function AuthModalPage() {
     return (
         <AuthModal
             showOverlay
-            showClose
+            showClose={false}
             onClose={() => router.back()}
         />
     );
