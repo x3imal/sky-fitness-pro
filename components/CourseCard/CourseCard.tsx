@@ -64,11 +64,11 @@ export function CourseCard({ course, progress, actionText, actionHref, showAddBu
                         }}
                     >
                         <Image
-                            src="/icons/plus.svg"
-                            alt="Добавить"
+                            src={hasCourse ? "/icons/minus.svg" : "/icons/plus.svg"}
+                            alt={hasCourse ? "Удалить" : "Добавить"}
                             width={26}
                             height={26}
-                            className={`${styles.plusIcon} ${hasCourse ? styles.plusIconActive : ""}`}
+                            className={styles.plusIcon}
                         />
                     </button>
                 )}

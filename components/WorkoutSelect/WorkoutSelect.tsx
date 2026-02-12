@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import styles from "./WorkoutSelect.module.css";
 import { Workout } from "@/shared/types/workout";
 import { Button } from "@/components/ui/Button/Button";
@@ -12,7 +11,6 @@ type Props = {
 };
 
 export default function WorkoutSelect({ courseTitle, workouts }: Props) {
-    const router = useRouter();
     const initialId = workouts[0]?._id ?? "";
     const [selectedId, setSelectedId] = useState<string>(initialId);
 
@@ -23,7 +21,7 @@ export default function WorkoutSelect({ courseTitle, workouts }: Props) {
 
     const onStart = () => {
         if (!selected) return;
-        router.push(`/workout/${selected._id}`);
+        window.location.assign(`/workout/${selected._id}`);
     };
 
     return (

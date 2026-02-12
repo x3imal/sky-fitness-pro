@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import WorkoutSelect from "@/components/WorkoutSelect/WorkoutSelect";
 import { getWorkoutsByCourseSlug } from "@/shared/util/getWorkoutsByCourseSlug";
@@ -12,6 +13,7 @@ type PageProps = {
 };
 
 export default function WorkoutsModalPage({ params }: PageProps) {
+    const router = useRouter();
     const { course } = use(params);
     const courseData = getCourseById(course);
     const workouts = getWorkoutsByCourseSlug(course);
@@ -20,8 +22,10 @@ export default function WorkoutsModalPage({ params }: PageProps) {
 
     return (
         <AuthGuard>
-            <div className={styles.overlay}>
-                <WorkoutSelect courseTitle={courseData.nameRU} workouts={workouts} />
+            <div className={styles.overlay} onClick={() => router.back()}>
+                <div onClick={(e) => e.stopPropagation()}>
+                    <WorkoutSelect courseTitle={courseData.nameRU} workouts={workouts} />
+                </div>
             </div>
         </AuthGuard>
     );

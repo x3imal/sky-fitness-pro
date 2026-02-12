@@ -48,15 +48,30 @@ export default function ProgressModal({
         router.push(`/workout/${workout._id}`);
     };
 
+    const handleClose = () => {
+        if (window.history.length > 1) {
+            router.back();
+            return;
+        }
+        router.push(`/workout/${workout._id}`);
+    };
+
     return (
-        <div className={showOverlay ? styles.overlay : styles.pageWrap}>
+        <div
+            className={showOverlay ? styles.overlay : styles.pageWrap}
+            onClick={showOverlay ? (e) => {
+                if (e.target === e.currentTarget) {
+                    handleClose();
+                }
+            } : undefined}
+        >
             <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Мой прогресс">
                 {showClose && (
                     <button
                         type="button"
                         className={styles.close}
                         aria-label="Закрыть"
-                        onClick={() => router.back()}
+                        onClick={handleClose}
                     >
                         ×
                     </button>

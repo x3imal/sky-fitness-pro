@@ -61,10 +61,6 @@
     display: block;
 }
 
-.plusIconActive {
-    transform: rotate(45deg);
-}
-
 .content {
     padding: 24px 30px 15px;
     display: flex;
