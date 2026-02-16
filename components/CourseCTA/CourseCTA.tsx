@@ -1,8 +1,29 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './CourseCTA.module.css';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { addCourseToCurrentUser, removeCourseFromCurrentUser } from "@/store/slices/authSlice";
+import { selectHasCourse, selectIsAuthenticated } from "@/store/selectors";
 
-export function CourseCTA() {
+type Props = {
+    courseSlug: string;
+};
+
+export function CourseCTA({ courseSlug }: Props) {
+    const dispatch = useAppDispatch();
+    const isAuthenticated = useAppSelector(selectIsAuthenticated);
+    const hasCourse = useAppSelector(state => selectHasCourse(state, courseSlug));
+
+    const onToggleCourse = () => {
+        if (hasCourse) {
+            dispatch(removeCourseFromCurrentUser({ slug: courseSlug }));
+        } else {
+            dispatch(addCourseToCurrentUser({ slug: courseSlug }));
+        }
+    };
+
     return (
         <section className={styles.cta}>
             <div className={styles.card}>
@@ -30,9 +51,15 @@ export function CourseCTA() {
                         <li>помогают противостоять стрессам</li>
                     </ul>
 
-                    <Link href="/auth" className={styles.button}>
-                        Войдите, чтобы добавить курс
-                    </Link>
+                    {isAuthenticated ? (
+                        <button type="button" className={styles.button} onClick={onToggleCourse}>
+                            {hasCourse ? "Удалить курс из списка" : "Добавить курс"}
+                        </button>
+                    ) : (
+                        <Link href="/auth" className={styles.button}>
+                            Войдите, чтобы добавить курс
+                        </Link>
+                    )}
                 </div>
 
                 <div className={styles.right}>

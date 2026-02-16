@@ -61,7 +61,7 @@ export default async function CoursePage({ params }: PageProps) {
                 </div>
             </section>
 
-            <CourseCTA />
+            <CourseCTA courseSlug={course.slug} />
 
         </div>
     );
