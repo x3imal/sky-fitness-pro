@@ -1,51 +1,81 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Workout } from "@/shared/types/workout";
 import { Button } from "@/components/ui/Button/Button";
 import styles from "./ProgressModal.module.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { saveWorkoutProgress } from "@/store/slices/progressSlice";
-import { selectWorkoutExerciseProgress } from "@/store/selectors";
+import { selectAuthToken, selectCourseIdByWorkoutId } from "@/store/selectors";
+import { getWorkout, getWorkoutProgress, saveWorkoutProgress as saveWorkoutProgressRequest } from "@/shared/services/workoutService";
+import { Exercise, Workout } from "@/shared/types/workout";
+import { setWorkoutProgress } from "@/store/slices/progressSlice";
 
 type Props = {
-    workout: Workout;
+    workoutId: string;
     showOverlay?: boolean;
     showClose?: boolean;
 };
 
+type WorkoutWithExercises = Workout & { exercises: (Exercise & { quantity?: number })[] };
+
 export default function ProgressModal({
-    workout,
+    workoutId,
     showOverlay = true,
     showClose = true,
 }: Props) {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const savedMap = useAppSelector(state => selectWorkoutExerciseProgress(state, workout._id));
+    const token = useAppSelector(selectAuthToken);
+    const courseId = useAppSelector(state => selectCourseIdByWorkoutId(state, workoutId));
+    const [workout, setWorkout] = useState<WorkoutWithExercises | null>(null);
+    const [values, setValues] = useState<Record<string, string>>({});
+    const [loading, setLoading] = useState(false);
 
-    const initialValues = useMemo(
-        () =>
-            Object.fromEntries(
-                workout.exercises.map(ex => [ex._id, String(savedMap[ex._id] ?? ex.progress ?? 0)])
-            ) as Record<string, string>,
-        [savedMap, workout.exercises]
-    );
-    const [values, setValues] = useState<Record<string, string>>(initialValues);
+    useEffect(() => {
+        if (!token || !courseId || !workoutId) return;
+        setLoading(true);
+        Promise.all([getWorkout(token, workoutId), getWorkoutProgress(token, courseId, workoutId)])
+            .then(([workoutData, progress]) => {
+                const exercises = workoutData.exercises?.map((ex) => ({
+                    _id: ex._id,
+                    name: ex.name,
+                    quantity: (ex as { quantity?: number }).quantity,
+                })) ?? [];
+                setWorkout({
+                    _id: workoutData._id,
+                    name: workoutData.name,
+                    video: workoutData.video,
+                    exercises,
+                });
+                const initial = exercises.reduce<Record<string, string>>((acc, ex, idx) => {
+                    const count = progress.progressData?.[idx] ?? 0;
+                    acc[ex._id] = String(count);
+                    return acc;
+                }, {});
+                setValues(initial);
+            })
+            .finally(() => setLoading(false));
+    }, [courseId, token, workoutId]);
 
     const onChange = (id: string, value: string) => {
-        // Allow only digits to keep the input predictable for mock UI.
         const next = value.replace(/[^\d]/g, "");
         setValues(prev => ({ ...prev, [id]: next }));
     };
 
-    const onSave = () => {
-        const parsed = Object.entries(values).reduce<Record<string, number>>((acc, [id, value]) => {
-            acc[id] = Number(value || 0);
+    const onSave = async () => {
+        if (!token || !courseId || !workout) return;
+        const counts = workout.exercises.map(ex => Number(values[ex._id] || 0));
+        await saveWorkoutProgressRequest(token, courseId, workoutId, counts);
+
+        const percents = workout.exercises.reduce<Record<string, number>>((acc, ex, idx) => {
+            const quantity = ex.quantity ?? 0;
+            const percent = quantity > 0 ? Math.round((counts[idx] / quantity) * 100) : 0;
+            acc[ex._id] = Math.max(0, Math.min(100, percent));
             return acc;
         }, {});
-        dispatch(saveWorkoutProgress({ workoutId: workout._id, values: parsed }));
-        router.push(`/workout/${workout._id}`);
+        dispatch(setWorkoutProgress({ workoutId, values: percents }));
+        router.push(`/workout/${workoutId}`);
     };
 
     const handleClose = () => {
@@ -53,7 +83,7 @@ export default function ProgressModal({
             router.back();
             return;
         }
-        router.push(`/workout/${workout._id}`);
+        router.push(`/workout/${workoutId}`);
     };
 
     return (
@@ -80,7 +110,7 @@ export default function ProgressModal({
                 <h2 className={styles.title}>Мой прогресс</h2>
 
                 <div className={styles.formList}>
-                    {workout.exercises.map(ex => (
+                    {workout?.exercises.map(ex => (
                         <div key={ex._id} className={styles.formItem}>
                             <label className={styles.label} htmlFor={`progress-${ex._id}`}>
                                 Сколько раз вы сделали {ex.name.toLowerCase()}?
@@ -102,6 +132,7 @@ export default function ProgressModal({
                     size="lg"
                     className={styles.saveButton}
                     onClick={onSave}
+                    disabled={loading || !workout}
                 >
                     Сохранить
                 </Button>

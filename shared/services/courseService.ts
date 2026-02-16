@@ -82,8 +82,15 @@ export async function fetchCourse(courseId: string): Promise<CourseDetail> {
     return request<CourseDetail>(buildUrl(`/api/fitness/courses/${courseId}`), { method: "GET" });
 }
 
-export async function fetchCourseWorkouts(courseId: string): Promise<Workout[]> {
-    return request<Workout[]>(buildUrl(`/api/fitness/courses/${courseId}/workouts`), { method: "GET" });
+export async function fetchCourseWorkouts(courseId: string, token?: string): Promise<Workout[]> {
+    return request<Workout[]>(buildUrl(`/api/fitness/courses/${courseId}/workouts`), {
+        method: "GET",
+        headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+            }
+            : undefined,
+    });
 }
 
 export async function addUserCourse(token: string, courseId: string): Promise<ApiMessage> {

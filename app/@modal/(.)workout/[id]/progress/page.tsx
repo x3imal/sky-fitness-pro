@@ -1,20 +1,16 @@
-import { notFound } from "next/navigation";
+"use client";
+
 import ProgressModal from "@/components/ProgressModal/ProgressModal";
 import AuthGuard from "@/components/AuthGuard/AuthGuard";
-import { getWorkoutByIdAsync } from "@/shared/util/catalogQueries";
+import { useParams } from "next/navigation";
 
-type PageProps = {
-    params: Promise<{ id: string }>;
-};
-
-export default async function WorkoutProgressModalPage({ params }: PageProps) {
-    const { id } = await params;
-    const workout = await getWorkoutByIdAsync(id);
-    if (!workout) notFound();
+export default function WorkoutProgressModalPage() {
+    const params = useParams<{ id: string }>();
+    const workoutId = params?.id ?? "";
 
     return (
         <AuthGuard>
-            <ProgressModal workout={workout} showOverlay showClose={false} />
+            <ProgressModal workoutId={workoutId} showOverlay showClose={false} />
         </AuthGuard>
     );
 }

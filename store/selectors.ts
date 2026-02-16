@@ -65,6 +65,16 @@ export const selectWorkoutsForCourse = (state: RootState, slug: string) =>
 export const selectWorkoutById = (state: RootState, id: string) =>
     Object.values(selectWorkoutsByCourseSlug(state)).flat().find(workout => workout._id === id);
 
+export const selectCourseIdBySlug = (state: RootState, slug: string) => {
+    const course = selectCourseBySlug(state, slug);
+    return course?._id ?? null;
+};
+
+export const selectCourseIdByWorkoutId = (state: RootState, workoutId: string) => {
+    const course = selectCourses(state).find(item => item.workouts?.includes(workoutId));
+    return course?._id ?? null;
+};
+
 export const selectCurrentUserLabel = (state: RootState) => {
     const user = selectCurrentUser(state);
     if (!user) return "";
