@@ -13,13 +13,13 @@ export function validateLogin(values: AuthValues): AuthErrors {
     const errors: AuthErrors = {};
 
     if (!values.login.trim()) {
-        errors.login = "Введите логин";
+        errors.login = "Введите email";
+    } else if (!emailRegex.test(values.login.trim())) {
+        errors.login = "Некорректный email";
     }
 
     if (!values.password.trim()) {
         errors.password = "Введите пароль";
-    } else if (values.password.trim().length < 6) {
-        errors.password = "Минимум 6 символов";
     }
 
     return errors;
@@ -36,8 +36,6 @@ export function validateSignup(values: AuthValues): AuthErrors {
 
     if (!values.password.trim()) {
         errors.password = "Введите пароль";
-    } else if (values.password.trim().length < 6) {
-        errors.password = "Минимум 6 символов";
     }
 
     if (!values.confirmPassword.trim()) {

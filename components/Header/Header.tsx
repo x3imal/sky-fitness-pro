@@ -56,7 +56,7 @@ export default function Header() {
 
                                 <div className={styles.userMenu} role="dialog" aria-label="Меню профиля">
                                     <div className={styles.menuName}>{currentUserLabel}</div>
-                                    <div className={styles.menuEmail}>{currentUser.email}</div>
+                                    <div className={styles.menuEmail}>{currentUser.email ?? ""}</div>
 
                                     <Button
                                         variant="primary"

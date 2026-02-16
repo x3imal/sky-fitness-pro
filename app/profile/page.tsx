@@ -20,6 +20,8 @@ export default function ProfilePage() {
     const currentUser = useAppSelector(selectCurrentUser);
     const myCourseSlugs = useAppSelector(selectMyCourseSlugs);
     const myCourses = courses.filter(course => myCourseSlugs.includes(course.slug));
+    const userName = (currentUser?.email?.split("@")[0] ?? "").split(".")[0];
+    const displayName = userName ? userName.charAt(0).toUpperCase() + userName.slice(1) : "";
     const courseUiBySlug = useAppSelector(state =>
         Object.fromEntries(
             courses.map(course => [
@@ -65,9 +67,9 @@ export default function ProfilePage() {
                         </div>
 
                         <div className={styles.userInfo}>
-                            <div className={styles.userName}>{currentUser?.login ?? ""}</div>
+                            <div className={styles.userName}>{displayName}</div>
                             <div className={styles.userLogin}>
-                                Логин: <span className={styles.userLoginValue}>{currentUser?.login ?? ""}</span>
+                                Логин: <span className={styles.userLoginValue}>{userName}</span>
                             </div>
 
                             <button

@@ -31,17 +31,18 @@ export const selectCourseActionText = (state: RootState, slug: string) => {
 };
 
 export const selectCurrentUser = (state: RootState) => {
-    const login = state.auth.currentUserLogin;
-    if (!login) return null;
-    return state.auth.users.find(user => user.login === login) ?? null;
+    return state.auth.currentUser;
 };
 
-export const selectUsers = (state: RootState) => state.auth.users;
-export const selectIsAuthenticated = (state: RootState) => Boolean(state.auth.currentUserLogin);
+export const selectIsAuthenticated = (state: RootState) =>
+    Boolean(state.auth.token && state.auth.currentUser);
+export const selectAuthStatus = (state: RootState) => state.auth.status;
+export const selectAuthError = (state: RootState) => state.auth.error;
+export const selectAuthToken = (state: RootState) => state.auth.token;
 
 export const selectMyCourseSlugs = (state: RootState) => {
     const user = selectCurrentUser(state);
-    return user?.myCourseSlugs ?? [];
+    return user?.selectedCourses ?? [];
 };
 
 export const selectHasCourse = (state: RootState, slug: string) =>
@@ -59,8 +60,8 @@ export const selectWorkoutById = (state: RootState, id: string) =>
 export const selectCurrentUserLabel = (state: RootState) => {
     const user = selectCurrentUser(state);
     if (!user) return "";
-    const source = user.login || user.email;
-    const base = source.split("@")[0].split(".")[0];
+    const email = user.email ?? "";
+    const base = email.split("@")[0]?.split(".")[0] ?? "";
     if (!base) return "Профиль";
     return base.charAt(0).toUpperCase() + base.slice(1);
 };
