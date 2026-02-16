@@ -92,7 +92,7 @@ const persistConfig = {
     key: "root",
     version: 2,
     storage,
-    whitelist: ["progress", "auth", "catalog"],
+    whitelist: ["progress", "auth"],
     migrate: createMigrate(migrations, { debug: false }),
 };
 

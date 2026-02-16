@@ -5,9 +5,10 @@ import Image from 'next/image';
 import styles from './CourseCard.module.css';
 import {Course} from "@/shared/types/course";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { addCourseToCurrentUser, removeCourseFromCurrentUser } from "@/store/slices/authSlice";
+import { addCourseForUser, removeCourseForUser } from "@/store/slices/authSlice";
 import { selectHasCourse, selectIsAuthenticated } from "@/store/selectors";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface CourseCardProps {
     course: Course;
@@ -23,6 +24,7 @@ export function CourseCard({ course, progress, actionText, actionHref, showAddBu
     const isAuthenticated = useAppSelector(selectIsAuthenticated);
     const {slug, nameRU, imageSrc, durationInDays, dailyDurationInMinutes, difficulty} = course;
     const hasCourse = useAppSelector(state => selectHasCourse(state, slug));
+    const [uiError, setUiError] = useState<string | null>(null);
 
     return (
         <article className={styles.card}>
@@ -51,15 +53,21 @@ export function CourseCard({ course, progress, actionText, actionHref, showAddBu
                         type="button"
                         className={styles.plusButton}
                         aria-label={hasCourse ? "Удалить тренировку" : "Добавить тренировку"}
-                        onClick={() => {
+                        onClick={async () => {
                             if (!isAuthenticated) {
                                 router.push("/auth");
                                 return;
                             }
-                            if (hasCourse) {
-                                dispatch(removeCourseFromCurrentUser({ slug }));
-                            } else {
-                                dispatch(addCourseToCurrentUser({ slug }));
+                            setUiError(null);
+                            try {
+                                if (hasCourse) {
+                                    await dispatch(removeCourseForUser({ slug })).unwrap();
+                                } else {
+                                    await dispatch(addCourseForUser({ slug })).unwrap();
+                                }
+                            } catch (error) {
+                                const message = error instanceof Error ? error.message : "Ошибка";
+                                setUiError(message);
                             }
                         }}
                     >
@@ -141,6 +149,7 @@ export function CourseCard({ course, progress, actionText, actionHref, showAddBu
                             {actionText}
                         </button>
                     ))}
+                {uiError && <div className={styles.actionError}>{uiError}</div>}
             </div>
         </article>
     );

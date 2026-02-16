@@ -165,3 +165,8 @@
 .actionButton:hover {
     filter: brightness(0.97);
 }
+
+.actionError {
+    font-size: 12px;
+    color: #d32f2f;
+}

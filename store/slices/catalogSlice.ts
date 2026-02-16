@@ -1,6 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { COURSES } from "@/shared/data/courses";
-import { workoutsByCourseSlug } from "@/shared/data/workouts";
 import { CatalogPayload, WorkoutsByCourseSlug } from "@/shared/types/catalog";
 import { Course } from "@/shared/types/course";
 import { loadCatalog } from "@/shared/services/catalogService";
@@ -14,11 +12,11 @@ type CatalogState = {
 };
 
 const initialState: CatalogState = {
-    courses: COURSES,
-    workoutsByCourseSlug,
+    courses: [],
+    workoutsByCourseSlug: {},
     status: "idle",
     error: null,
-    source: "mock",
+    source: "api",
 };
 
 export const fetchCatalog = createAsyncThunk<CatalogPayload>(
@@ -38,9 +36,14 @@ const catalogSlice = createSlice({
             })
             .addCase(fetchCatalog.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.courses = action.payload.courses;
+                state.courses = action.payload.courses.reduce<Course[]>((acc, course) => {
+                    if (!acc.some(item => item.slug === course.slug)) {
+                        acc.push(course);
+                    }
+                    return acc;
+                }, []);
                 state.workoutsByCourseSlug = action.payload.workoutsByCourseSlug;
-                state.source = action.payload.source;
+                state.source = "api";
             })
             .addCase(fetchCatalog.rejected, (state, action) => {
                 state.status = "failed";

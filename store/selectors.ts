@@ -42,7 +42,15 @@ export const selectAuthToken = (state: RootState) => state.auth.token;
 
 export const selectMyCourseSlugs = (state: RootState) => {
     const user = selectCurrentUser(state);
-    return user?.selectedCourses ?? [];
+    const selected = user?.selectedCourses ?? [];
+    const courses = selectCourses(state);
+    return selected.map((value) => {
+        const bySlug = courses.find(course => course.slug === value);
+        if (bySlug) return bySlug.slug;
+        const byId = courses.find(course => course._id === value);
+        if (byId) return byId.slug;
+        return value;
+    });
 };
 
 export const selectHasCourse = (state: RootState, slug: string) =>

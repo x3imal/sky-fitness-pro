@@ -97,7 +97,7 @@ export default function ProfilePage() {
                                 const courseUi = courseUiBySlug[course.slug];
                                 return (
                                     <CourseCard
-                                        key={course.slug}
+                                        key={course._id || course.slug}
                                         course={course}
                                         progress={courseUi?.progress ?? 0}
                                         actionText={courseUi?.actionText ?? "Начать тренировки"}

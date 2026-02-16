@@ -4,8 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './CourseCTA.module.css';
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { addCourseToCurrentUser, removeCourseFromCurrentUser } from "@/store/slices/authSlice";
+import { addCourseForUser, removeCourseForUser } from "@/store/slices/authSlice";
 import { selectHasCourse, selectIsAuthenticated } from "@/store/selectors";
+import { useState } from "react";
 
 type Props = {
     courseSlug: string;
@@ -15,12 +16,19 @@ export function CourseCTA({ courseSlug }: Props) {
     const dispatch = useAppDispatch();
     const isAuthenticated = useAppSelector(selectIsAuthenticated);
     const hasCourse = useAppSelector(state => selectHasCourse(state, courseSlug));
+    const [uiError, setUiError] = useState<string | null>(null);
 
-    const onToggleCourse = () => {
-        if (hasCourse) {
-            dispatch(removeCourseFromCurrentUser({ slug: courseSlug }));
-        } else {
-            dispatch(addCourseToCurrentUser({ slug: courseSlug }));
+    const onToggleCourse = async () => {
+        setUiError(null);
+        try {
+            if (hasCourse) {
+                await dispatch(removeCourseForUser({ slug: courseSlug })).unwrap();
+            } else {
+                await dispatch(addCourseForUser({ slug: courseSlug })).unwrap();
+            }
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Ошибка";
+            setUiError(message);
         }
     };
 
@@ -60,6 +68,7 @@ export function CourseCTA({ courseSlug }: Props) {
                             Войдите, чтобы добавить курс
                         </Link>
                     )}
+                    {uiError && <div className={styles.errorText}>{uiError}</div>}
                 </div>
 
                 <div className={styles.right}>

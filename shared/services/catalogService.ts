@@ -1,85 +1,73 @@
-import { COURSES } from "@/shared/data/courses";
-import { workoutsByCourseSlug } from "@/shared/data/workouts";
 import { CatalogPayload, WorkoutsByCourseSlug } from "@/shared/types/catalog";
-import { Course } from "@/shared/types/course";
-import { Workout } from "@/shared/types/workout";
+import { Course, DifficultyRU } from "@/shared/types/course";
+import { fetchCourse, fetchCourses } from "@/shared/services/courseService";
+import { COURSES } from "@/shared/data/courses";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.trim() ?? "";
+const slugify = (value: string) =>
+    value
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9а-яё\s-]/gi, "")
+        .replace(/\s+/g, "-");
 
-const getMockCatalog = (): CatalogPayload => ({
-    courses: COURSES,
-    workoutsByCourseSlug,
-    source: "mock",
-});
-
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-    typeof value === "object" && value !== null;
-
-const isWorkoutArrayMap = (value: unknown): value is WorkoutsByCourseSlug => {
-    if (!isRecord(value)) return false;
-    return Object.values(value).every(
-        (items) => Array.isArray(items) && items.every((item) => isRecord(item) && typeof item._id === "string")
-    );
-};
-
-const toWorkoutsMap = (value: unknown): WorkoutsByCourseSlug | null => {
-    if (isWorkoutArrayMap(value)) return value;
-    if (!Array.isArray(value)) return null;
-
-    const mapped = value.reduce<WorkoutsByCourseSlug>((acc, item) => {
-        if (!isRecord(item)) return acc;
-        if (typeof item._id !== "string" || typeof item.courseSlug !== "string") return acc;
-        const courseSlug = item.courseSlug;
-        const workout: Workout = {
-            _id: item._id,
-            name: typeof item.name === "string" ? item.name : "",
-            video: typeof item.video === "string" ? item.video : "",
-            exercises: Array.isArray(item.exercises) ? (item.exercises as Workout["exercises"]) : [],
-            completed: Boolean(item.completed),
-        };
-
-        if (!acc[courseSlug]) acc[courseSlug] = [];
-        acc[courseSlug].push(workout);
-        return acc;
-    }, {});
-
-    return Object.keys(mapped).length ? mapped : null;
-};
-
-const fetchJSON = async <T>(url: string): Promise<T> => {
-    const response = await fetch(url, { cache: "no-store" });
-    if (!response.ok) {
-        throw new Error(`Request failed: ${response.status}`);
-    }
-    return response.json() as Promise<T>;
+const normalizeDifficulty = (value: string | undefined): DifficultyRU => {
+    if (value === "легкий" || value === "средний" || value === "сложный") return value;
+    return "средний";
 };
 
 export async function loadCatalog(): Promise<CatalogPayload> {
-    if (!API_BASE_URL) {
-        return getMockCatalog();
-    }
-
-    try {
-        const [coursesPayload, workoutsPayload] = await Promise.all([
-            fetchJSON<unknown>(`${API_BASE_URL}/courses`),
-            fetchJSON<unknown>(`${API_BASE_URL}/workouts`),
-        ]);
-
-        if (!Array.isArray(coursesPayload) || !coursesPayload.every((item) => isRecord(item))) {
-            return getMockCatalog();
+    const coursesPayloadRaw = await fetchCourses();
+    const coursesPayload = coursesPayloadRaw.reduce<typeof coursesPayloadRaw>((acc, course) => {
+        const key = `${(course.nameEN || course.nameRU || "").toLowerCase()}`;
+        if (!acc.some(item => item._id === course._id || `${(item.nameEN || item.nameRU || "").toLowerCase()}` === key)) {
+            acc.push(course);
         }
+        return acc;
+    }, []);
+    const details = await Promise.all(
+        coursesPayload.map(async (course) => {
+            try {
+                return await fetchCourse(course._id);
+            } catch {
+                return course;
+            }
+        })
+    );
+    const workoutsMap: WorkoutsByCourseSlug = {};
 
-        const mappedWorkouts = toWorkoutsMap(workoutsPayload);
-        if (!mappedWorkouts) {
-            return getMockCatalog();
-        }
+    const mappedCoursesRaw: Course[] = details.map(detail => {
+        const localMatch =
+            COURSES.find(item => item._id === detail._id) ??
+            COURSES.find(item => item.nameRU === detail.nameRU) ??
+            COURSES.find(item => item.nameEN === detail.nameEN);
+        const slug = localMatch?.slug ?? slugify(detail.nameEN || detail.nameRU) ?? detail._id;
 
         return {
-            courses: coursesPayload as Course[],
-            workoutsByCourseSlug: mappedWorkouts,
-            source: "api",
+            _id: detail._id,
+            nameRU: detail.nameRU,
+            nameEN: detail.nameEN,
+            description: detail.description ?? "",
+            directions: detail.directions ?? [],
+            fitting: detail.fitting ?? [],
+            difficulty: normalizeDifficulty(detail.difficulty),
+            durationInDays: detail.durationInDays ?? 0,
+            dailyDurationInMinutes: detail.dailyDurationInMinutes ?? { from: 0, to: 0 },
+            workouts: detail.workouts ?? [],
+            slug,
+            imageSrc: localMatch?.imageSrc ?? "",
+            ctaImageSrc: localMatch?.ctaImageSrc,
         };
-    } catch {
-        return getMockCatalog();
-    }
+    });
+    const mappedCourses = mappedCoursesRaw.reduce<Course[]>((acc, course) => {
+        if (!acc.some(item => item.slug === course.slug)) {
+            acc.push(course);
+        }
+        return acc;
+    }, []);
+
+    return {
+        courses: mappedCourses,
+        workoutsByCourseSlug: workoutsMap,
+        source: "api",
+    };
 }

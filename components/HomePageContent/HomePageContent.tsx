@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/Button/Button";
 import { CourseCard } from "@/components/CourseCard/CourseCard";
 import styles from "@/app/page.module.css";
 import { useAppSelector } from "@/store/hooks";
-import { selectCourses } from "@/store/selectors";
+import { selectCatalogStatus, selectCourses } from "@/store/selectors";
 
 export default function HomePageContent() {
     const courses = useAppSelector(selectCourses);
+    const catalogStatus = useAppSelector(selectCatalogStatus);
 
     return (
         <>
@@ -22,9 +23,17 @@ export default function HomePageContent() {
             </div>
 
             <div className={styles.grid}>
-                {courses.map((course) => (
-                    <CourseCard key={course.slug} course={course} />
-                ))}
+                {courses.length > 0 ? (
+                    courses.map((course) => (
+                        <CourseCard key={course._id || course.slug} course={course} />
+                    ))
+                ) : (
+                    <div>
+                        {catalogStatus === "failed"
+                            ? "Список тренировок пуст"
+                            : "Курсы загружаются..."}
+                    </div>
+                )}
             </div>
 
             <div className={styles.toTop}>

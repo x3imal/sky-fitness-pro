@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginRequest, meRequest, registerRequest } from "@/shared/services/authService";
+import { addUserCourse, removeUserCourse } from "@/shared/services/courseService";
+import { RootState } from "@/store/store";
 import { COURSES } from "@/shared/data/courses";
 
 export type AuthUser = {
@@ -103,6 +105,57 @@ export const fetchCurrentUser = createAsyncThunk<
     }
 });
 
+export const addCourseForUser = createAsyncThunk<
+    { slug: string },
+    { slug: string },
+    { state: RootState; rejectValue: string }
+>("auth/addCourseForUser", async ({ slug }, thunkApi) => {
+    const state = thunkApi.getState();
+    const token = state.auth.token;
+    if (!token) {
+        return thunkApi.rejectWithValue("Токен не найден");
+    }
+    const course = state.catalog.courses.find(item => item.slug === slug);
+    if (!course) {
+        return thunkApi.rejectWithValue("Курс не найден");
+    }
+
+    try {
+        await addUserCourse(token, course._id);
+        return { slug };
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Не удалось добавить курс";
+        if (message.toLowerCase().includes("уже")) {
+            return { slug };
+        }
+        return thunkApi.rejectWithValue(message);
+    }
+});
+
+export const removeCourseForUser = createAsyncThunk<
+    { slug: string },
+    { slug: string },
+    { state: RootState; rejectValue: string }
+>("auth/removeCourseForUser", async ({ slug }, thunkApi) => {
+    const state = thunkApi.getState();
+    const token = state.auth.token;
+    if (!token) {
+        return thunkApi.rejectWithValue("Токен не найден");
+    }
+    const course = state.catalog.courses.find(item => item.slug === slug);
+    if (!course) {
+        return thunkApi.rejectWithValue("Курс не найден");
+    }
+
+    try {
+        await removeUserCourse(token, course._id);
+        return { slug };
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Не удалось удалить курс";
+        return thunkApi.rejectWithValue(message);
+    }
+});
+
 const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -175,6 +228,20 @@ const authSlice = createSlice({
                 state.error = action.payload ?? action.error.message ?? "Не удалось получить профиль";
                 state.token = null;
                 state.currentUser = null;
+            })
+            .addCase(addCourseForUser.fulfilled, (state, action) => {
+                const currentUser = state.currentUser;
+                if (!currentUser) return;
+                const selected = currentUser.selectedCourses ?? (currentUser.selectedCourses = []);
+                if (!selected.includes(action.payload.slug)) {
+                    selected.push(action.payload.slug);
+                }
+            })
+            .addCase(removeCourseForUser.fulfilled, (state, action) => {
+                const currentUser = state.currentUser;
+                if (!currentUser) return;
+                const selected = currentUser.selectedCourses ?? (currentUser.selectedCourses = []);
+                currentUser.selectedCourses = selected.filter(slug => slug !== action.payload.slug);
             });
     },
 });
