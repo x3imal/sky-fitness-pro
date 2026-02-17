@@ -6,8 +6,6 @@ const average = (values: number[]) =>
 export const selectCourses = (state: RootState) => state.catalog.courses;
 export const selectWorkoutsByCourseSlug = (state: RootState) => state.catalog.workoutsByCourseSlug;
 export const selectCatalogStatus = (state: RootState) => state.catalog.status;
-export const selectCatalogError = (state: RootState) => state.catalog.error;
-export const selectCatalogSource = (state: RootState) => state.catalog.source;
 
 export const selectWorkoutExerciseProgress = (state: RootState, workoutId: string) =>
     state.progress.exerciseProgressByWorkout[workoutId] ?? {};
@@ -17,6 +15,16 @@ export const selectWorkoutProgress = (state: RootState, workoutId: string) => {
     return Math.round(average(Object.values(map)));
 };
 
+/**
+ * Возвращает прогресс курса в процентах.
+ * Приоритет источников:
+ * 1) локальный прогресс тренировки (только что изменен в UI),
+ * 2) прогресс из API (`users/me.courseProgress`),
+ * 3) `0` для тренировок без прогресса.
+ *
+ * Это позволяет сразу обновлять карточки после сохранения
+ * и сохранять корректность после перезагрузки страницы.
+ */
 export const selectCourseProgress = (state: RootState, slug: string) => {
     const course = selectCourseBySlug(state, slug);
     const courseId = course?._id ?? slug;
@@ -71,24 +79,15 @@ export const selectCurrentUser = (state: RootState) => {
 export const selectIsAuthenticated = (state: RootState) =>
     Boolean(state.auth.token && state.auth.currentUser);
 export const selectAuthStatus = (state: RootState) => state.auth.status;
-export const selectAuthError = (state: RootState) => state.auth.error;
 export const selectAuthToken = (state: RootState) => state.auth.token;
 
 export const selectMySelectedCourses = (state: RootState) =>
     selectCurrentUser(state)?.selectedCourses ?? [];
 
-export const selectMyCourseSlugs = (state: RootState) => {
-    const selected = selectMySelectedCourses(state);
-    const courses = selectCourses(state);
-    return selected.map((value) => {
-        const bySlug = courses.find(course => course.slug === value);
-        if (bySlug) return bySlug.slug;
-        const byId = courses.find(course => course._id === value);
-        if (byId) return byId.slug;
-        return value;
-    });
-};
-
+/**
+ * Проверяет, есть ли курс в списке пользователя.
+ * Поддерживает и legacy-хранение по slug, и текущее хранение по backend `_id`.
+ */
 export const selectHasCourse = (state: RootState, slug: string) => {
     const selected = selectMySelectedCourses(state);
     const course = selectCourseBySlug(state, slug);
@@ -108,22 +107,15 @@ export const selectMyCourses = (state: RootState) => {
 export const selectCourseBySlug = (state: RootState, slug: string) =>
     selectCourses(state).find(course => course.slug === slug);
 
-export const selectWorkoutsForCourse = (state: RootState, slug: string) =>
-    selectWorkoutsByCourseSlug(state)[slug] ?? [];
-
-export const selectWorkoutById = (state: RootState, id: string) =>
-    Object.values(selectWorkoutsByCourseSlug(state)).flat().find(workout => workout._id === id);
-
-export const selectCourseIdBySlug = (state: RootState, slug: string) => {
-    const course = selectCourseBySlug(state, slug);
-    return course?._id ?? null;
-};
-
 export const selectCourseIdByWorkoutId = (state: RootState, workoutId: string) => {
     const course = selectCourses(state).find(item => item.workouts?.includes(workoutId));
     return course?._id ?? null;
 };
 
+/**
+ * Формирует короткий лейбл для хедера из email
+ * (часть до `@` и до первой точки).
+ */
 export const selectCurrentUserLabel = (state: RootState) => {
     const user = selectCurrentUser(state);
     if (!user) return "";

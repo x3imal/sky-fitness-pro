@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable react-hooks/set-state-in-effect */
 
 import styles from "./page.module.css";
 import WorkoutExercisesCard from "@/components/WorkoutExercisesCard/WorkoutExercisesCard";
@@ -30,9 +29,13 @@ export default function WorkoutPage() {
 
     useEffect(() => {
         if (!token || !workoutId) return;
-        setLoading(true);
-        getWorkout(token, workoutId)
-            .then((data) => {
+        let isCancelled = false;
+
+        const loadWorkout = async () => {
+            setLoading(true);
+            try {
+                const data = await getWorkout(token, workoutId);
+                if (isCancelled) return;
                 const exercises = data.exercises?.map((ex) => ({
                     _id: ex._id,
                     name: ex.name,
@@ -54,8 +57,18 @@ export default function WorkoutPage() {
                     }, {});
                     dispatch(setWorkoutProgress({ workoutId, values: empty }));
                 }
-            })
-            .finally(() => setLoading(false));
+            } finally {
+                if (!isCancelled) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        void loadWorkout();
+
+        return () => {
+            isCancelled = true;
+        };
     }, [courseId, dispatch, token, workoutId]);
 
     return (

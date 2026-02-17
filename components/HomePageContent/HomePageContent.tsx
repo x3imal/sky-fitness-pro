@@ -47,9 +47,7 @@ export default function HomePageContent() {
                         <CourseCard key={course._id || course.slug} course={course} />
                     ))
                 ) : (
-                    <div>
-                        {catalogStatus === "failed" ? "Список тренировок пуст" : "Список тренировок пуст"}
-                    </div>
+                    <div>Список тренировок пуст</div>
                 )}
             </div>
 

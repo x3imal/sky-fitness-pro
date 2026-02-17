@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable react-hooks/set-state-in-effect */
 
 import styles from "./page.module.css";
 import WorkoutSelect from "@/components/WorkoutSelect/WorkoutSelect";
@@ -23,13 +22,17 @@ export default function WorkoutsPage() {
 
     useEffect(() => {
         if (!token || !courseData) return;
-        setLoading(true);
-        setError(null);
-        Promise.all([
-            fetchCourseWorkouts(courseData._id, token),
-            getCourseProgress(token, courseData._id),
-        ])
-            .then(([workoutsList, progress]) => {
+        let isCancelled = false;
+
+        const loadWorkouts = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const [workoutsList, progress] = await Promise.all([
+                    fetchCourseWorkouts(courseData._id, token),
+                    getCourseProgress(token, courseData._id),
+                ]);
+                if (isCancelled) return;
                 const progressMap = new Map(
                     (progress.workoutsProgress ?? []).map(item => [item.workoutId, item.workoutCompleted])
                 );
@@ -38,12 +41,22 @@ export default function WorkoutsPage() {
                     completed: progressMap.get(workout._id) ?? false,
                 }));
                 setWorkouts(merged);
-            })
-            .catch((err: unknown) => {
+            } catch (err: unknown) {
+                if (isCancelled) return;
                 const message = err instanceof Error ? err.message : "Не удалось загрузить тренировки";
                 setError(message);
-            })
-            .finally(() => setLoading(false));
+            } finally {
+                if (!isCancelled) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        void loadWorkouts();
+
+        return () => {
+            isCancelled = true;
+        };
     }, [courseData, token]);
 
     if (!courseData) return null;

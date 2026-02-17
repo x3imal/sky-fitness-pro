@@ -3,6 +3,11 @@ import { fetchCourse, fetchCourseWorkouts, fetchCourses } from "@/shared/service
 import { COURSE_THEME_BY_SLUG } from "@/components/ui/Theme/courseTheme";
 import { resolveCourseSlug } from "@/shared/util/resolveCourseSlug";
 
+/**
+ * Находит backend `_id` курса по slug приложения.
+ * Нужно потому, что в роуте используется slug,
+ * а в API курсов/тренировок — `_id`.
+ */
 const findCourseIdBySlug = async (slug: string): Promise<string | null> => {
     try {
         const list = await fetchCourses();
@@ -16,6 +21,10 @@ const findCourseIdBySlug = async (slug: string): Promise<string | null> => {
     }
 };
 
+/**
+ * Возвращает нормализованную модель курса для рендера страницы.
+ * Сначала пробует прямой запрос в API, при ошибке использует fallback из каталога.
+ */
 export async function getCourseByIdAsync(slug: string) {
     const courseId = await findCourseIdBySlug(slug);
     if (!courseId) {
@@ -47,6 +56,10 @@ export async function getCourseByIdAsync(slug: string) {
     }
 }
 
+/**
+ * Загружает тренировки курса по slug по стратегии API-first
+ * с fallback на локальный каталог.
+ */
 export async function getWorkoutsByCourseSlugAsync(slug: string) {
     const courseId = await findCourseIdBySlug(slug);
     if (!courseId) {

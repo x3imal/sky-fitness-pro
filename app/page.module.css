@@ -8,28 +8,6 @@
 .hero h1 {
     margin: 0;
     font-weight: 500;
-
-}
-
-.bubble {
-    background: #bcec30;
-    color: black;
-    font-weight: 400;
-    font-size: 32px;
-    padding: 16px 20px;
-    border-radius: 5px;
-    white-space: nowrap;
-    position: relative;
-}
-
-.bubble::before {
-    content: "";
-    position: absolute;
-    left: -14px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: 14px solid transparent;
-    border-right-color: #bcec30;
 }
 
 .grid {
@@ -101,67 +79,7 @@
     }
 }
 
-.card {
-    border-radius: 24px;
-    overflow: hidden;
-    background: white;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-}
-
-.media {
-    height: 260px;
-    position: relative;
-}
-
-.plus {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.92);
-    border: none;
-    font-size: 32px;
-    font-weight: bold;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    cursor: pointer;
-}
-
-.plus:hover {
-    background: white;
-}
-
-.content {
-    padding: 20px 24px 28px;
-}
-
-.content h3 {
-    margin: 0 0 12px;
-    font-size: 22px;
-    font-weight: 800;
-}
-
-.meta {
-    display: flex;
-    gap: 24px;
-    color: rgba(0,0,0,0.65);
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.difficulty {
-    color: #2196f3;
-    font-weight: 600;
-    font-size: 14px;
-}
-
 .toTop {
     text-align: center;
     margin-bottom: 60px;
-}
-
-.toTopBtn {
-    min-width: 160px;
-    font-size: 18px;
 }

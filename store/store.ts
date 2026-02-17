@@ -67,18 +67,19 @@ type PersistedRootState = {
     };
 };
 
-const migrations = {
-    2: (state: PersistedRootState) => {
+const migrations: Record<string, (state: PersistedRootState | undefined) => PersistedRootState | undefined> = {
+    "2": (state) => {
         if (!state?.auth) return state;
         const auth = state.auth;
 
-        if ("currentUser" in auth && typeof auth.token !== "undefined") {
+        if ("currentUser" in auth || "token" in auth) {
             return state;
         }
 
-        const currentLogin = auth.currentUserLogin;
-        const users = Array.isArray(auth.users) ? auth.users : [];
-        const matchedUser = users.find((user) => user.login === currentLogin) ?? null;
+        const legacyAuth = auth as LegacyAuthState;
+        const currentLogin = legacyAuth.currentUserLogin;
+        const users = Array.isArray(legacyAuth.users) ? legacyAuth.users : [];
+        const matchedUser = users.find((user: LegacyAuthUser) => user.login === currentLogin) ?? null;
 
         return {
             ...state,
@@ -103,7 +104,7 @@ const persistConfig = {
     version: 2,
     storage,
     whitelist: ["progress", "auth"],
-    migrate: createMigrate(migrations, { debug: false }),
+    migrate: createMigrate(migrations as never, { debug: false }),
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

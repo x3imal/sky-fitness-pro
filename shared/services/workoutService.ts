@@ -1,4 +1,5 @@
 import { Workout } from "@/shared/types/workout";
+import { apiRequest, buildApiUrl } from "@/shared/services/apiClient";
 
 type WorkoutProgressResponse = {
     workoutId: string;
@@ -12,59 +13,8 @@ type CourseProgressResponse = {
     workoutsProgress: WorkoutProgressResponse[];
 };
 
-const DEFAULT_API_BASE = "https://wedev-api.sky.pro";
-
-const normalizeBaseUrl = (base: string) => {
-    const trimmed = base.trim();
-    if (!trimmed) return DEFAULT_API_BASE;
-    if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
-    return `https://${trimmed}`;
-};
-
-const API_BASE_URL = normalizeBaseUrl(process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_BASE);
-
-const buildUrl = (path: string) => `${API_BASE_URL}${path}`;
-
-const parseApiError = async (response: Response): Promise<string> => {
-    try {
-        const payload = (await response.json()) as { message?: string };
-        if (payload?.message) return payload.message;
-    } catch {
-        // ignore parse error
-    }
-    return `Ошибка запроса (${response.status})`;
-};
-
-async function request<TResponse>(url: string, init: RequestInit): Promise<TResponse> {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
-    let response: Response;
-    try {
-        response = await fetch(url, {
-            ...init,
-            headers: init.headers ?? {},
-            cache: "no-store",
-            signal: controller.signal,
-        });
-    } catch {
-        throw new Error("Сервер недоступен, попробуйте позже");
-    } finally {
-        clearTimeout(timeout);
-    }
-
-    if (!response.ok) {
-        throw new Error(await parseApiError(response));
-    }
-
-    if (response.status === 204) {
-        return {} as TResponse;
-    }
-
-    return response.json() as Promise<TResponse>;
-}
-
 export async function getWorkout(token: string, workoutId: string): Promise<Workout> {
-    return request<Workout>(buildUrl(`/api/fitness/workouts/${workoutId}`), {
+    return apiRequest<Workout>(buildApiUrl(`/api/fitness/workouts/${workoutId}`), {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -73,8 +23,8 @@ export async function getWorkout(token: string, workoutId: string): Promise<Work
 }
 
 export async function getCourseProgress(token: string, courseId: string): Promise<CourseProgressResponse> {
-    return request<CourseProgressResponse>(
-        buildUrl(`/api/fitness/users/me/progress?courseId=${courseId}`),
+    return apiRequest<CourseProgressResponse>(
+        buildApiUrl(`/api/fitness/users/me/progress?courseId=${courseId}`),
         {
             method: "GET",
             headers: {
@@ -89,8 +39,8 @@ export async function getWorkoutProgress(
     courseId: string,
     workoutId: string
 ): Promise<WorkoutProgressResponse> {
-    return request<WorkoutProgressResponse>(
-        buildUrl(`/api/fitness/users/me/progress?courseId=${courseId}&workoutId=${workoutId}`),
+    return apiRequest<WorkoutProgressResponse>(
+        buildApiUrl(`/api/fitness/users/me/progress?courseId=${courseId}&workoutId=${workoutId}`),
         {
             method: "GET",
             headers: {
@@ -106,8 +56,8 @@ export async function saveWorkoutProgress(
     workoutId: string,
     progressData: number[]
 ): Promise<{ message: string }> {
-    return request<{ message: string }>(
-        buildUrl(`/api/fitness/courses/${courseId}/workouts/${workoutId}`),
+    return apiRequest<{ message: string }>(
+        buildApiUrl(`/api/fitness/courses/${courseId}/workouts/${workoutId}`),
         {
             method: "PATCH",
             headers: {
@@ -123,8 +73,8 @@ export async function resetWorkoutProgress(
     courseId: string,
     workoutId: string
 ): Promise<{ message: string }> {
-    return request<{ message: string }>(
-        buildUrl(`/api/fitness/courses/${courseId}/workouts/${workoutId}/reset`),
+    return apiRequest<{ message: string }>(
+        buildApiUrl(`/api/fitness/courses/${courseId}/workouts/${workoutId}/reset`),
         {
             method: "PATCH",
             headers: {

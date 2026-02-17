@@ -15,11 +15,6 @@ const initialState: ProgressState = {
     exerciseProgressByWorkout: {},
 };
 
-type SaveWorkoutProgressPayload = {
-    workoutId: string;
-    values: Record<string, number>;
-};
-
 const progressSlice = createSlice({
     name: "progress",
     initialState,
@@ -29,19 +24,6 @@ const progressSlice = createSlice({
             action: PayloadAction<{ workoutId: string; values: Record<string, number> }>
         ) => {
             state.exerciseProgressByWorkout[action.payload.workoutId] = action.payload.values;
-        },
-        saveWorkoutProgress: (state, action: PayloadAction<SaveWorkoutProgressPayload>) => {
-            const { workoutId, values } = action.payload;
-            const current = state.exerciseProgressByWorkout[workoutId] ?? {};
-
-            state.exerciseProgressByWorkout[workoutId] = Object.keys(current).reduce<Record<string, number>>(
-                (acc, exerciseId) => {
-                    const nextValue = values[exerciseId];
-                    acc[exerciseId] = clampProgress(Number.isFinite(nextValue) ? nextValue : current[exerciseId]);
-                    return acc;
-                },
-                {}
-            );
         },
     },
     extraReducers: builder => {
@@ -55,9 +37,13 @@ const progressSlice = createSlice({
     },
 });
 
-export const { saveWorkoutProgress, setWorkoutProgress } = progressSlice.actions;
+export const { setWorkoutProgress } = progressSlice.actions;
 export default progressSlice.reducer;
 
+/**
+ * Загружает прогресс тренировки из API и конвертирует значения в проценты
+ * относительно `quantity` упражнений для отображения в UI-баре.
+ */
 export const fetchWorkoutProgress = createAsyncThunk<
     { workoutId: string; values: Record<string, number> },
     { courseId: string; workoutId: string; exercises: Exercise[] },
@@ -83,6 +69,11 @@ export const fetchWorkoutProgress = createAsyncThunk<
     }
 });
 
+/**
+ * Сохраняет прогресс тренировки в API.
+ * В UI используются проценты, перед отправкой они конвертируются
+ * в абсолютные значения повторений для backend `progressData`.
+ */
 export const saveWorkoutProgressApi = createAsyncThunk<
     { workoutId: string; values: Record<string, number> },
     { courseId: string; workoutId: string; values: Record<string, number>; exercises: Exercise[] },

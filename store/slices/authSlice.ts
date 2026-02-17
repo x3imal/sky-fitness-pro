@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loginRequest, meRequest, registerRequest } from "@/shared/services/authService";
 import { addUserCourse, removeUserCourse } from "@/shared/services/courseService";
 import { RootState } from "@/store/store";
@@ -59,6 +59,12 @@ export const loginUser = createAsyncThunk<
     }
 });
 
+/**
+ * Поток регистрации для UI:
+ * 1) регистрация пользователя,
+ * 2) моментальный вход,
+ * 3) запрос профиля (`me`) и заполнение store.
+ */
 export const registerUser = createAsyncThunk<
     { token: string; user: AuthUser },
     Credentials,
@@ -107,6 +113,12 @@ export const fetchCurrentUser = createAsyncThunk<
     }
 });
 
+/**
+ * Добавляет курс авторизованному пользователю на бэкенде
+ * и сохраняет backend `courseId` локально.
+ * Если бэкенд вернул "уже существует", thunk завершится успешно,
+ * чтобы не ломать UI-сценарий добавления.
+ */
 export const addCourseForUser = createAsyncThunk<
     { courseId: string },
     { slug: string },
@@ -166,23 +178,6 @@ const authSlice = createSlice({
             state.token = null;
             state.currentUser = null;
             state.status = "idle";
-            state.error = null;
-        },
-        addCourseToCurrentUser: (state, action: PayloadAction<{ slug: string }>) => {
-            const currentUser = state.currentUser;
-            if (!currentUser) return;
-            const selected = currentUser.selectedCourses ?? (currentUser.selectedCourses = []);
-            if (!selected.includes(action.payload.slug)) {
-                selected.push(action.payload.slug);
-            }
-        },
-        removeCourseFromCurrentUser: (state, action: PayloadAction<{ slug: string }>) => {
-            const currentUser = state.currentUser;
-            if (!currentUser) return;
-            const selected = currentUser.selectedCourses ?? (currentUser.selectedCourses = []);
-            currentUser.selectedCourses = selected.filter(slug => slug !== action.payload.slug);
-        },
-        clearAuthError: state => {
             state.error = null;
         },
     },
@@ -250,9 +245,6 @@ const authSlice = createSlice({
 
 export const {
     logoutUser,
-    addCourseToCurrentUser,
-    removeCourseFromCurrentUser,
-    clearAuthError,
 } = authSlice.actions;
 
 export default authSlice.reducer;

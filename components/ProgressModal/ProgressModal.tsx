@@ -7,7 +7,7 @@ import styles from "./ProgressModal.module.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { selectAuthToken, selectCourseIdByWorkoutId } from "@/store/selectors";
 import { getWorkout, getWorkoutProgress, saveWorkoutProgress as saveWorkoutProgressRequest } from "@/shared/services/workoutService";
-import { Exercise, Workout } from "@/shared/types/workout";
+import { Exercise } from "@/shared/types/workout";
 import { setWorkoutProgress } from "@/store/slices/progressSlice";
 import { fetchCurrentUser } from "@/store/slices/authSlice";
 
@@ -17,7 +17,13 @@ type Props = {
     showClose?: boolean;
 };
 
-type WorkoutWithExercises = Workout & { exercises: (Exercise & { quantity?: number })[] };
+type WorkoutExercise = Exercise & { quantity?: number };
+type WorkoutWithExercises = {
+    _id: string;
+    name: string;
+    video: string;
+    exercises: WorkoutExercise[];
+};
 
 export default function ProgressModal({
     workoutId,
@@ -102,7 +108,7 @@ export default function ProgressModal({
                 const percent = quantity > 0 ? Math.round((count / quantity) * 100) : 0;
                 acc[ex._id] = Math.max(0, Math.min(100, percent));
                 return acc;
-            }, {});
+            }, {} as Record<string, number>);
             dispatch(setWorkoutProgress({ workoutId, values: percents }));
             dispatch(fetchCurrentUser());
             setShowSuccess(true);
@@ -161,7 +167,7 @@ export default function ProgressModal({
                     <h2 className={styles.title}>Мой прогресс</h2>
 
                     <div className={styles.formList}>
-                        {workout?.exercises.map(ex => (
+                        {workout?.exercises.map((ex: WorkoutExercise) => (
                             <div key={ex._id} className={styles.formItem}>
                                 <label className={styles.label} htmlFor={`progress-${ex._id}`}>
                                     Сколько раз вы сделали {ex.name.toLowerCase()}?
