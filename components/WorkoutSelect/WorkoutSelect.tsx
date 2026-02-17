@@ -44,7 +44,15 @@ export default function WorkoutSelect({
 
             <div className={styles.list} role="radiogroup" aria-label={`Тренировки курса ${courseTitle}`}>
                 {loading ? (
-                    <div className={styles.infoText}>Загрузка тренировок...</div>
+                    Array.from({ length: 5 }).map((_, idx) => (
+                        <div key={idx} className={styles.skeletonItem} aria-hidden="true">
+                            <span className={styles.skeletonMarker} />
+                            <div className={styles.skeletonText}>
+                                <div className={styles.skeletonTitle} />
+                                <div className={styles.skeletonSub} />
+                            </div>
+                        </div>
+                    ))
                 ) : error ? (
                     <div className={styles.errorText}>{error}</div>
                 ) : (

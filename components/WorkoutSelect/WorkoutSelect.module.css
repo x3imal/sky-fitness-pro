@@ -117,6 +117,47 @@
     padding: 8px 0;
 }
 
+.skeletonItem {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 12px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.skeletonMarker,
+.skeletonTitle,
+.skeletonSub {
+    background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.2s infinite linear;
+}
+
+.skeletonMarker {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+}
+
+.skeletonText {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skeletonTitle {
+    height: 24px;
+    width: 70%;
+    border-radius: 8px;
+}
+
+.skeletonSub {
+    height: 16px;
+    width: 56%;
+    border-radius: 8px;
+}
+
 .startLink {
     display: flex;
     justify-content: center;
@@ -130,4 +171,13 @@
     height: 52px;
     font-size: 18px !important;
     font-weight: 400 !important;
+}
+
+@keyframes skeletonShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
