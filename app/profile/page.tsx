@@ -7,10 +7,13 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
     selectAuthToken,
+    selectAuthStatus,
+    selectCatalogStatus,
     selectCourseActionText,
     selectCourseProgress,
     selectCurrentUser,
-    selectMyCourses
+    selectMyCourses,
+    selectMySelectedCourses
 } from "@/store/selectors";
 import { fetchCurrentUser, logoutUser } from "@/store/slices/authSlice";
 import AuthGuard from "@/components/AuthGuard/AuthGuard";
@@ -18,10 +21,17 @@ import AuthGuard from "@/components/AuthGuard/AuthGuard";
 export default function ProfilePage() {
     const dispatch = useAppDispatch();
     const authToken = useAppSelector(selectAuthToken);
+    const authStatus = useAppSelector(selectAuthStatus);
+    const catalogStatus = useAppSelector(selectCatalogStatus);
     const myCourses = useAppSelector(selectMyCourses);
+    const selectedCourses = useAppSelector(selectMySelectedCourses);
     const currentUser = useAppSelector(selectCurrentUser);
     const userName = (currentUser?.email?.split("@")[0] ?? "").split(".")[0];
     const displayName = userName ? userName.charAt(0).toUpperCase() + userName.slice(1) : "";
+    const isLoadingProfile =
+        authStatus === "loading" ||
+        (Boolean(authToken) && !currentUser) ||
+        (catalogStatus === "loading" && selectedCourses.length > 0 && myCourses.length === 0);
     const courseUiBySlug = useAppSelector(state =>
         Object.fromEntries(
             myCourses.map(course => [
@@ -45,55 +55,71 @@ export default function ProfilePage() {
                 <div className={styles.container}>
                     <h1 className={styles.title}>Профиль</h1>
 
-                    {/* User card */}
-                    <section className={styles.userCard} aria-label="Данные пользователя">
-                        <div className={styles.avatar}>
-                            <Image
-                                src="/images/profile/avatarBase.png"
-                                alt=""
-                                fill
-                                priority
-                                className={styles.avatarBase}
-                            />
-                            <Image
-                                src="/images/profile/avatar-body.png"
-                                alt=""
-                                width={211}
-                                height={72}
-                                className={styles.avatarBody}
-                            />
-                            <Image
-                                src="/images/profile/avatar-head.png"
-                                alt=""
-                                width={70}
-                                height={70}
-                                className={styles.avatarHead}
-                            />
-                        </div>
-
-                        <div className={styles.userInfo}>
-                            <div className={styles.userName}>{displayName}</div>
-                            <div className={styles.userLogin}>
-                                Логин: <span className={styles.userLoginValue}>{userName}</span>
+                    {isLoadingProfile ? (
+                        <section className={styles.userCard} aria-label="Загрузка профиля">
+                            <div className={`${styles.avatar} ${styles.skeletonBlock}`} />
+                            <div className={styles.userInfo}>
+                                <div className={`${styles.skeletonLine} ${styles.skeletonName}`} />
+                                <div className={`${styles.skeletonLine} ${styles.skeletonLogin}`} />
+                                <div className={`${styles.skeletonLine} ${styles.skeletonButton}`} />
+                            </div>
+                        </section>
+                    ) : (
+                        <section className={styles.userCard} aria-label="Данные пользователя">
+                            <div className={styles.avatar}>
+                                <Image
+                                    src="/images/profile/avatarBase.png"
+                                    alt=""
+                                    fill
+                                    priority
+                                    className={styles.avatarBase}
+                                />
+                                <Image
+                                    src="/images/profile/avatar-body.png"
+                                    alt=""
+                                    width={211}
+                                    height={72}
+                                    className={styles.avatarBody}
+                                />
+                                <Image
+                                    src="/images/profile/avatar-head.png"
+                                    alt=""
+                                    width={70}
+                                    height={70}
+                                    className={styles.avatarHead}
+                                />
                             </div>
 
-                            <button
-                                className={styles.logoutBtn}
-                                type="button"
-                                onClick={() => {
-                                    window.sessionStorage.setItem("logout_redirect", "1");
-                                    dispatch(logoutUser());
-                                }}
-                            >
-                                Выйти
-                            </button>
-                        </div>
-                    </section>
+                            <div className={styles.userInfo}>
+                                <div className={styles.userName}>{displayName}</div>
+                                <div className={styles.userLogin}>
+                                    Логин: <span className={styles.userLoginValue}>{userName}</span>
+                                </div>
+
+                                <button
+                                    className={styles.logoutBtn}
+                                    type="button"
+                                    onClick={() => {
+                                        window.sessionStorage.setItem("logout_redirect", "1");
+                                        dispatch(logoutUser());
+                                    }}
+                                >
+                                    Выйти
+                                </button>
+                            </div>
+                        </section>
+                    )}
 
                     <h2 className={styles.sectionTitle}>Мои курсы</h2>
 
                     {/* Courses */}
-                    {myCourses.length === 0 ? (
+                    {isLoadingProfile ? (
+                        <section className={styles.grid} aria-label="Загрузка курсов">
+                            {Array.from({ length: 3 }).map((_, idx) => (
+                                <div key={idx} className={styles.skeletonCourseCard} />
+                            ))}
+                        </section>
+                    ) : myCourses.length === 0 ? (
                         <section className={styles.emptyState} aria-label="Мои курсы пусты">
                             <p className={styles.emptyText}>У вас пока нет добавленных курсов</p>
                         </section>

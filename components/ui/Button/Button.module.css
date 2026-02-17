@@ -94,9 +94,17 @@
 
 .size-lg {
     height: 52px;
-    width: 103px;
+    width: 380px;
     padding: 0 32px;
     font-size: 18px;
+}
+
+.size-down {
+    height: 52px;
+    width: 127px;
+    padding: 16px 26px;
+    font-size: 18px;
+    font-weight: 400;
 }
 
 .size-menu {
@@ -105,4 +113,11 @@
     padding: 0 18px;
     font-size: 18px;
     font-weight: 400;
+}
+
+.size-in {
+    height: 52px;
+    width: 103px;
+    padding: 0 32px;
+    font-size: 18px;
 }

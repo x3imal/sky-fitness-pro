@@ -3,11 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Header.module.css";
-import {Button} from "@/components/ui/Button/Button";
+import { Button } from "@/components/ui/Button/Button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { selectCurrentUser, selectCurrentUserLabel } from "@/store/selectors";
 import { logoutUser } from "@/store/slices/authSlice";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
@@ -16,6 +16,24 @@ export default function Header() {
     const currentUser = useAppSelector(selectCurrentUser);
     const currentUserLabel = useAppSelector(selectCurrentUserLabel);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement | null>(null);
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+    useEffect(() => {
+        if (!isMenuOpen) return;
+
+        const handleOutsideClick = (event: MouseEvent) => {
+            const target = event.target as Node;
+            if (menuRef.current?.contains(target)) return;
+            if (buttonRef.current?.contains(target)) return;
+            setIsMenuOpen(false);
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [isMenuOpen]);
 
     return (
         <header className={styles.header}>
@@ -36,14 +54,26 @@ export default function Header() {
 
                 {currentUser ? (
                     <div className={styles.userMenuWrap}>
-                        <Button
-                            variant="primary"
-                            size="lg"
-                            className={styles.userBtn}
+                        <button
+                            type="button"
+                            className={styles.profileTrigger}
+                            ref={buttonRef}
                             onClick={() => setIsMenuOpen(prev => !prev)}
+                            aria-haspopup="dialog"
+                            aria-expanded={isMenuOpen}
+                            aria-label="Открыть меню профиля"
                         >
-                            {currentUserLabel}
-                        </Button>
+                            <Image
+                                src="/images/profile/mini_avatar.png"
+                                alt=""
+                                width={50}
+                                height={50}
+                                aria-hidden="true"
+                                className={styles.profileAvatar}
+                            />
+                            <span className={styles.profileName}>{currentUserLabel}</span>
+                            <span className={styles.profileChevron} aria-hidden="true" />
+                        </button>
 
                         {isMenuOpen && (
                             <>
@@ -54,7 +84,12 @@ export default function Header() {
                                     onClick={() => setIsMenuOpen(false)}
                                 />
 
-                                <div className={styles.userMenu} role="dialog" aria-label="Меню профиля">
+                                <div
+                                    ref={menuRef}
+                                    className={styles.userMenu}
+                                    role="dialog"
+                                    aria-label="Меню профиля"
+                                >
                                     <div className={styles.menuName}>{currentUserLabel}</div>
                                     <div className={styles.menuEmail}>{currentUser.email ?? ""}</div>
 
@@ -88,7 +123,7 @@ export default function Header() {
                     </div>
                 ) : (
                     <Link href="/auth">
-                        <Button variant="primary" size="lg">
+                        <Button variant="primary" size="in">
                             Войти
                         </Button>
                     </Link>

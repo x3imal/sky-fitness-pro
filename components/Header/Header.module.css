@@ -50,7 +50,7 @@
 }
 
 .logoImage {
-    margin-bottom: 15px;
+    margin-bottom: 14px;
 }
 
 .logoSub {
@@ -66,14 +66,36 @@
     z-index: 120;
 }
 
-.userBtn {
-    width: auto !important;
-    min-width: 103px;
-    max-width: 240px;
-    padding: 0 20px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.profileTrigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    color: #0b0b0b;
+}
+
+.profileAvatar {
+    width: 50px;
+    height: 50px;
+    display: block;
+}
+
+.profileName {
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 400;
+}
+
+.profileChevron {
+    width: 12px;
+    height: 12px;
+    border-right: 3px solid #0b0b0b;
+    border-bottom: 3px solid #0b0b0b;
+    transform: rotate(45deg) translateY(-2px);
+    margin-left: 2px;
 }
 
 .backdrop {
@@ -109,7 +131,7 @@
     font-size: 18px;
     color: rgba(0, 0, 0, 0.6);
     margin-top: 10px;
-    margin-bottom: 34px;
+    margin-bottom: 24px;
 }
 
 .menuButton {

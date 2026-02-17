@@ -54,7 +54,7 @@ export default function HomePageContent() {
             <div className={styles.toTop}>
                 <Button
                     variant="primary"
-                    size="lg"
+                    size="down"
                     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 >
                     Наверх ↑

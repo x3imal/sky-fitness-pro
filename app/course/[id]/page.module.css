@@ -19,7 +19,7 @@
 .heroTitle {
     position: absolute;
     left: 40px;
-    top: 28px;
+    top: 40px;
     z-index: 2;
     margin: 0;
     font-size: 60px;
@@ -38,11 +38,10 @@
 
 /* SECTIONS */
 .section {
-    margin-top: 34px;
+    margin-top: 60px;
 }
 
 .sectionTitle {
-    margin: 0 0 18px 0;
     font-size: 40px;
     font-weight: 600;
     color: #0b0b0b;
@@ -59,7 +58,7 @@
     display: flex;
     gap: 25px;
     align-items: center;
-    background: #1f2937;
+    background: #151720;
     color: #fff;
     padding: 20px;
     border-radius: 18px;
@@ -99,24 +98,29 @@
 /* DIRECTIONS */
 .directions {
     display: grid;
-    grid-auto-flow: column;
+    grid-template-columns: repeat(3, 284px);
     grid-template-rows: repeat(2, auto);
-    grid-auto-columns: minmax(0, 1fr);
-    gap: 34px;
+    column-gap: 124px;
+    row-gap: 34px;
     background: #bcec30;
     padding: 30px;
     border-radius: 28px;
-    max-width: 1160px;
+    width: 1160px;
+    max-width: 100%;
+    box-sizing: border-box;
     min-height: 146px;
+    margin: 0 auto;
 }
 
 .directionChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
     color: #0b0b0b;
     font-weight: 400;
-    /*line-height: 1.1;*/
-    width: 284px;
+    width: 100%;
 }
 
 /* DESCRIPTION */

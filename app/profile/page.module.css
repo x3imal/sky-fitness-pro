@@ -8,7 +8,7 @@
 }
 
 .title {
-    margin: 0 0 18px;
+    margin-bottom: 40px;
     font-size: 40px;
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -23,7 +23,7 @@
     border-radius: 22px;
     background: #ffffff;
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
-    margin-bottom: 26px;
+    margin-bottom: 50px;
 }
 
 .avatar {
@@ -91,7 +91,7 @@
 
 .sectionTitle {
     margin: 10px 0 16px;
-    font-size: 26px;
+    font-size: 40px;
     font-weight: 600;
     letter-spacing: -0.01em;
 }
@@ -118,4 +118,46 @@
     font-size: 20px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.75);
+}
+
+.skeletonBlock,
+.skeletonLine,
+.skeletonCourseCard {
+    background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+    background-size: 200% 100%;
+    animation: profileSkeletonShimmer 1.2s infinite linear;
+}
+
+.skeletonLine {
+    border-radius: 999px;
+}
+
+.skeletonName {
+    width: 220px;
+    height: 34px;
+}
+
+.skeletonLogin {
+    width: 320px;
+    height: 22px;
+}
+
+.skeletonButton {
+    width: 192px;
+    height: 52px;
+}
+
+.skeletonCourseCard {
+    width: 360px;
+    height: 501px;
+    border-radius: 30px;
+}
+
+@keyframes profileSkeletonShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }

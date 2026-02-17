@@ -57,8 +57,9 @@ export default async function CoursePage({ params }: PageProps) {
                 <div className={styles.directions}>
                     {course.directions.map(dir => (
                         <span key={dir} className={styles.directionChip}>
-              + {dir}
-            </span>
+                            <Image src="/icons/star.svg" alt="" width={20} height={20} aria-hidden="true" />
+                            {dir}
+                        </span>
                     ))}
                 </div>
             </section>
