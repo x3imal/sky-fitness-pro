@@ -1,10 +1,14 @@
 .modal {
     position: relative;
-    width: 320px;
+    width: 460px;
+    max-width: calc(100vw - 32px);
+    max-height: 609px;
     border-radius: 24px;
     background: #fff;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    padding: 22px 20px 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
 .close {
@@ -22,28 +26,29 @@
 }
 
 .title {
-    margin: 8px 0 14px;
-    font-size: 20px;
-    font-weight: 600;
+    margin: 0 0 24px;
+    font-size: 32px;
+    font-weight: 400;
     text-align: center;
 }
 
 .list {
-    max-height: 270px;
+    max-height: 393px;
     overflow: auto;
-    padding-right: 4px;
+    padding-right: 8px;
+    margin-right: -8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
 }
 
 .item {
     display: grid;
-    grid-template-columns: 18px 1fr;
-    gap: 10px;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
     align-items: start;
     cursor: pointer;
-    padding-bottom: 8px;
+    padding: 12px 0;
     border-bottom: 1px solid #e6e6e6;
 }
 
@@ -54,8 +59,8 @@
 }
 
 .marker {
-    width: 14px;
-    height: 14px;
+    width: 24px;
+    height: 24px;
     border-radius: 999px;
     border: 1px solid #c7c7c7;
     display: inline-flex;
@@ -70,8 +75,17 @@
     background: #bcec30;
 }
 
+.markerDone::before {
+    content: "✓";
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+}
+
 .markerActive:not(.markerDone) {
-    border-color: #0b0b0b;
+    border-color: #bcec30;
+    background: #bcec30;
 }
 
 .itemText {
@@ -81,13 +95,14 @@
 }
 
 .itemTitle {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 400;
 }
 
 .itemSub {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .infoText {
@@ -103,12 +118,16 @@
 }
 
 .startLink {
-    display: block;
-    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
     text-decoration: none;
 }
 
 .startButton {
-    width: 100%;
-    height: 44px;
+    width: 380px;
+    max-width: 100%;
+    height: 52px;
+    font-size: 18px !important;
+    font-weight: 400 !important;
 }

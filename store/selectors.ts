@@ -18,8 +18,42 @@ export const selectWorkoutProgress = (state: RootState, workoutId: string) => {
 };
 
 export const selectCourseProgress = (state: RootState, slug: string) => {
+    const course = selectCourseBySlug(state, slug);
+    const courseId = course?._id ?? slug;
+    const userCourseProgress = selectCurrentUser(state)?.courseProgress ?? [];
+    const apiCourseProgress = userCourseProgress.find(
+        item => item.courseId === courseId || item.courseId === slug
+    );
+
     const workouts = selectWorkoutsByCourseSlug(state)[slug] ?? [];
-    const values = workouts.map(workout => selectWorkoutProgress(state, workout._id));
+    const workoutIds = (course?.workouts?.length ? course.workouts : workouts.map(workout => workout._id));
+
+    const apiProgressByWorkoutId = new Map<string, number>();
+    if (apiCourseProgress) {
+        apiCourseProgress.workoutsProgress.forEach(item => {
+            if (item.workoutCompleted) {
+                apiProgressByWorkoutId.set(item.workoutId, 100);
+                return;
+            }
+            const values = item.progressData ?? [];
+            if (!values.length) {
+                apiProgressByWorkoutId.set(item.workoutId, 0);
+                return;
+            }
+            const doneCount = values.filter(value => value > 0).length;
+            apiProgressByWorkoutId.set(item.workoutId, Math.round((doneCount / values.length) * 100));
+        });
+    }
+
+    const normalizedWorkoutIds = workoutIds.length
+        ? workoutIds
+        : Array.from(apiProgressByWorkoutId.keys());
+
+    const values = normalizedWorkoutIds.map(workoutId => {
+        const localProgress = selectWorkoutProgress(state, workoutId);
+        if (localProgress > 0) return localProgress;
+        return apiProgressByWorkoutId.get(workoutId) ?? 0;
+    });
     return Math.round(average(values));
 };
 

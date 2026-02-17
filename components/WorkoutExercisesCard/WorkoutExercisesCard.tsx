@@ -14,6 +14,10 @@ type Props = {
 
 export default function WorkoutExercisesCard({ workoutId, exercises }: Props) {
     const progressMap = useAppSelector(state => selectWorkoutExerciseProgress(state, workoutId));
+    const hasAnyProgress = Object.values(progressMap).some(value => value > 0);
+    const progressButtonText = hasAnyProgress
+        ? "Обновить свой прогресс"
+        : "Заполнить свой прогресс";
 
     return (
         <div className={styles.exercisesCard}>
@@ -42,7 +46,7 @@ export default function WorkoutExercisesCard({ workoutId, exercises }: Props) {
 
             <Link href={`/workout/${workoutId}/progress`} className={styles.fillButtonLink}>
                 <Button variant="primary" size="lg" className={styles.fillButton}>
-                    Заполнить свой прогресс
+                    {progressButtonText}
                 </Button>
             </Link>
         </div>

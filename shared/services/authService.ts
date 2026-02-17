@@ -15,6 +15,15 @@ type LoginPayload = {
 export type MeResponse = {
     email: string;
     selectedCourses?: string[];
+    courseProgress?: {
+        courseId: string;
+        courseCompleted: boolean;
+        workoutsProgress: {
+            workoutId: string;
+            workoutCompleted: boolean;
+            progressData: number[];
+        }[];
+    }[];
 };
 
 type RawMeResponse =
@@ -23,6 +32,15 @@ type RawMeResponse =
         user?: {
             email?: string;
             selectedCourses?: string[];
+            courseProgress?: {
+                courseId: string;
+                courseCompleted: boolean;
+                workoutsProgress: {
+                    workoutId: string;
+                    workoutCompleted: boolean;
+                    progressData: number[];
+                }[];
+            }[];
         };
     };
 
@@ -103,11 +121,13 @@ export async function meRequest(token: string): Promise<MeResponse> {
         return {
             email: payload.email ?? "",
             selectedCourses: payload.selectedCourses ?? [],
+            courseProgress: payload.courseProgress ?? [],
         };
     }
 
     return {
         email: payload.user?.email ?? "",
         selectedCourses: payload.user?.selectedCourses ?? [],
+        courseProgress: payload.user?.courseProgress ?? [],
     };
 }

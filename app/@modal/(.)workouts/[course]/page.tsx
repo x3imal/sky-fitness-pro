@@ -40,7 +40,7 @@ export default function WorkoutsModalPage({ params }: PageProps) {
                 );
                 const merged = workoutsList.map(workout => ({
                     ...workout,
-                    completed: progressMap.get(workout._id) ?? workout.completed,
+                    completed: progressMap.get(workout._id) ?? false,
                 }));
                 setWorkouts(merged);
             })

@@ -78,8 +78,12 @@
     padding: 0 14px;
     font-size: 18px;
     font-weight: 400;
-    color: #D0CECE;
+    color: #0b0b0b;
     outline: none;
+}
+
+.input::placeholder {
+    color: #D0CECE;
 }
 
 .input:focus {
@@ -92,4 +96,56 @@
     margin-top: 20px;
     font-size: 18px;
     font-weight: 400;
+}
+
+.errorText {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #ff4d73;
+    text-align: center;
+}
+
+.successOverlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+}
+
+.successModal {
+    width: 426px;
+    min-height: 270px;
+    background: #fff;
+    border-radius: 30px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+}
+
+.successTitle {
+    margin: 0;
+    text-align: center;
+    font-size: 40px;
+    line-height: 0.95;
+    font-weight: 700;
+}
+
+.successIcon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #bcec30;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
 }

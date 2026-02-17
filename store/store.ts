@@ -54,6 +54,15 @@ type PersistedRootState = {
         currentUser?: {
             email?: string;
             selectedCourses?: string[];
+            courseProgress?: {
+                courseId: string;
+                courseCompleted: boolean;
+                workoutsProgress: {
+                    workoutId: string;
+                    workoutCompleted: boolean;
+                    progressData: number[];
+                }[];
+            }[];
         } | null;
     };
 };
@@ -79,6 +88,7 @@ const migrations = {
                     ? {
                         email: matchedUser.email ?? "",
                         selectedCourses: matchedUser.myCourseSlugs ?? [],
+                        courseProgress: [],
                     }
                     : null,
                 status: "idle",

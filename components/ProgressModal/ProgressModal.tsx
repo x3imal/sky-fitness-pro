@@ -1,7 +1,6 @@
 "use client";
-/* eslint-disable react-hooks/set-state-in-effect */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button/Button";
 import styles from "./ProgressModal.module.css";
@@ -10,6 +9,7 @@ import { selectAuthToken, selectCourseIdByWorkoutId } from "@/store/selectors";
 import { getWorkout, getWorkoutProgress, saveWorkoutProgress as saveWorkoutProgressRequest } from "@/shared/services/workoutService";
 import { Exercise, Workout } from "@/shared/types/workout";
 import { setWorkoutProgress } from "@/store/slices/progressSlice";
+import { fetchCurrentUser } from "@/store/slices/authSlice";
 
 type Props = {
     workoutId: string;
@@ -30,7 +30,12 @@ export default function ProgressModal({
     const courseId = useAppSelector(state => selectCourseIdByWorkoutId(state, workoutId));
     const [workout, setWorkout] = useState<WorkoutWithExercises | null>(null);
     const [values, setValues] = useState<Record<string, string>>({});
+    const [initialCounts, setInitialCounts] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [saveError, setSaveError] = useState("");
+    const [showSuccess, setShowSuccess] = useState(false);
+    const closeTimerRef = useRef<number | null>(null);
 
     useEffect(() => {
         if (!token || !courseId || !workoutId) return;
@@ -50,13 +55,26 @@ export default function ProgressModal({
                 });
                 const initial = exercises.reduce<Record<string, string>>((acc, ex, idx) => {
                     const count = progress.progressData?.[idx] ?? 0;
-                    acc[ex._id] = String(count);
+                    acc[ex._id] = count > 0 ? String(count) : "";
+                    return acc;
+                }, {});
+                const initialNumeric = exercises.reduce<Record<string, number>>((acc, ex, idx) => {
+                    acc[ex._id] = progress.progressData?.[idx] ?? 0;
                     return acc;
                 }, {});
                 setValues(initial);
+                setInitialCounts(initialNumeric);
             })
             .finally(() => setLoading(false));
     }, [courseId, token, workoutId]);
+
+    useEffect(() => {
+        return () => {
+            if (closeTimerRef.current) {
+                window.clearTimeout(closeTimerRef.current);
+            }
+        };
+    }, []);
 
     const onChange = (id: string, value: string) => {
         const next = value.replace(/[^\d]/g, "");
@@ -65,17 +83,37 @@ export default function ProgressModal({
 
     const onSave = async () => {
         if (!token || !courseId || !workout) return;
-        const counts = workout.exercises.map(ex => Number(values[ex._id] || 0));
-        await saveWorkoutProgressRequest(token, courseId, workoutId, counts);
+        const counts = workout.exercises.map(ex => {
+            const rawValue = values[ex._id];
+            if (rawValue === "" || rawValue === undefined) {
+                return initialCounts[ex._id] ?? 0;
+            }
+            return Number(rawValue);
+        });
+        setSaving(true);
+        setSaveError("");
 
-        const percents = workout.exercises.reduce<Record<string, number>>((acc, ex, idx) => {
-            const quantity = ex.quantity ?? 0;
-            const percent = quantity > 0 ? Math.round((counts[idx] / quantity) * 100) : 0;
-            acc[ex._id] = Math.max(0, Math.min(100, percent));
-            return acc;
-        }, {});
-        dispatch(setWorkoutProgress({ workoutId, values: percents }));
-        router.push(`/workout/${workoutId}`);
+        try {
+            await saveWorkoutProgressRequest(token, courseId, workoutId, counts);
+            const actualProgress = await getWorkoutProgress(token, courseId, workoutId);
+            const percents = workout.exercises.reduce<Record<string, number>>((acc, ex, idx) => {
+                const quantity = ex.quantity ?? 0;
+                const count = actualProgress.progressData?.[idx] ?? 0;
+                const percent = quantity > 0 ? Math.round((count / quantity) * 100) : 0;
+                acc[ex._id] = Math.max(0, Math.min(100, percent));
+                return acc;
+            }, {});
+            dispatch(setWorkoutProgress({ workoutId, values: percents }));
+            dispatch(fetchCurrentUser());
+            setShowSuccess(true);
+            closeTimerRef.current = window.setTimeout(() => {
+                closeSuccessAndLeave();
+            }, 1100);
+        } catch (error) {
+            setSaveError(error instanceof Error ? error.message : "Не удалось сохранить прогресс");
+        } finally {
+            setSaving(false);
+        }
     };
 
     const handleClose = () => {
@@ -84,6 +122,18 @@ export default function ProgressModal({
             return;
         }
         router.push(`/workout/${workoutId}`);
+    };
+
+    const closeSuccessAndLeave = () => {
+        if (closeTimerRef.current) {
+            window.clearTimeout(closeTimerRef.current);
+            closeTimerRef.current = null;
+        }
+        if (showOverlay && window.history.length > 1) {
+            router.back();
+            return;
+        }
+        router.replace(`/workout/${workoutId}`);
     };
 
     return (
@@ -95,48 +145,67 @@ export default function ProgressModal({
                 }
             } : undefined}
         >
-            <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Мой прогресс">
-                {showClose && (
-                    <button
-                        type="button"
-                        className={styles.close}
-                        aria-label="Закрыть"
-                        onClick={handleClose}
-                    >
-                        ×
-                    </button>
-                )}
+            {!showSuccess && (
+                <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Мой прогресс">
+                    {showClose && (
+                        <button
+                            type="button"
+                            className={styles.close}
+                            aria-label="Закрыть"
+                            onClick={handleClose}
+                        >
+                            ×
+                        </button>
+                    )}
 
-                <h2 className={styles.title}>Мой прогресс</h2>
+                    <h2 className={styles.title}>Мой прогресс</h2>
 
-                <div className={styles.formList}>
-                    {workout?.exercises.map(ex => (
-                        <div key={ex._id} className={styles.formItem}>
-                            <label className={styles.label} htmlFor={`progress-${ex._id}`}>
-                                Сколько раз вы сделали {ex.name.toLowerCase()}?
-                            </label>
-                            <input
-                                id={`progress-${ex._id}`}
+                    <div className={styles.formList}>
+                        {workout?.exercises.map(ex => (
+                            <div key={ex._id} className={styles.formItem}>
+                                <label className={styles.label} htmlFor={`progress-${ex._id}`}>
+                                    Сколько раз вы сделали {ex.name.toLowerCase()}?
+                                </label>
+                                <input
+                                    id={`progress-${ex._id}`}
                                 className={styles.input}
                                 type="text"
                                 inputMode="numeric"
+                                placeholder="0"
                                 value={values[ex._id] ?? ""}
                                 onChange={e => onChange(ex._id, e.target.value)}
                             />
-                        </div>
-                    ))}
-                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {saveError && <div className={styles.errorText}>{saveError}</div>}
 
-                <Button
-                    variant="primary"
-                    size="lg"
-                    className={styles.saveButton}
-                    onClick={onSave}
-                    disabled={loading || !workout}
+                    <Button
+                        variant="primary"
+                        size="lg"
+                        className={styles.saveButton}
+                        onClick={onSave}
+                        disabled={loading || saving || !workout}
+                    >
+                        {saving ? "Сохранение..." : "Сохранить"}
+                    </Button>
+                </div>
+            )}
+            {showSuccess && (
+                <div
+                    className={styles.successOverlay}
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
+                            closeSuccessAndLeave();
+                        }
+                    }}
                 >
-                    Сохранить
-                </Button>
-            </div>
+                    <div className={styles.successModal} role="status" aria-live="polite">
+                        <h3 className={styles.successTitle}>Ваш прогресс засчитан!</h3>
+                        <span className={styles.successIcon} aria-hidden="true">✓</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

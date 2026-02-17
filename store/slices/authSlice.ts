@@ -6,6 +6,15 @@ import { RootState } from "@/store/store";
 export type AuthUser = {
     email: string;
     selectedCourses: string[];
+    courseProgress: {
+        courseId: string;
+        courseCompleted: boolean;
+        workoutsProgress: {
+            workoutId: string;
+            workoutCompleted: boolean;
+            progressData: number[];
+        }[];
+    }[];
 };
 
 type AuthState = {
@@ -41,6 +50,7 @@ export const loginUser = createAsyncThunk<
             user: {
                 email: resolvedEmail,
                 selectedCourses: me.selectedCourses ?? [],
+                courseProgress: me.courseProgress ?? [],
             },
         };
     } catch (error) {
@@ -64,6 +74,7 @@ export const registerUser = createAsyncThunk<
             user: {
                 email: resolvedEmail,
                 selectedCourses: me.selectedCourses ?? [],
+                courseProgress: me.courseProgress ?? [],
             },
         };
     } catch (error) {
@@ -88,6 +99,7 @@ export const fetchCurrentUser = createAsyncThunk<
         return {
             email: resolvedEmail,
             selectedCourses: me.selectedCourses ?? [],
+            courseProgress: me.courseProgress ?? [],
         };
     } catch (error) {
         const message = error instanceof Error ? error.message : "Не удалось получить профиль";
