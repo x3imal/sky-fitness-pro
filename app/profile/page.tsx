@@ -81,6 +81,7 @@ export default function ProfilePage() {
                                 className={styles.logoutBtn}
                                 type="button"
                                 onClick={() => {
+                                    window.sessionStorage.setItem("logout_redirect", "1");
                                     dispatch(logoutUser());
                                 }}
                             >

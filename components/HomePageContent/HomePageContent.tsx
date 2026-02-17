@@ -10,6 +10,7 @@ import { selectCatalogStatus, selectCourses } from "@/store/selectors";
 export default function HomePageContent() {
     const courses = useAppSelector(selectCourses);
     const catalogStatus = useAppSelector(selectCatalogStatus);
+    const isLoading = catalogStatus === "loading" || (catalogStatus === "idle" && courses.length === 0);
     const coursesToShow = courses.reduce<typeof courses>((acc, course) => {
         if (!acc.some(item => item.slug === course.slug)) {
             acc.push(course);
@@ -29,15 +30,25 @@ export default function HomePageContent() {
             </div>
 
             <div className={styles.grid}>
-                {coursesToShow.length > 0 ? (
+                {isLoading ? (
+                    Array.from({ length: 6 }).map((_, idx) => (
+                        <div key={idx} className={styles.skeletonCard} aria-hidden="true">
+                            <div className={styles.skeletonImage} />
+                            <div className={styles.skeletonContent}>
+                                <div className={styles.skeletonTitle} />
+                                <div className={styles.skeletonMetaRow} />
+                                <div className={styles.skeletonMetaRowShort} />
+                                <div className={styles.skeletonButton} />
+                            </div>
+                        </div>
+                    ))
+                ) : coursesToShow.length > 0 ? (
                     coursesToShow.map((course) => (
                         <CourseCard key={course._id || course.slug} course={course} />
                     ))
                 ) : (
                     <div>
-                        {catalogStatus === "failed"
-                            ? "Список тренировок пуст"
-                            : "Курсы загружаются..."}
+                        {catalogStatus === "failed" ? "Список тренировок пуст" : "Список тренировок пуст"}
                     </div>
                 )}
             </div>

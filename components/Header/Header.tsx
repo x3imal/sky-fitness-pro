@@ -75,8 +75,9 @@ export default function Header() {
                                         size="menu"
                                         className={styles.menuButton}
                                         onClick={() => {
-                                            dispatch(logoutUser());
                                             setIsMenuOpen(false);
+                                            window.sessionStorage.setItem("logout_redirect", "1");
+                                            dispatch(logoutUser());
                                         }}
                                     >
                                         Выйти

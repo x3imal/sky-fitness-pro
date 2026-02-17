@@ -19,6 +19,12 @@ export default function AuthGuard({ children }: Props) {
 
     useEffect(() => {
         if (!isAuthenticated && !isResolvingSession) {
+            const shouldGoHome = typeof window !== "undefined" && window.sessionStorage.getItem("logout_redirect") === "1";
+            if (shouldGoHome) {
+                window.sessionStorage.removeItem("logout_redirect");
+                window.location.replace("/");
+                return;
+            }
             const nextPath = pathname ? `?next=${encodeURIComponent(pathname)}` : "";
             window.location.replace(`/auth${nextPath}`);
         }
