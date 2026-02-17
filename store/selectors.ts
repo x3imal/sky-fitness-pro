@@ -40,9 +40,11 @@ export const selectAuthStatus = (state: RootState) => state.auth.status;
 export const selectAuthError = (state: RootState) => state.auth.error;
 export const selectAuthToken = (state: RootState) => state.auth.token;
 
+export const selectMySelectedCourses = (state: RootState) =>
+    selectCurrentUser(state)?.selectedCourses ?? [];
+
 export const selectMyCourseSlugs = (state: RootState) => {
-    const user = selectCurrentUser(state);
-    const selected = user?.selectedCourses ?? [];
+    const selected = selectMySelectedCourses(state);
     const courses = selectCourses(state);
     return selected.map((value) => {
         const bySlug = courses.find(course => course.slug === value);
@@ -53,8 +55,21 @@ export const selectMyCourseSlugs = (state: RootState) => {
     });
 };
 
-export const selectHasCourse = (state: RootState, slug: string) =>
-    selectMyCourseSlugs(state).includes(slug);
+export const selectHasCourse = (state: RootState, slug: string) => {
+    const selected = selectMySelectedCourses(state);
+    const course = selectCourseBySlug(state, slug);
+    if (!course) {
+        return selected.includes(slug);
+    }
+    return selected.includes(course._id) || selected.includes(course.slug);
+};
+
+export const selectMyCourses = (state: RootState) => {
+    const selected = selectMySelectedCourses(state);
+    return selectCourses(state).filter(
+        course => selected.includes(course._id) || selected.includes(course.slug)
+    );
+};
 
 export const selectCourseBySlug = (state: RootState, slug: string) =>
     selectCourses(state).find(course => course.slug === slug);

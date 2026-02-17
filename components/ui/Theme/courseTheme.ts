@@ -6,7 +6,7 @@ export type CourseTheme = {
 
 export const COURSE_THEME_BY_SLUG: Record<string, CourseTheme> = {
     yoga: {
-        cardImageSrc: '/images/courses/yoga.png',
+        cardImageSrc: '/images/courses/Yoga.png',
         heroImageSrc: '/images/courses/yoga-hero.png',
         heroObjectPosition: '80% 20%',
     },
@@ -35,4 +35,3 @@ export const COURSE_THEME_BY_SLUG: Record<string, CourseTheme> = {
         heroObjectPosition: '85% 20%',
     },
 };
-

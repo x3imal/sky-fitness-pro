@@ -17,6 +17,15 @@ export type MeResponse = {
     selectedCourses?: string[];
 };
 
+type RawMeResponse =
+    | MeResponse
+    | {
+        user?: {
+            email?: string;
+            selectedCourses?: string[];
+        };
+    };
+
 const DEFAULT_API_BASE = "https://wedev-api.sky.pro";
 
 const normalizeBaseUrl = (base: string) => {
@@ -83,10 +92,22 @@ export async function loginRequest(payload: LoginPayload): Promise<{ token: stri
 }
 
 export async function meRequest(token: string): Promise<MeResponse> {
-    return request<MeResponse>(buildUrl("/api/fitness/users/me"), {
+    const payload = await request<RawMeResponse>(buildUrl("/api/fitness/users/me"), {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
+
+    if ("email" in payload) {
+        return {
+            email: payload.email ?? "",
+            selectedCourses: payload.selectedCourses ?? [],
+        };
+    }
+
+    return {
+        email: payload.user?.email ?? "",
+        selectedCourses: payload.user?.selectedCourses ?? [],
+    };
 }

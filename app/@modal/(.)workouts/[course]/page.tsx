@@ -62,6 +62,7 @@ export default function WorkoutsModalPage({ params }: PageProps) {
                         workouts={workouts}
                         loading={loading}
                         error={error}
+                        onStartWorkout={(workoutId) => router.replace(`/workout/${workoutId}`)}
                     />
                 </div>
             </div>

@@ -1,14 +1,8 @@
 import { CatalogPayload, WorkoutsByCourseSlug } from "@/shared/types/catalog";
 import { Course, DifficultyRU } from "@/shared/types/course";
 import { fetchCourse, fetchCourses } from "@/shared/services/courseService";
-import { COURSES } from "@/shared/data/courses";
-
-const slugify = (value: string) =>
-    value
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9а-яё\s-]/gi, "")
-        .replace(/\s+/g, "-");
+import { COURSE_THEME_BY_SLUG } from "@/components/ui/Theme/courseTheme";
+import { resolveCourseSlug } from "@/shared/util/resolveCourseSlug";
 
 const normalizeDifficulty = (value: string | undefined): DifficultyRU => {
     if (value === "легкий" || value === "средний" || value === "сложный") return value;
@@ -18,8 +12,7 @@ const normalizeDifficulty = (value: string | undefined): DifficultyRU => {
 export async function loadCatalog(): Promise<CatalogPayload> {
     const coursesPayloadRaw = await fetchCourses();
     const coursesPayload = coursesPayloadRaw.reduce<typeof coursesPayloadRaw>((acc, course) => {
-        const key = `${(course.nameEN || course.nameRU || "").toLowerCase()}`;
-        if (!acc.some(item => item._id === course._id || `${(item.nameEN || item.nameRU || "").toLowerCase()}` === key)) {
+        if (!acc.some(item => item._id === course._id)) {
             acc.push(course);
         }
         return acc;
@@ -36,11 +29,8 @@ export async function loadCatalog(): Promise<CatalogPayload> {
     const workoutsMap: WorkoutsByCourseSlug = {};
 
     const mappedCoursesRaw: Course[] = details.map(detail => {
-        const localMatch =
-            COURSES.find(item => item._id === detail._id) ??
-            COURSES.find(item => item.nameRU === detail.nameRU) ??
-            COURSES.find(item => item.nameEN === detail.nameEN);
-        const slug = localMatch?.slug ?? slugify(detail.nameEN || detail.nameRU) ?? detail._id;
+        const slug = resolveCourseSlug(detail.nameRU, detail.nameEN, detail._id);
+        const theme = COURSE_THEME_BY_SLUG[slug];
 
         return {
             _id: detail._id,
@@ -54,12 +44,12 @@ export async function loadCatalog(): Promise<CatalogPayload> {
             dailyDurationInMinutes: detail.dailyDurationInMinutes ?? { from: 0, to: 0 },
             workouts: detail.workouts ?? [],
             slug,
-            imageSrc: localMatch?.imageSrc ?? "",
-            ctaImageSrc: localMatch?.ctaImageSrc,
+            imageSrc: theme?.cardImageSrc ?? "",
+            ctaImageSrc: undefined,
         };
     });
     const mappedCourses = mappedCoursesRaw.reduce<Course[]>((acc, course) => {
-        if (!acc.some(item => item.slug === course.slug)) {
+        if (!acc.some(item => item._id === course._id)) {
             acc.push(course);
         }
         return acc;

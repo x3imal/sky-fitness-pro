@@ -37,7 +37,7 @@ const catalogSlice = createSlice({
             .addCase(fetchCatalog.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 state.courses = action.payload.courses.reduce<Course[]>((acc, course) => {
-                    if (!acc.some(item => item.slug === course.slug)) {
+                    if (!acc.some(item => item._id === course._id)) {
                         acc.push(course);
                     }
                     return acc;

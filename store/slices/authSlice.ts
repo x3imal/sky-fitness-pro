@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginRequest, meRequest, registerRequest } from "@/shared/services/authService";
 import { addUserCourse, removeUserCourse } from "@/shared/services/courseService";
 import { RootState } from "@/store/store";
-import { COURSES } from "@/shared/data/courses";
 
 export type AuthUser = {
     email: string;
@@ -28,15 +27,6 @@ type Credentials = {
     password: string;
 };
 
-const normalizeSelectedCourses = (selectedCourses: string[] = []) =>
-    selectedCourses.map((value) => {
-        const bySlug = COURSES.find(course => course.slug === value);
-        if (bySlug) return bySlug.slug;
-        const byId = COURSES.find(course => course._id === value);
-        if (byId) return byId.slug;
-        return value;
-    });
-
 export const loginUser = createAsyncThunk<
     { token: string; user: AuthUser },
     Credentials,
@@ -50,7 +40,7 @@ export const loginUser = createAsyncThunk<
             token,
             user: {
                 email: resolvedEmail,
-                selectedCourses: normalizeSelectedCourses(me.selectedCourses ?? []),
+                selectedCourses: me.selectedCourses ?? [],
             },
         };
     } catch (error) {
@@ -73,7 +63,7 @@ export const registerUser = createAsyncThunk<
             token,
             user: {
                 email: resolvedEmail,
-                selectedCourses: normalizeSelectedCourses(me.selectedCourses ?? []),
+                selectedCourses: me.selectedCourses ?? [],
             },
         };
     } catch (error) {
@@ -97,7 +87,7 @@ export const fetchCurrentUser = createAsyncThunk<
         const resolvedEmail = (me.email ?? "").trim();
         return {
             email: resolvedEmail,
-            selectedCourses: normalizeSelectedCourses(me.selectedCourses ?? []),
+            selectedCourses: me.selectedCourses ?? [],
         };
     } catch (error) {
         const message = error instanceof Error ? error.message : "Не удалось получить профиль";
@@ -106,7 +96,7 @@ export const fetchCurrentUser = createAsyncThunk<
 });
 
 export const addCourseForUser = createAsyncThunk<
-    { slug: string },
+    { courseId: string },
     { slug: string },
     { state: RootState; rejectValue: string }
 >("auth/addCourseForUser", async ({ slug }, thunkApi) => {
@@ -122,18 +112,18 @@ export const addCourseForUser = createAsyncThunk<
 
     try {
         await addUserCourse(token, course._id);
-        return { slug };
+        return { courseId: course._id };
     } catch (error) {
         const message = error instanceof Error ? error.message : "Не удалось добавить курс";
         if (message.toLowerCase().includes("уже")) {
-            return { slug };
+            return { courseId: course._id };
         }
         return thunkApi.rejectWithValue(message);
     }
 });
 
 export const removeCourseForUser = createAsyncThunk<
-    { slug: string },
+    { courseId: string; slug: string },
     { slug: string },
     { state: RootState; rejectValue: string }
 >("auth/removeCourseForUser", async ({ slug }, thunkApi) => {
@@ -149,7 +139,7 @@ export const removeCourseForUser = createAsyncThunk<
 
     try {
         await removeUserCourse(token, course._id);
-        return { slug };
+        return { courseId: course._id, slug };
     } catch (error) {
         const message = error instanceof Error ? error.message : "Не удалось удалить курс";
         return thunkApi.rejectWithValue(message);
@@ -226,22 +216,22 @@ const authSlice = createSlice({
             .addCase(fetchCurrentUser.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.payload ?? action.error.message ?? "Не удалось получить профиль";
-                state.token = null;
-                state.currentUser = null;
             })
             .addCase(addCourseForUser.fulfilled, (state, action) => {
                 const currentUser = state.currentUser;
                 if (!currentUser) return;
                 const selected = currentUser.selectedCourses ?? (currentUser.selectedCourses = []);
-                if (!selected.includes(action.payload.slug)) {
-                    selected.push(action.payload.slug);
+                if (!selected.includes(action.payload.courseId)) {
+                    selected.push(action.payload.courseId);
                 }
             })
             .addCase(removeCourseForUser.fulfilled, (state, action) => {
                 const currentUser = state.currentUser;
                 if (!currentUser) return;
                 const selected = currentUser.selectedCourses ?? (currentUser.selectedCourses = []);
-                currentUser.selectedCourses = selected.filter(slug => slug !== action.payload.slug);
+                currentUser.selectedCourses = selected.filter(
+                    value => value !== action.payload.courseId && value !== action.payload.slug
+                );
             });
     },
 });

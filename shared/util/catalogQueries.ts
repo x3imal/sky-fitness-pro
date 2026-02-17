@@ -1,24 +1,14 @@
 import { loadCatalog } from "@/shared/services/catalogService";
 import { fetchCourse, fetchCourseWorkouts, fetchCourses } from "@/shared/services/courseService";
-import { COURSES } from "@/shared/data/courses";
-
-const slugify = (value: string) =>
-    value
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9а-яё\s-]/gi, "")
-        .replace(/\s+/g, "-");
+import { COURSE_THEME_BY_SLUG } from "@/components/ui/Theme/courseTheme";
+import { resolveCourseSlug } from "@/shared/util/resolveCourseSlug";
 
 const findCourseIdBySlug = async (slug: string): Promise<string | null> => {
     try {
         const list = await fetchCourses();
         const matched = list.find(course => {
-            const localMatch =
-                COURSES.find(item => item._id === course._id) ??
-                COURSES.find(item => item.nameRU === course.nameRU) ??
-                COURSES.find(item => item.nameEN === course.nameEN);
-            const resolvedSlug = localMatch?.slug ?? slugify(course.nameEN || course.nameRU);
-            return resolvedSlug === slug;
+            const resolvedSlug = resolveCourseSlug(course.nameRU, course.nameEN, course._id);
+            return resolvedSlug === slug || course._id === slug;
         });
         return matched?._id ?? null;
     } catch {
@@ -34,10 +24,8 @@ export async function getCourseByIdAsync(slug: string) {
     }
     try {
         const detail = await fetchCourse(courseId);
-        const localMatch =
-            COURSES.find(item => item._id === detail._id) ??
-            COURSES.find(item => item.nameRU === detail.nameRU) ??
-            COURSES.find(item => item.nameEN === detail.nameEN);
+        const resolvedSlug = resolveCourseSlug(detail.nameRU, detail.nameEN, detail._id);
+        const theme = COURSE_THEME_BY_SLUG[resolvedSlug];
         return {
             _id: detail._id,
             nameRU: detail.nameRU,
@@ -49,9 +37,9 @@ export async function getCourseByIdAsync(slug: string) {
             durationInDays: detail.durationInDays ?? 0,
             dailyDurationInMinutes: detail.dailyDurationInMinutes ?? { from: 0, to: 0 },
             workouts: detail.workouts ?? [],
-            slug: localMatch?.slug ?? slug,
-            imageSrc: localMatch?.imageSrc ?? "",
-            ctaImageSrc: localMatch?.ctaImageSrc,
+            slug: resolvedSlug,
+            imageSrc: theme?.cardImageSrc ?? "",
+            ctaImageSrc: undefined,
         };
     } catch {
         const catalog = await loadCatalog();

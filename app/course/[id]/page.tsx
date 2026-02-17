@@ -23,15 +23,17 @@ export default async function CoursePage({ params }: PageProps) {
                     <h1 className={styles.heroTitle}>{course.nameRU}</h1>
 
                     <div className={styles.heroImage}>
-                        <Image
-                            src={theme.heroImageSrc}
-                            alt={course.nameRU}
-                            fill
-                            priority
-                            sizes="(max-width: 768px) 100vw, 1200px"
-                            className={styles.heroImageImg}
-                            style={{ objectPosition: theme.heroObjectPosition ?? "center" }}
-                        />
+                        {theme.heroImageSrc ? (
+                            <Image
+                                src={theme.heroImageSrc}
+                                alt={course.nameRU}
+                                fill
+                                priority
+                                sizes="(max-width: 768px) 100vw, 1200px"
+                                className={styles.heroImageImg}
+                                style={{ objectPosition: theme.heroObjectPosition ?? "center" }}
+                            />
+                        ) : null}
                     </div>
                 </div>
             </section>

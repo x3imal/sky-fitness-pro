@@ -3,28 +3,28 @@
 import styles from "./page.module.css";
 import { CourseCard } from "@/components/CourseCard/CourseCard";
 import Image from "next/image";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-    selectCourses,
+    selectAuthToken,
     selectCourseActionText,
     selectCourseProgress,
     selectCurrentUser,
-    selectMyCourseSlugs
+    selectMyCourses
 } from "@/store/selectors";
-import { logoutUser } from "@/store/slices/authSlice";
+import { fetchCurrentUser, logoutUser } from "@/store/slices/authSlice";
 import AuthGuard from "@/components/AuthGuard/AuthGuard";
 
 export default function ProfilePage() {
     const dispatch = useAppDispatch();
-    const courses = useAppSelector(selectCourses);
+    const authToken = useAppSelector(selectAuthToken);
+    const myCourses = useAppSelector(selectMyCourses);
     const currentUser = useAppSelector(selectCurrentUser);
-    const myCourseSlugs = useAppSelector(selectMyCourseSlugs);
-    const myCourses = courses.filter(course => myCourseSlugs.includes(course.slug));
     const userName = (currentUser?.email?.split("@")[0] ?? "").split(".")[0];
     const displayName = userName ? userName.charAt(0).toUpperCase() + userName.slice(1) : "";
     const courseUiBySlug = useAppSelector(state =>
         Object.fromEntries(
-            courses.map(course => [
+            myCourses.map(course => [
                 course.slug,
                 {
                     progress: selectCourseProgress(state, course.slug),
@@ -33,6 +33,11 @@ export default function ProfilePage() {
             ])
         )
     );
+
+    useEffect(() => {
+        if (!authToken) return;
+        dispatch(fetchCurrentUser());
+    }, [authToken, dispatch]);
 
     return (
         <AuthGuard>

@@ -10,6 +10,12 @@ import { selectCatalogStatus, selectCourses } from "@/store/selectors";
 export default function HomePageContent() {
     const courses = useAppSelector(selectCourses);
     const catalogStatus = useAppSelector(selectCatalogStatus);
+    const coursesToShow = courses.reduce<typeof courses>((acc, course) => {
+        if (!acc.some(item => item.slug === course.slug)) {
+            acc.push(course);
+        }
+        return acc;
+    }, []);
 
     return (
         <>
@@ -23,8 +29,8 @@ export default function HomePageContent() {
             </div>
 
             <div className={styles.grid}>
-                {courses.length > 0 ? (
-                    courses.map((course) => (
+                {coursesToShow.length > 0 ? (
+                    coursesToShow.map((course) => (
                         <CourseCard key={course._id || course.slug} course={course} />
                     ))
                 ) : (

@@ -10,9 +10,16 @@ type Props = {
     workouts: Workout[];
     loading?: boolean;
     error?: string | null;
+    onStartWorkout?: (workoutId: string) => void;
 };
 
-export default function WorkoutSelect({ courseTitle, workouts, loading = false, error = null }: Props) {
+export default function WorkoutSelect({
+    courseTitle,
+    workouts,
+    loading = false,
+    error = null,
+    onStartWorkout,
+}: Props) {
     const initialId = workouts[0]?._id ?? "";
     const [selectedId, setSelectedId] = useState<string>(initialId);
 
@@ -23,6 +30,10 @@ export default function WorkoutSelect({ courseTitle, workouts, loading = false, 
 
     const onStart = () => {
         if (!selected) return;
+        if (onStartWorkout) {
+            onStartWorkout(selected._id);
+            return;
+        }
         window.location.assign(`/workout/${selected._id}`);
     };
 
