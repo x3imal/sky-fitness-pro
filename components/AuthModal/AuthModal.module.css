@@ -25,6 +25,7 @@
     background: #fff;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
     padding: 40px;
+    box-sizing: border-box;
 }
 
 .close {
@@ -92,4 +93,24 @@
     height: 52px;
     font-size: 14px;
     padding: 0 18px;
+}
+
+@media (max-width: 767px) {
+    .overlay {
+        padding: 16px;
+    }
+
+    .pageWrap {
+        min-height: calc(100vh - 80px);
+        padding: 16px 0 24px;
+    }
+
+    .modal {
+        width: 343px;
+        min-height: 425px;
+        max-height: calc(100vh - 32px);
+        border-radius: 30px;
+        padding: 40px;
+        overflow: auto;
+    }
 }

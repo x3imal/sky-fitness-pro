@@ -18,6 +18,7 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null);
+    const isMobile = () => typeof window !== "undefined" && window.innerWidth <= 767;
 
     useEffect(() => {
         if (!isMenuOpen) return;
@@ -34,6 +35,14 @@ export default function Header() {
             document.removeEventListener("mousedown", handleOutsideClick);
         };
     }, [isMenuOpen]);
+
+    const onProfileClick = () => {
+        if (isMobile()) {
+            router.push("/profile");
+            return;
+        }
+        setIsMenuOpen(prev => !prev);
+    };
 
     return (
         <header className={styles.header}>
@@ -58,7 +67,7 @@ export default function Header() {
                             type="button"
                             className={styles.profileTrigger}
                             ref={buttonRef}
-                            onClick={() => setIsMenuOpen(prev => !prev)}
+                            onClick={onProfileClick}
                             aria-haspopup="dialog"
                             aria-expanded={isMenuOpen}
                             aria-label="Открыть меню профиля"

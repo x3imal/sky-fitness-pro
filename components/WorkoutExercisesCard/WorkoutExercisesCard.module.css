@@ -60,7 +60,7 @@
     display: block;
     height: 100%;
     width: var(--progress, 0%);
-    background: #1da1ff;
+    background: #00C1FF;
     border-radius: 999px;
 }
 
@@ -74,4 +74,68 @@
     height: 40px;
     font-size: 18px;
     font-weight: 400;
+}
+
+@media (max-width: 767px) {
+    .exercisesCard {
+        width: 343px;
+        max-width: 100%;
+        border-radius: 30px;
+        padding: 30px;
+        margin-top: 24px;
+        box-sizing: border-box;
+    }
+
+    .exercisesTitle {
+        font-size: 32px;
+        font-weight: 400;
+        margin-bottom: 0;
+    }
+
+    .exerciseGrid {
+        width: 100%;
+        grid-template-columns: 1fr;
+        row-gap: 24px;
+        column-gap: 0;
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
+
+    .exerciseItem {
+        gap: 10px;
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    .exerciseName {
+        max-width: 235px;
+        font-size: 18px;
+        font-weight: 400;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        overflow-wrap: anywhere;
+    }
+
+    .exerciseProgress {
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    .exerciseBar {
+        width: 283px;
+        height: 6px;
+        border-radius: 50px;
+    }
+
+    .fillButtonLink {
+        display: flex;
+    }
+
+    .fillButton {
+        width: 283px;
+        height: 52px;
+        font-size: 18px;
+        font-weight: 400;
+    }
 }

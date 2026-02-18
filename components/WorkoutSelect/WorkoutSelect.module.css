@@ -181,3 +181,25 @@
         background-position: -200% 0;
     }
 }
+
+@media (max-width: 767px) {
+    .title {
+        text-align: left;
+    }
+
+    .itemTitle {
+        font-size: 18px;
+    }
+
+    .itemSub {
+        font-size: 14px;
+    }
+
+    .skeletonTitle {
+        height: 18px;
+    }
+
+    .skeletonSub {
+        height: 14px;
+    }
+}

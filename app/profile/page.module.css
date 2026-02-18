@@ -161,3 +161,97 @@
         background-position: -200% 0;
     }
 }
+
+@media (max-width: 767px) {
+    .page {
+        padding: 0 0 40px;
+    }
+
+    .container {
+        width: 343px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .title {
+        margin: 0 0 30px;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .userCard {
+        width: 343px;
+        max-width: 100%;
+        min-height: 365px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+        padding: 30px;
+        border-radius: 30px;
+        margin-bottom: 34px;
+    }
+
+    .avatar {
+        width: 141px;
+        height: 141px;
+        border-radius: 18px;
+    }
+
+    .avatarBody {
+        width: 151px !important;
+        height: 52px !important;
+        bottom: -12px;
+        left: -5px;
+    }
+
+    .avatarHead {
+        width: 50px !important;
+        height: 50px !important;
+        bottom: 70px;
+        right: 42px;
+    }
+
+    .userInfo {
+        width: 100%;
+        gap: 16px;
+    }
+
+    .userName {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.1;
+    }
+
+    .userLogin {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .logoutBtn {
+        margin-top: 14px;
+        width: 283px;
+        height: 50px;
+        font-size: 16px;
+        padding: 16px 117px;
+        line-height: 1;
+    }
+
+    .sectionTitle {
+        margin: 0 0 16px;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        justify-items: center;
+    }
+
+    .skeletonCourseCard {
+        width: 343px;
+        min-height: 492px;
+    }
+}

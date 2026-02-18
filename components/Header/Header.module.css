@@ -173,6 +173,7 @@
     .profileTrigger {
         width: 54px;
         height: 36px;
+        align-items: center;
         justify-content: space-between;
         gap: 0;
     }
@@ -188,10 +189,12 @@
 
     .profileChevron {
         width: 8px;
-        height: 4px;
+        height: 8px;
+        box-sizing: border-box;
         border-right-width: 2px;
         border-bottom-width: 2px;
         margin-left: 0;
-        transform: rotate(45deg) translateY(-1px);
+        margin-top: -1px;
+        transform: rotate(45deg);
     }
 }
