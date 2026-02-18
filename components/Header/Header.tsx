@@ -123,7 +123,7 @@ export default function Header() {
                     </div>
                 ) : (
                     <Link href="/auth">
-                        <Button variant="primary" size="in">
+                        <Button variant="primary" size="in" className={styles.loginBtn}>
                             Войти
                         </Button>
                     </Link>

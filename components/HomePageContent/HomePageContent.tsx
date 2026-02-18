@@ -23,10 +23,15 @@ export default function HomePageContent() {
             <div className={styles.hero}>
                 <h1>
                     Начните заниматься спортом
-                    <br />
                     и улучшите качество жизни
                 </h1>
-                <Image src="/Massage.svg" alt="Dsdsd" width={288} height={120} />
+                <Image
+                    src="/Massage.svg"
+                    alt="Иллюстрация"
+                    width={288}
+                    height={120}
+                    className={styles.heroImage}
+                />
             </div>
 
             <div className={styles.grid}>

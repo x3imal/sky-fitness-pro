@@ -137,3 +137,60 @@
 .menuButton {
     margin-top: 10px;
 }
+
+@media (max-width: 767px) {
+    .header {
+        margin-bottom: 40px;
+        padding-top: 40px;
+    }
+
+    .inner {
+        max-width: 375px;
+        padding: 0 16px;
+        align-items: center;
+    }
+
+    .logoImage {
+        width: 220px;
+        height: 35px;
+        margin-bottom: 0;
+    }
+
+    .logoSub {
+        display: none;
+    }
+
+    .loginBtn {
+        width: 83px !important;
+        height: 36px !important;
+        border-radius: 46px !important;
+        padding: 8px 16px !important;
+        font-size: 18px !important;
+        line-height: 1;
+    }
+
+    .profileTrigger {
+        width: 54px;
+        height: 36px;
+        justify-content: space-between;
+        gap: 0;
+    }
+
+    .profileAvatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .profileName {
+        display: none;
+    }
+
+    .profileChevron {
+        width: 8px;
+        height: 4px;
+        border-right-width: 2px;
+        border-bottom-width: 2px;
+        margin-left: 0;
+        transform: rotate(45deg) translateY(-1px);
+    }
+}
