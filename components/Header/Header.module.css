@@ -161,8 +161,9 @@
     }
 
     .loginBtn {
-        width: 83px !important;
-        height: 36px !important;
+        width: auto !important;
+        height: auto !important;
+        min-width: 0 !important;
         border-radius: 46px !important;
         padding: 8px 16px !important;
         font-size: 18px !important;
