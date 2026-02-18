@@ -82,6 +82,16 @@ export function CourseCTA({ courseSlug }: Props) {
                             className={styles.image}
                         />
                     </div>
+                    <div className={styles.imageWrapMobile}>
+                        <Image
+                            src="/images/cta/common-cta-mobil.png"
+                            alt=""
+                            fill
+                            priority
+                            sizes="343px"
+                            className={styles.image}
+                        />
+                    </div>
                 </div>
             </div>
         </section>

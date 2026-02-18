@@ -36,6 +36,17 @@ export default async function CoursePage({ params }: PageProps) {
                         ) : null}
                     </div>
                 </div>
+
+                <div className={styles.mobileHeroCard}>
+                    <Image
+                        src={theme.cardImageSrc}
+                        alt={course.nameRU}
+                        fill
+                        priority
+                        sizes="(max-width: 767px) 343px, 1px"
+                        className={styles.mobileHeroImage}
+                    />
+                </div>
             </section>
 
             <section className={styles.section}>

@@ -36,6 +36,10 @@
     object-fit: cover;
 }
 
+.mobileHeroCard {
+    display: none;
+}
+
 /* SECTIONS */
 .section {
     margin-top: 60px;
@@ -130,4 +134,66 @@
     color: rgba(0, 0, 0, 0.75);
     line-height: 1.6;
     font-size: 16px;
+}
+
+@media (max-width: 767px) {
+    .section {
+        margin-top: 40px;
+    }
+
+    .sectionTitle {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.1;
+        margin: 0 0 24px;
+    }
+
+    .fittingGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .fittingCard {
+        gap: 18px;
+    }
+
+    .fittingText {
+        font-size: 18px;
+        line-height: 1.1;
+    }
+
+    .directions {
+        width: 343px;
+        max-width: 100%;
+        min-height: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        column-gap: 0;
+        row-gap: 30px;
+        padding: 24px;
+    }
+
+    .directionChip {
+        width: 100%;
+        font-size: 18px;
+        line-height: 1.1;
+    }
+
+    .heroCard {
+        display: none;
+    }
+
+    .mobileHeroCard {
+        display: block;
+        position: relative;
+        width: 343px;
+        height: 389px;
+        border-radius: 30px;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+
+    .mobileHeroImage {
+        object-fit: cover;
+    }
 }
