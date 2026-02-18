@@ -1,0 +1,199 @@
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+/* HERO */
+.hero {
+    margin-bottom: 34px;
+}
+
+.heroCard {
+    position: relative;
+    height: 310px;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.heroTitle {
+    position: absolute;
+    left: 40px;
+    top: 40px;
+    z-index: 2;
+    margin: 0;
+    font-size: 60px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.heroImage {
+    position: absolute;
+    inset: 0;
+}
+
+.heroImageImg {
+    object-fit: cover;
+}
+
+.mobileHeroCard {
+    display: none;
+}
+
+/* SECTIONS */
+.section {
+    margin-top: 60px;
+}
+
+.sectionTitle {
+    font-size: 40px;
+    font-weight: 600;
+    color: #0b0b0b;
+}
+
+/* FITTING */
+.fittingGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 18px;
+}
+
+.fittingCard {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    background: #151720;
+    color: #fff;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.fittingCard:nth-child(2) {
+    z-index: 1;
+    transform: scale(1.03);
+}
+
+.fittingIndex {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 75px;
+    line-height: 135%;
+    letter-spacing: 0;
+
+    color: #bcec30;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 35px;
+    height: 101px;
+}
+
+
+.fittingText {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 400;
+}
+
+/* DIRECTIONS */
+.directions {
+    display: grid;
+    grid-template-columns: repeat(3, 284px);
+    grid-template-rows: repeat(2, auto);
+    column-gap: 124px;
+    row-gap: 34px;
+    background: #bcec30;
+    padding: 30px;
+    border-radius: 28px;
+    width: 1160px;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-height: 146px;
+    margin: 0 auto;
+}
+
+.directionChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    color: #0b0b0b;
+    font-weight: 400;
+    width: 100%;
+}
+
+/* DESCRIPTION */
+.description {
+    margin: 0;
+    max-width: 920px;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+@media (max-width: 767px) {
+    .section {
+        margin-top: 40px;
+    }
+
+    .sectionTitle {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.1;
+        margin: 0 0 24px;
+    }
+
+    .fittingGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .fittingCard {
+        gap: 18px;
+    }
+
+    .fittingText {
+        font-size: 18px;
+        line-height: 1.1;
+    }
+
+    .directions {
+        width: 343px;
+        max-width: 100%;
+        min-height: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        column-gap: 0;
+        row-gap: 30px;
+        padding: 24px;
+    }
+
+    .directionChip {
+        width: 100%;
+        font-size: 18px;
+        line-height: 1.1;
+    }
+
+    .heroCard {
+        display: none;
+    }
+
+    .mobileHeroCard {
+        display: block;
+        position: relative;
+        width: 343px;
+        height: 389px;
+        border-radius: 30px;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+
+    .mobileHeroImage {
+        object-fit: cover;
+    }
+}
