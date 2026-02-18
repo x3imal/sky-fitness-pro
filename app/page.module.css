@@ -89,12 +89,13 @@
 @media (max-width: 767px) {
     .hero {
         margin-bottom: 34px;
+        width: 100%;
     }
 
     .hero h1 {
         font-size: 32px;
         line-height: 1.1;
-        max-width: 343px;
+        width: 100%;
     }
 
     .heroImage {
@@ -105,15 +106,16 @@
         grid-template-columns: 1fr;
         gap: 24px;
         margin-bottom: 24px;
-        justify-items: center;
+        justify-items: start;
     }
 
     .toTop {
+        width: 100%;
         text-align: right;
     }
 
     .skeletonCard {
-        width: 343px;
+        width: 100%;
         min-height: 492px;
         padding-bottom: 15px;
     }

@@ -173,13 +173,31 @@
 
 @media (max-width: 767px) {
     .card {
-        width: 343px;
+        width: 100%;
         min-height: 492px;
         padding-bottom: 15px;
     }
 
     .imageContainer {
         height: 325px;
+        background: #ffffff;
+        border-radius: 30px;
+    }
+
+    .imageContainer::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 24px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+        pointer-events: none;
+    }
+
+    .courseImage {
+        object-fit: cover;
+        object-position: center top;
     }
 
     .content {
