@@ -81,3 +81,10 @@ h1 {
     padding-bottom: 40px;
   }
 }
+
+@media (min-width: 401px) and (max-width: 767px) {
+  .container {
+    padding: 0 24px;
+    padding-bottom: 40px;
+  }
+}

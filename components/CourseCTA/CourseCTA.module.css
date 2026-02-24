@@ -141,6 +141,7 @@
     .cta {
         margin-top: 28px;
         z-index: 30;
+        overflow-x: clip;
     }
 
     .card {

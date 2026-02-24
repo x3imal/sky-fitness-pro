@@ -137,8 +137,13 @@
 }
 
 @media (max-width: 767px) {
+    .hero {
+        width: 100%;
+    }
+
     .section {
         margin-top: 40px;
+        width: 100%;
     }
 
     .sectionTitle {
@@ -146,15 +151,22 @@
         font-weight: 500;
         line-height: 1.1;
         margin: 0 0 24px;
+        width: 100%;
     }
 
     .fittingGrid {
         grid-template-columns: 1fr;
         gap: 12px;
+        width: 100%;
     }
 
     .fittingCard {
         gap: 18px;
+    }
+
+    .fittingCard:nth-child(2) {
+        z-index: auto;
+        transform: none;
     }
 
     .fittingText {
@@ -163,14 +175,14 @@
     }
 
     .directions {
-        width: 343px;
-        max-width: 100%;
+        width: 100%;
         min-height: 0;
         grid-template-columns: 1fr;
         grid-template-rows: none;
         column-gap: 0;
         row-gap: 30px;
         padding: 24px;
+        margin: 0;
     }
 
     .directionChip {
@@ -186,11 +198,11 @@
     .mobileHeroCard {
         display: block;
         position: relative;
-        width: 343px;
+        width: 100%;
         height: 389px;
         border-radius: 30px;
         overflow: hidden;
-        margin: 0 auto;
+        margin: 0;
     }
 
     .mobileHeroImage {
