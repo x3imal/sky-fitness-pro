@@ -76,6 +76,28 @@
     font-weight: 400;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .exercisesCard {
+        padding: 32px;
+    }
+
+    .exerciseGrid {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+        row-gap: 24px;
+    }
+
+    .exerciseName {
+        max-width: none;
+        white-space: normal;
+    }
+
+    .fillButton {
+        width: 100%;
+    }
+}
+
 @media (max-width: 767px) {
     .exercisesCard {
         width: 343px;

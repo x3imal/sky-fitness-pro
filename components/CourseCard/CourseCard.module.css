@@ -171,6 +171,30 @@
     color: #d32f2f;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .card {
+        width: 100%;
+    }
+
+    .imageContainer {
+        height: 280px;
+    }
+
+    .content {
+        padding: 20px 20px 18px;
+        gap: 16px;
+    }
+
+    .title {
+        font-size: 26px;
+        line-height: 1.1;
+    }
+
+    .metaTop {
+        flex-wrap: wrap;
+    }
+}
+
 @media (max-width: 767px) {
     .card {
         width: 100%;

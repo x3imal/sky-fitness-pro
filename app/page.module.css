@@ -86,6 +86,33 @@
     margin-bottom: 60px;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .hero {
+        margin-bottom: 40px;
+        gap: 24px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+        max-width: 520px;
+    }
+
+    .heroImage {
+        max-width: 240px;
+        height: auto;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        justify-items: stretch;
+    }
+
+    .skeletonCard {
+        width: 100%;
+    }
+}
+
 @media (max-width: 767px) {
     .hero {
         margin-bottom: 34px;

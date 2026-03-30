@@ -138,6 +138,36 @@
     margin-top: 10px;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .header {
+        padding-top: 20px;
+        margin-bottom: 32px;
+    }
+
+    .inner {
+        padding: 16px 32px;
+        align-items: center;
+    }
+
+    .logoImage {
+        width: 260px;
+        height: auto;
+        margin-bottom: 8px;
+    }
+
+    .logoSub {
+        font-size: 14px;
+    }
+
+    .profileTrigger {
+        gap: 12px;
+    }
+
+    .profileName {
+        font-size: 18px;
+    }
+}
+
 @media (max-width: 767px) {
     .header {
         margin-bottom: 40px;
