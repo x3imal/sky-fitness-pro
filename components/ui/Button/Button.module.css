@@ -1,0 +1,123 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
+}
+
+.button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.button:disabled,
+.button.disabled {
+    cursor: not-allowed;
+}
+
+/* Варианты */
+.variant-primary {
+    background: #bcec30;
+    color: #000000;
+}
+
+.variant-primary:hover:not(:disabled) {
+    background: #a8d92a;
+}
+
+.variant-primary:active:not(:disabled) {
+    background: #0b0b0b;
+    color: #ffffff;
+}
+
+.variant-primary:disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+}
+
+.variant-secondary {
+    background: #ffffff;
+    border: 1px solid #0b0b0b;
+    color: #000000;
+}
+
+.variant-secondary:hover:not(:disabled) {
+    background: #f9fafb;
+}
+
+.variant-secondary:active:not(:disabled) {
+    background: #e5e7eb;
+}
+
+.variant-secondary:disabled {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #9ca3af;
+}
+
+.variant-outline {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #000000;
+}
+
+.variant-outline:hover:not(:disabled) {
+    background: #f9fafb;
+}
+
+.variant-ghost {
+    background: transparent;
+    color: #000000;
+}
+
+.variant-ghost:hover:not(:disabled) {
+    background: #f3f4f6;
+}
+
+/* Размеры */
+.size-sm {
+    height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+}
+
+.size-md {
+    height: 52px;
+    width: 103px;
+    padding: 0 24px;
+    font-size: 16px;
+}
+
+.size-lg {
+    height: 52px;
+    width: 380px;
+    padding: 0 32px;
+    font-size: 18px;
+}
+
+.size-down {
+    height: 52px;
+    width: 127px;
+    padding: 16px 26px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.size-menu {
+    height: 52px;
+    width: 206px;
+    padding: 0 18px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.size-in {
+    height: 52px;
+    width: 103px;
+    padding: 0 32px;
+    font-size: 18px;
+}

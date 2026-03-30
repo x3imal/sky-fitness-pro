@@ -1,0 +1,321 @@
+.page {
+    padding: 28px 0 60px;
+}
+
+.container {
+    width: 1160px;
+    margin: 0 auto;
+}
+
+.title {
+    margin-bottom: 40px;
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.userCard {
+    height: 257px;
+    display: grid;
+    grid-template-columns: 197px 1fr;
+    gap: 33px;
+    padding: 30px;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    margin-bottom: 50px;
+}
+
+.avatar {
+    width: 197px;
+    height: 197px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatarBase {
+    object-fit: cover;
+    z-index: 0;
+}
+
+.avatarBody {
+    position: absolute;
+    bottom: -15px;
+    left: -6px;
+    z-index: 1;
+}
+
+.avatarHead {
+    position: absolute;
+    z-index: 2;
+    bottom: 100px;
+    right: 60px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 30px;
+}
+
+.userName {
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.userLogin {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.userLoginValue {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.logoutBtn {
+    margin-top: 10px;
+    width: 192px;
+    height: 52px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.logoutBtn:hover {
+    border-color: rgba(0, 0, 0, 0.55);
+}
+
+.sectionTitle {
+    margin: 10px 0 16px;
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 26px 30px;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.emptyText {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.skeletonBlock,
+.skeletonLine,
+.skeletonCourseCard {
+    background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+    background-size: 200% 100%;
+    animation: profileSkeletonShimmer 1.2s infinite linear;
+}
+
+.skeletonLine {
+    border-radius: 999px;
+}
+
+.skeletonName {
+    width: 220px;
+    height: 34px;
+}
+
+.skeletonLogin {
+    width: 320px;
+    height: 22px;
+}
+
+.skeletonButton {
+    width: 192px;
+    height: 52px;
+}
+
+.skeletonCourseCard {
+    width: 360px;
+    height: 501px;
+    border-radius: 30px;
+}
+
+@keyframes profileSkeletonShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .page {
+        padding: 12px 0 48px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0 32px;
+    }
+
+    .title {
+        margin-bottom: 32px;
+        font-size: 32px;
+    }
+
+    .userCard {
+        height: auto;
+        grid-template-columns: 160px 1fr;
+        gap: 24px;
+        padding: 24px;
+        margin-bottom: 40px;
+    }
+
+    .avatar {
+        width: 160px;
+        height: 160px;
+    }
+
+    .avatarBody {
+        width: 170px;
+        height: auto;
+        bottom: -12px;
+        left: -6px;
+    }
+
+    .avatarHead {
+        width: 56px;
+        height: 56px;
+        bottom: 82px;
+        right: 48px;
+    }
+
+    .userInfo {
+        gap: 20px;
+    }
+
+    .userName {
+        font-size: 28px;
+    }
+
+    .sectionTitle {
+        font-size: 32px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .skeletonCourseCard {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .page {
+        padding: 0 0 40px;
+    }
+
+    .container {
+        width: 343px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .title {
+        margin: 0 0 30px;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .userCard {
+        width: 343px;
+        max-width: 100%;
+        min-height: 365px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+        padding: 30px;
+        border-radius: 30px;
+        margin-bottom: 34px;
+    }
+
+    .avatar {
+        width: 141px;
+        height: 141px;
+        border-radius: 18px;
+    }
+
+    .avatarBody {
+        width: 151px !important;
+        height: 52px !important;
+        bottom: -12px;
+        left: -5px;
+    }
+
+    .avatarHead {
+        width: 50px !important;
+        height: 50px !important;
+        bottom: 70px;
+        right: 42px;
+    }
+
+    .userInfo {
+        width: 100%;
+        gap: 16px;
+    }
+
+    .userName {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.1;
+    }
+
+    .userLogin {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .logoutBtn {
+        margin-top: 14px;
+        width: 283px;
+        height: 50px;
+        font-size: 16px;
+        padding: 16px 117px;
+        line-height: 1;
+    }
+
+    .sectionTitle {
+        margin: 0 0 16px;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        justify-items: center;
+    }
+
+    .skeletonCourseCard {
+        width: 343px;
+        min-height: 492px;
+    }
+}

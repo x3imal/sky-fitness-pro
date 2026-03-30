@@ -1,0 +1,205 @@
+.modal {
+    position: relative;
+    width: 460px;
+    max-width: calc(100vw - 32px);
+    max-height: 609px;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    color: #0b0b0b;
+}
+
+.title {
+    margin: 0 0 24px;
+    font-size: 32px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.list {
+    max-height: 393px;
+    overflow: auto;
+    padding-right: 8px;
+    margin-right: -8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    align-items: start;
+    cursor: pointer;
+    padding: 12px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.marker {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: 1px solid #c7c7c7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    background: #fff;
+}
+
+.markerDone {
+    border-color: #bcec30;
+    background: #bcec30;
+}
+
+.markerDone::before {
+    content: "✓";
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.markerActive:not(.markerDone) {
+    border-color: #bcec30;
+    background: #bcec30;
+}
+
+.itemText {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.itemTitle {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.itemSub {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.infoText {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.6);
+    padding: 8px 0;
+}
+
+.errorText {
+    font-size: 13px;
+    color: #d32f2f;
+    padding: 8px 0;
+}
+
+.skeletonItem {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 12px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.skeletonMarker,
+.skeletonTitle,
+.skeletonSub {
+    background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.2s infinite linear;
+}
+
+.skeletonMarker {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+}
+
+.skeletonText {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skeletonTitle {
+    height: 24px;
+    width: 70%;
+    border-radius: 8px;
+}
+
+.skeletonSub {
+    height: 16px;
+    width: 56%;
+    border-radius: 8px;
+}
+
+.startLink {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    text-decoration: none;
+}
+
+.startButton {
+    width: 380px;
+    max-width: 100%;
+    height: 52px;
+    font-size: 18px !important;
+    font-weight: 400 !important;
+}
+
+@keyframes skeletonShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .title {
+        text-align: left;
+    }
+
+    .itemTitle {
+        font-size: 18px;
+    }
+
+    .itemSub {
+        font-size: 14px;
+    }
+
+    .skeletonTitle {
+        height: 18px;
+    }
+
+    .skeletonSub {
+        height: 14px;
+    }
+}

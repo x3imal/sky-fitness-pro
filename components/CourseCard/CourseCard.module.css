@@ -1,0 +1,238 @@
+.card {
+    width: 360px;
+    /*height: 501px;*/
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    overflow: visible;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.12);
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 325px;
+    border-radius: 30px 30px 0 0;
+    overflow: hidden;
+}
+
+.cardLink {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.courseImage {
+    object-fit: cover;
+}
+
+.imagePlaceholder {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border-radius: 30px;
+}
+
+.plusButton {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 2;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.plusIcon {
+    display: block;
+}
+
+.content {
+    padding: 24px 30px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.titleLink {
+    display: inline-flex;
+    text-decoration: none;
+}
+
+.title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0;
+    color: #0b0b0b;
+}
+
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 0;
+    align-items: flex-start;
+}
+
+.metaTop {
+    display: flex;
+    gap: 10px;
+}
+
+.metaRow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    background: #F7F7F7;
+    border-radius: 999px;
+    padding: 10px 10px;
+
+    font-size: 16px;
+    color: rgba(11, 11, 11, 0.85);
+    font-weight: 400;
+}
+
+.metaIcon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: block;
+    flex: 0 0 auto;
+}
+
+.metaText {
+    white-space: nowrap;
+}
+
+.progressBlock {
+    margin-top: 2px;
+}
+
+.progressLabel {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.75);
+    margin-bottom: 6px;
+}
+
+.progressBar {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 140, 255, 0.18);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: #1da1ff;
+    border-radius: 999px;
+}
+
+.actionButton {
+    width: 100%;
+    height: 52px;
+    border: 0;
+    border-radius: 999px;
+    background: #bcec30;
+    color: rgba(0, 0, 0, 0.9);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.actionButton:hover {
+    filter: brightness(0.97);
+}
+
+.actionError {
+    font-size: 12px;
+    color: #d32f2f;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .card {
+        width: 100%;
+    }
+
+    .imageContainer {
+        height: 280px;
+    }
+
+    .content {
+        padding: 20px 20px 18px;
+        gap: 16px;
+    }
+
+    .title {
+        font-size: 26px;
+        line-height: 1.1;
+    }
+
+    .metaTop {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 767px) {
+    .card {
+        width: 100%;
+        min-height: 492px;
+        padding-bottom: 15px;
+    }
+
+    .imageContainer {
+        height: 325px;
+        background: #ffffff;
+        border-radius: 30px;
+    }
+
+    .imageContainer::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 24px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+        pointer-events: none;
+    }
+
+    .courseImage {
+        object-fit: cover;
+        object-position: center top;
+    }
+
+    .content {
+        width: 300px;
+        margin: 0 auto;
+        padding: 24px 0 0;
+        gap: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+        line-height: 1.1;
+    }
+}

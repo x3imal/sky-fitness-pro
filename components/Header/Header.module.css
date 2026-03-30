@@ -1,0 +1,236 @@
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: #FAFAFA;
+    backdrop-filter: blur(12px);
+    margin-bottom: 40px;
+    padding-top: 30px;
+}
+
+.inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px 140px;
+
+    box-sizing: border-box;
+}
+
+.logoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.loginBtn {
+    min-width: 103px;
+    height: 52px;
+}
+
+.inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+}
+
+.logoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    color: #000;
+}
+
+.logoImage {
+    margin-bottom: 14px;
+}
+
+.logoSub {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.55);
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.userMenuWrap {
+    position: relative;
+    z-index: 120;
+}
+
+.profileTrigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    color: #0b0b0b;
+}
+
+.profileAvatar {
+    width: 50px;
+    height: 50px;
+    display: block;
+}
+
+.profileName {
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 400;
+}
+
+.profileChevron {
+    width: 12px;
+    height: 12px;
+    border-right: 3px solid #0b0b0b;
+    border-bottom: 3px solid #0b0b0b;
+    transform: rotate(45deg) translateY(-2px);
+    margin-left: 2px;
+}
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    border: 0;
+    background: transparent;
+    z-index: 110;
+}
+
+.userMenu {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    width: 266px;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    padding: 36px 30px;
+    z-index: 121;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menuName {
+    font-size: 18px;
+    line-height: 1.05;
+    font-weight: 400;
+}
+
+.menuEmail {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 10px;
+    margin-bottom: 24px;
+}
+
+.menuButton {
+    margin-top: 10px;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .header {
+        padding-top: 20px;
+        margin-bottom: 32px;
+    }
+
+    .inner {
+        padding: 16px 32px;
+        align-items: center;
+    }
+
+    .logoImage {
+        width: 260px;
+        height: auto;
+        margin-bottom: 8px;
+    }
+
+    .logoSub {
+        font-size: 14px;
+    }
+
+    .profileTrigger {
+        gap: 12px;
+    }
+
+    .profileName {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        margin-bottom: 40px;
+        padding-top: 40px;
+    }
+
+    .inner {
+        max-width: none;
+        padding: 0 16px;
+        align-items: center;
+    }
+
+    .logoImage {
+        width: 220px;
+        height: 35px;
+        margin-bottom: 0;
+    }
+
+    .logoSub {
+        display: none;
+    }
+
+    .loginBtn {
+        width: auto !important;
+        height: auto !important;
+        min-width: 0 !important;
+        border-radius: 46px !important;
+        padding: 8px 16px !important;
+        font-size: 18px !important;
+        line-height: 1;
+    }
+
+    .profileTrigger {
+        width: 54px;
+        height: 36px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+    }
+
+    .profileAvatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .profileName {
+        display: none;
+    }
+
+    .profileChevron {
+        width: 8px;
+        height: 8px;
+        box-sizing: border-box;
+        border-right-width: 2px;
+        border-bottom-width: 2px;
+        margin-left: 0;
+        margin-top: -1px;
+        transform: rotate(45deg);
+    }
+}
+
+@media (min-width: 401px) and (max-width: 767px) {
+    .inner {
+        padding: 0 24px;
+    }
+}

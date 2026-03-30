@@ -1,0 +1,159 @@
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 50px;
+}
+
+.hero h1 {
+    margin: 0;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1.1;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 34px;
+}
+
+.skeletonCard {
+    width: 360px;
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.skeletonImage {
+    height: 325px;
+    background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.2s infinite linear;
+}
+
+.skeletonContent {
+    padding: 24px 30px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.skeletonTitle,
+.skeletonMetaRow,
+.skeletonMetaRowShort,
+.skeletonButton {
+    border-radius: 999px;
+    background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.2s infinite linear;
+}
+
+.skeletonTitle {
+    height: 34px;
+    width: 55%;
+}
+
+.skeletonMetaRow {
+    height: 18px;
+    width: 80%;
+}
+
+.skeletonMetaRowShort {
+    height: 18px;
+    width: 45%;
+}
+
+.skeletonButton {
+    margin-top: 8px;
+    height: 52px;
+    width: 100%;
+}
+
+@keyframes skeletonShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.toTop {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .hero {
+        margin-bottom: 40px;
+        gap: 24px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+        max-width: 520px;
+    }
+
+    .heroImage {
+        max-width: 240px;
+        height: auto;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        justify-items: stretch;
+    }
+
+    .skeletonCard {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero {
+        margin-bottom: 34px;
+        width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+        line-height: 1.1;
+        width: 100%;
+    }
+
+    .heroImage {
+        display: none;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-bottom: 24px;
+        justify-items: start;
+    }
+
+    .toTop {
+        width: 100%;
+        text-align: right;
+    }
+
+    .skeletonCard {
+        width: 100%;
+        min-height: 492px;
+        padding-bottom: 15px;
+    }
+
+    .skeletonImage {
+        height: 325px;
+    }
+
+    .skeletonContent {
+        width: 300px;
+        margin: 0 auto;
+        padding: 24px 0 0;
+    }
+}

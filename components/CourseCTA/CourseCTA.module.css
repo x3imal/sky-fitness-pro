@@ -1,0 +1,264 @@
+/* CTA */
+.cta {
+    margin-top: 34px;
+    position: relative;
+    z-index: 30;
+}
+
+.card {
+    margin: 102px auto 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    width: 1160px;
+
+    padding: 40px;
+    border-radius: 24px;
+    background: #fff;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    overflow: visible;
+
+    position: relative;
+    isolation: isolate;
+    z-index: 3;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.title {
+    margin: 0;
+    font-size: 60px;
+    font-weight: 500;
+    line-height: 1.1;
+    max-width: 398px;
+}
+
+.list {
+    margin: 0;
+    padding-left: 40px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 24px;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+.button {
+    display: inline-flex;
+    width: 437px;
+    align-items: center;
+    justify-content: center;
+
+    height: 52px;
+    padding: 0 18px;
+
+    border: none;
+    outline: none;
+    border-radius: 999px;
+    background: #bcec30;
+    color: #0b0b0b;
+
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.button:focus,
+.button:focus-visible {
+    outline: none;
+}
+
+.errorText {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #d32f2f;
+}
+
+.right {
+    position: relative;
+    z-index: -1;
+}
+
+.right :global(img) {
+    object-fit: contain;
+}
+
+.imageWrap {
+    position: absolute;
+    inset: 0;
+    left: 140px;
+    width: 487px;
+    height: 560px;
+    transform: translateY(-150px);
+
+    z-index: -1;
+}
+
+.image {
+    object-fit: contain;
+}
+
+.imageWrapMobile {
+    display: none;
+}
+
+/* Слой линии */
+.lineClip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 24px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.line {
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    width: 690px;
+    height: 390px;
+    transform: rotate(3deg);
+    transform-origin: right bottom;
+}
+
+.lineImg {
+    object-fit: contain;
+}
+
+
+/* Контент поверх линии и изображения */
+.left {
+    position: relative;
+    z-index: 2;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .card {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 16px;
+        padding: 28px 28px 30px;
+        margin-top: 72px;
+        overflow: visible;
+    }
+
+    .title {
+        max-width: 280px;
+        font-size: 34px;
+        line-height: 1.05;
+    }
+
+    .list {
+        padding-left: 20px;
+        font-size: 18px;
+        line-height: 1.35;
+    }
+
+    .button {
+        width: 100%;
+        max-width: 220px;
+        padding: 0 10px;
+    }
+
+    .imageWrap {
+        left: -60px;
+        width: 360px;
+        height: 430px;
+        transform: translateY(-118px);
+    }
+
+    .line {
+        width: 490px;
+        height: 280px;
+        right: -18px;
+        bottom: -50px;
+    }
+}
+
+@media (max-width: 767px) {
+    .cta {
+        margin-top: 28px;
+        z-index: 30;
+        overflow-x: clip;
+    }
+
+    .card {
+        width: 343px;
+        max-width: 100%;
+        display: block;
+        padding: 30px 24px 24px;
+        border-radius: 30px;
+        overflow: visible;
+        isolation: isolate;
+        margin: 156px auto 0;
+        z-index: 3;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 30px;
+        background: #fff;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        z-index: 1;
+    }
+
+    .lineClip {
+        display: none;
+    }
+
+    .right {
+        position: absolute;
+        top: -270px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 0;
+        pointer-events: none;
+        width: 482px;
+        height: 455px;
+    }
+
+    .imageWrap {
+        display: none;
+    }
+
+    .imageWrapMobile {
+        display: block;
+        position: relative;
+        width: 482px;
+        height: 455px;
+    }
+
+
+    .title {
+        max-width: 260px;
+        font-size: 32px;
+        line-height: 1.1;
+    }
+
+    .left {
+        position: relative;
+        z-index: 2;
+    }
+
+    .list {
+        padding-left: 18px;
+        font-size: 18px;
+        line-height: 1.35;
+    }
+
+    .button {
+        width: 100%;
+        height: 52px;
+        font-size: 18px;
+        font-weight: 400;
+    }
+}
