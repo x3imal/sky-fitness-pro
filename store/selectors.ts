@@ -6,6 +6,7 @@ const average = (values: number[]) =>
 export const selectCourses = (state: RootState) => state.catalog.courses;
 export const selectWorkoutsByCourseSlug = (state: RootState) => state.catalog.workoutsByCourseSlug;
 export const selectCatalogStatus = (state: RootState) => state.catalog.status;
+export const selectCatalogError = (state: RootState) => state.catalog.error;
 
 export const selectWorkoutExerciseProgress = (state: RootState, workoutId: string) =>
     state.progress.exerciseProgressByWorkout[workoutId] ?? {};

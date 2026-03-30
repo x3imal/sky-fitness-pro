@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/Button/Button";
 import { CourseCard } from "@/components/CourseCard/CourseCard";
 import styles from "@/app/page.module.css";
 import { useAppSelector } from "@/store/hooks";
-import { selectCatalogStatus, selectCourses } from "@/store/selectors";
+import { selectCatalogError, selectCatalogStatus, selectCourses } from "@/store/selectors";
 
 export default function HomePageContent() {
     const courses = useAppSelector(selectCourses);
     const catalogStatus = useAppSelector(selectCatalogStatus);
+    const catalogError = useAppSelector(selectCatalogError);
     const isLoading = catalogStatus === "loading" || (catalogStatus === "idle" && courses.length === 0);
     const coursesToShow = courses.reduce<typeof courses>((acc, course) => {
         if (!acc.some(item => item.slug === course.slug)) {
@@ -51,6 +52,8 @@ export default function HomePageContent() {
                     coursesToShow.map((course) => (
                         <CourseCard key={course._id || course.slug} course={course} />
                     ))
+                ) : catalogError ? (
+                    <div>{catalogError}</div>
                 ) : (
                     <div>Список тренировок пуст</div>
                 )}

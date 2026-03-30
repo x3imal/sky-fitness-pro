@@ -22,6 +22,7 @@ export default function WorkoutPage() {
     const dispatch = useAppDispatch();
     const [workout, setWorkout] = useState<WorkoutWithExercises | null>(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const courseName = courseId
         ? courses.find(course => course._id === courseId)?.nameRU
@@ -33,6 +34,7 @@ export default function WorkoutPage() {
 
         const loadWorkout = async () => {
             setLoading(true);
+            setError(null);
             try {
                 const data = await getWorkout(token, workoutId);
                 if (isCancelled) return;
@@ -48,8 +50,19 @@ export default function WorkoutPage() {
                     exercises,
                 };
                 setWorkout(mapped);
+
                 if (courseId) {
-                    dispatch(fetchWorkoutProgress({ courseId, workoutId, exercises }));
+                    try {
+                        await dispatch(fetchWorkoutProgress({ courseId, workoutId, exercises })).unwrap();
+                    } catch (progressError) {
+                        if (isCancelled) return;
+                        const message = progressError instanceof Error
+                            ? progressError.message
+                            : typeof progressError === "string"
+                                ? progressError
+                                : "Не удалось загрузить прогресс тренировки";
+                        setError(message);
+                    }
                 } else {
                     const empty = exercises.reduce<Record<string, number>>((acc, ex) => {
                         acc[ex._id] = 0;
@@ -57,6 +70,13 @@ export default function WorkoutPage() {
                     }, {});
                     dispatch(setWorkoutProgress({ workoutId, values: empty }));
                 }
+            } catch (loadError) {
+                if (isCancelled) return;
+                const message = loadError instanceof Error
+                    ? loadError.message
+                    : "Не удалось загрузить тренировку";
+                setWorkout(null);
+                setError(message);
             } finally {
                 if (!isCancelled) {
                     setLoading(false);
@@ -96,6 +116,8 @@ export default function WorkoutPage() {
                     ) : (
                         loading && <div>Загрузка тренировки...</div>
                     )}
+
+                    {error && <div>{error}</div>}
                 </div>
             </div>
         </AuthGuard>

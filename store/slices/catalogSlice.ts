@@ -19,9 +19,20 @@ const initialState: CatalogState = {
     source: "api",
 };
 
-export const fetchCatalog = createAsyncThunk<CatalogPayload>(
+export const fetchCatalog = createAsyncThunk<
+    CatalogPayload,
+    void,
+    { rejectValue: string }
+>(
     "catalog/fetchCatalog",
-    async () => loadCatalog()
+    async (_, thunkApi) => {
+        try {
+            return await loadCatalog();
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Не удалось загрузить каталог";
+            return thunkApi.rejectWithValue(message);
+        }
+    }
 );
 
 const catalogSlice = createSlice({
@@ -36,6 +47,7 @@ const catalogSlice = createSlice({
             })
             .addCase(fetchCatalog.fulfilled, (state, action) => {
                 state.status = "succeeded";
+                state.error = null;
                 state.courses = action.payload.courses.reduce<Course[]>((acc, course) => {
                     if (!acc.some(item => item._id === course._id)) {
                         acc.push(course);
@@ -47,7 +59,7 @@ const catalogSlice = createSlice({
             })
             .addCase(fetchCatalog.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.error.message ?? "Не удалось загрузить каталог";
+                state.error = action.payload ?? action.error.message ?? "Не удалось загрузить каталог";
             });
     },
 });
