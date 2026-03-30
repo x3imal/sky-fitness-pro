@@ -1,135 +1,157 @@
 # SkyFitnessPro
 
-SkyFitnessPro — приложение для онлайн‑тренировок.
+SkyFitnessPro is a Next.js application for online fitness courses, workouts, and progress tracking.
 
-## Что есть в приложении
+## Features
 
-- Авторизация и регистрация пользователя
-- Каталог курсов
-- Просмотр тренировок внутри курса
-- Заполнение и сохранение прогресса
-- Профиль пользователя с выбранными курсами и прогрессом
+- User login and registration
+- Course catalog
+- Course details page
+- Workout selection flow
+- Workout progress tracking and saving
+- Profile page with selected courses and progress
+- Modal routes for auth, workout selection, and progress entry
+- Responsive layout for desktop, tablet, and mobile
+- User-facing error handling for key API flows
 
-## File Documentation
+## Stack
 
-Минимальное описание назначения файлов проекта.
+- Next.js 16
+- React 19
+- TypeScript
+- Redux Toolkit
+- redux-persist
+- CSS Modules
+- Vitest
 
-## Root
+## Requirements
 
-- `README.md` — базовое описание проекта.
-- `package.json` — скрипты и зависимости.
-- `package-lock.json` — lockfile npm.
-- `tsconfig.json` — конфигурация TypeScript.
-- `next.config.ts` — конфигурация Next.js.
-- `postcss.config.mjs` — конфигурация PostCSS.
-- `eslint.config.mjs` — конфигурация ESLint.
+- Node.js 20+
+- npm 10+
 
-## App Routes
+## Installation
 
-- `app/layout.tsx` — корневой layout, подключение `ReduxProvider`, `Header`, modal slot.
-- `app/globals.css` — глобальные стили.
-- `app/favicon.ico` — favicon.
-- `app/page.tsx` — главная страница (композиция контента).
-- `app/page.module.css` — стили главной страницы.
-- `app/auth/page.tsx` — standalone-страница авторизации.
-- `app/profile/page.tsx` — страница профиля пользователя.
-- `app/profile/page.module.css` — стили профиля.
-- `app/course/[id]/page.tsx` — страница курса.
-- `app/course/[id]/page.module.css` — стили страницы курса.
-- `app/workouts/[course]/page.tsx` — standalone-страница выбора тренировки.
-- `app/workouts/[course]/page.module.css` — стили страницы выбора тренировки.
-- `app/workout/[id]/page.tsx` — страница конкретной тренировки (видео + упражнения).
-- `app/workout/[id]/page.module.css` — стили страницы тренировки.
-- `app/workout/[id]/progress/page.tsx` — standalone-страница ввода прогресса.
+```bash
+npm install
+```
 
-## Intercept/Modal Routes
+## Run Locally
 
-- `app/@modal/default.tsx` — пустой default slot для модалок.
-- `app/@modal/(.)auth/page.tsx` — auth как modal route.
-- `app/@modal/(.)workouts/[course]/page.tsx` — выбор тренировки как modal route.
-- `app/@modal/(.)workouts/[course]/page.module.css` — стили модального выбора тренировки.
-- `app/@modal/(.)workout/[id]/progress/page.tsx` — ввод прогресса как modal route.
+Development mode:
 
-## Components
+```bash
+npm run dev
+```
 
-- `components/Header/Header.tsx` — хедер, кнопка входа/профиля, меню пользователя.
-- `components/Header/Header.module.css` — стили хедера.
-- `components/AuthGuard/AuthGuard.tsx` — защита приватных страниц.
-- `components/AuthModal/AuthModal.tsx` — форма входа/регистрации.
-- `components/AuthModal/AuthModal.module.css` — стили auth-модалки.
-- `components/HomePageContent/HomePageContent.tsx` — контент главной + skeletons.
-- `components/CourseCard/CourseCard.tsx` — карточка курса (добавить/удалить, прогресс, CTA).
-- `components/CourseCard/CourseCard.module.css` — стили карточки курса.
-- `components/CourseCTA/CourseCTA.tsx` — CTA-блок на странице курса.
-- `components/CourseCTA/CourseCTA.module.css` — стили CTA-блока.
-- `components/WorkoutSelect/WorkoutSelect.tsx` — список тренировок в модалке/странице выбора.
-- `components/WorkoutSelect/WorkoutSelect.module.css` — стили выбора тренировок.
-- `components/WorkoutExercisesCard/WorkoutExercisesCard.tsx` — список упражнений тренировки + кнопка прогресса.
-- `components/WorkoutExercisesCard/WorkoutExercisesCard.module.css` — стили карточки упражнений.
-- `components/ProgressModal/ProgressModal.tsx` — форма ввода прогресса + модалка успешного сохранения.
-- `components/ProgressModal/ProgressModal.module.css` — стили прогресс-модалки.
-- `components/ui/Button/Button.tsx` — общий компонент кнопки.
-- `components/ui/Button/Button.module.css` — стили кнопки.
-- `components/ui/Theme/courseTheme.ts` — маппинг тем/картинок по курсам.
+Production build:
 
-## Shared: Services
+```bash
+npm run build
+npm run start
+```
 
-- `shared/services/apiClient.ts` — общий HTTP-клиент (base URL, timeout, обработка ошибок).
-- `shared/services/authService.ts` — API авторизации/регистрации/`me`.
-- `shared/services/courseService.ts` — API курсов и добавления/удаления курса у пользователя.
-- `shared/services/workoutService.ts` — API тренировок и прогресса.
-- `shared/services/catalogService.ts` — сбор каталога курсов в формат приложения.
+Lint:
 
-## Shared: Utils
+```bash
+npm run lint
+```
 
-- `shared/util/authValidation.ts` — клиентская валидация форм auth.
-- `shared/util/catalogQueries.ts` — async-утилиты для поиска курса/тренировок в каталоге.
-- `shared/util/getCourseTheme.ts` — получение темы курса по slug/id.
-- `shared/util/resolveCourseSlug.ts` — нормализация slug курса.
+Tests:
 
-## Shared: Types
+```bash
+npm test
+```
 
-- `shared/types/course.ts` — типы курса.
-- `shared/types/workout.ts` — типы тренировки и упражнений.
-- `shared/types/catalog.ts` — типы каталога и `workoutsByCourseSlug`.
+## Environment
 
-## Store
+The app uses `NEXT_PUBLIC_API_BASE_URL` for API requests.
 
-- `store/store.ts` — конфигурация Redux Toolkit + redux-persist + migration.
-- `store/hooks.ts` — typed hooks (`useAppDispatch`, `useAppSelector`).
-- `store/ReduxProvider.tsx` — провайдер store + persist gate.
-- `store/StoreBootstrap.tsx` — bootstrap-логика стора на клиенте.
-- `store/selectors.ts` — селекторы состояния приложения.
-- `store/slices/authSlice.ts` — auth state и async thunks (login/register/me, add/remove course).
-- `store/slices/catalogSlice.ts` — каталог курсов.
-- `store/slices/progressSlice.ts` — прогресс по упражнениям/тренировкам.
+If the variable is not provided, the default API base from [`shared/services/apiClient.ts`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/services/apiClient.ts) is used.
 
-## Public Assets
+Example:
 
-- `public/logo.svg` — логотип.
-- `public/Massage.svg` — иллюстрация hero.
-- `public/file.svg` — служебная иконка.
-- `public/globe.svg` — служебная иконка.
-- `public/window.svg` — служебная иконка.
-- `public/next.svg` — дефолтный ассет Next.js.
-- `public/vercel.svg` — дефолтный ассет Vercel.
-- `public/icons/Calendar.svg` — иконка календаря.
-- `public/icons/watch.svg` — иконка времени.
-- `public/icons/complexity.svg` — иконка сложности.
-- `public/icons/plus.svg` — иконка добавления курса.
-- `public/icons/minus.svg` — иконка удаления курса.
-- `public/images/courses/Yoga.png` — карточка: Йога.
-- `public/images/courses/fitness.png` — карточка: Фитнес.
-- `public/images/courses/stretching.png` — карточка: Стретчинг.
-- `public/images/courses/step.png` — карточка: Степ-аэробика.
-- `public/images/courses/bodyflex.png` — карточка: Бодифлекс.
-- `public/images/courses/yoga-hero.png` — hero: Йога.
-- `public/images/courses/fitness-hero.png` — hero: Фитнес.
-- `public/images/courses/stretching-hero.png` — hero: Стретчинг.
-- `public/images/courses/step-hero.png` — hero: Степ-аэробика.
-- `public/images/courses/bodyflex-hero.png` — hero: Бодифлекс.
-- `public/images/cta/common-cta.png` — изображение CTA.
-- `public/images/cta/line-cta.png` — линия CTA.
-- `public/images/profile/avatarBase.png` — фон аватара профиля.
-- `public/images/profile/avatar-head.png` — верхняя часть аватара.
-- `public/images/profile/avatar-body.png` — нижняя часть аватара.
+```env
+NEXT_PUBLIC_API_BASE_URL=https://wedev-api.sky.pro
+```
+
+## Testing
+
+The project uses `Vitest` for unit tests.
+
+Current coverage focuses on core business logic:
+
+- auth form validation
+- course slug resolving
+- shared API client error handling
+- Redux selectors
+- `catalogSlice`
+- `authSlice`
+- `progressSlice`
+
+Test files:
+
+- [shared/util/authValidation.test.ts](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/util/authValidation.test.ts)
+- [shared/util/resolveCourseSlug.test.ts](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/util/resolveCourseSlug.test.ts)
+- [shared/services/apiClient.test.ts](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/services/apiClient.test.ts)
+- [store/selectors.test.ts](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/selectors.test.ts)
+- [store/slices/catalogSlice.test.ts](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/slices/catalogSlice.test.ts)
+- [store/slices/authSlice.test.ts](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/slices/authSlice.test.ts)
+- [store/slices/progressSlice.test.ts](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/slices/progressSlice.test.ts)
+
+## Error Handling
+
+API calls are centralized in [`shared/services/apiClient.ts`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/services/apiClient.ts).
+
+The app uses a shared pattern:
+
+- `apiClient` throws normalized `Error` messages
+- async thunks convert failures to `rejectWithValue(...)`
+- UI components display user-facing error messages for important flows
+
+This is applied to:
+
+- catalog loading
+- auth flows
+- add/remove course actions
+- workout loading
+- workout progress loading and saving
+
+## Project Structure
+
+### App
+
+- [`app/page.tsx`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/app/page.tsx): home page
+- [`app/course/[id]/page.tsx`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/app/course/[id]/page.tsx): course page
+- [`app/workouts/[course]/page.tsx`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/app/workouts/[course]/page.tsx): workout selection page
+- [`app/workout/[id]/page.tsx`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/app/workout/[id]/page.tsx): workout page
+- [`app/profile/page.tsx`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/app/profile/page.tsx): profile page
+- [`app/@modal`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/app/@modal): intercepting modal routes
+
+### Components
+
+- [`components/AuthModal`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/components/AuthModal): auth UI
+- [`components/CourseCard`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/components/CourseCard): course card
+- [`components/CourseCTA`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/components/CourseCTA): CTA block on course page
+- [`components/WorkoutSelect`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/components/WorkoutSelect): workout picker
+- [`components/WorkoutExercisesCard`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/components/WorkoutExercisesCard): workout exercises and progress CTA
+- [`components/ProgressModal`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/components/ProgressModal): progress entry modal
+
+### Store
+
+- [`store/store.ts`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/store.ts): Redux store setup
+- [`store/selectors.ts`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/selectors.ts): selectors
+- [`store/slices/authSlice.ts`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/slices/authSlice.ts): auth state and thunks
+- [`store/slices/catalogSlice.ts`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/slices/catalogSlice.ts): catalog state
+- [`store/slices/progressSlice.ts`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/slices/progressSlice.ts): workout progress state
+
+### Shared
+
+- [`shared/services`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/services): API layer
+- [`shared/util`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/util): utility functions
+- [`shared/types`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/shared/types): shared types
+
+## Notes
+
+- State for auth and progress is persisted with `redux-persist`.
+- Catalog loading is bootstrapped on the client in [`store/StoreBootstrap.tsx`](/abs/path/C:/Users/Lenovo/WebstormProjects/sky-fitness-pro/store/StoreBootstrap.tsx).
+- Tablet styles were added for the main layout, cards, CTA, profile, course, and workout screens.

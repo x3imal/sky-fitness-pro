@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/Button/Button";
 import styles from "./ProgressModal.module.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { selectAuthToken, selectCourseIdByWorkoutId } from "@/store/selectors";
-import { getWorkout, getWorkoutProgress, saveWorkoutProgress as saveWorkoutProgressRequest } from "@/shared/services/workoutService";
+import {
+    getWorkout,
+    getWorkoutProgress,
+    saveWorkoutProgress as saveWorkoutProgressRequest,
+} from "@/shared/services/workoutService";
 import { Exercise } from "@/shared/types/workout";
 import { setWorkoutProgress } from "@/store/slices/progressSlice";
 import { fetchCurrentUser } from "@/store/slices/authSlice";
@@ -38,6 +42,7 @@ export default function ProgressModal({
     const [values, setValues] = useState<Record<string, string>>({});
     const [initialCounts, setInitialCounts] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState(false);
+    const [loadError, setLoadError] = useState("");
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState("");
     const [showSuccess, setShowSuccess] = useState(false);
@@ -46,6 +51,8 @@ export default function ProgressModal({
     useEffect(() => {
         if (!token || !courseId || !workoutId) return;
         setLoading(true);
+        setLoadError("");
+
         Promise.all([getWorkout(token, workoutId), getWorkoutProgress(token, courseId, workoutId)])
             .then(([workoutData, progress]) => {
                 const exercises = workoutData.exercises?.map((ex) => ({
@@ -53,23 +60,32 @@ export default function ProgressModal({
                     name: ex.name,
                     quantity: (ex as { quantity?: number }).quantity,
                 })) ?? [];
+
                 setWorkout({
                     _id: workoutData._id,
                     name: workoutData.name,
                     video: workoutData.video,
                     exercises,
                 });
+
                 const initial = exercises.reduce<Record<string, string>>((acc, ex, idx) => {
                     const count = progress.progressData?.[idx] ?? 0;
                     acc[ex._id] = count > 0 ? String(count) : "";
                     return acc;
                 }, {});
+
                 const initialNumeric = exercises.reduce<Record<string, number>>((acc, ex, idx) => {
                     acc[ex._id] = progress.progressData?.[idx] ?? 0;
                     return acc;
                 }, {});
+
                 setValues(initial);
                 setInitialCounts(initialNumeric);
+            })
+            .catch((error: unknown) => {
+                const message = error instanceof Error ? error.message : "Не удалось загрузить прогресс";
+                setWorkout(null);
+                setLoadError(message);
             })
             .finally(() => setLoading(false));
     }, [courseId, token, workoutId]);
@@ -89,6 +105,7 @@ export default function ProgressModal({
 
     const onSave = async () => {
         if (!token || !courseId || !workout) return;
+
         const counts = workout.exercises.map(ex => {
             const rawValue = values[ex._id];
             if (rawValue === "" || rawValue === undefined) {
@@ -96,6 +113,7 @@ export default function ProgressModal({
             }
             return Number(rawValue);
         });
+
         setSaving(true);
         setSaveError("");
 
@@ -108,9 +126,11 @@ export default function ProgressModal({
                 const percent = quantity > 0 ? Math.round((count / quantity) * 100) : 0;
                 acc[ex._id] = Math.max(0, Math.min(100, percent));
                 return acc;
-            }, {} as Record<string, number>);
+            }, {});
+
             dispatch(setWorkoutProgress({ workoutId, values: percents }));
-            dispatch(fetchCurrentUser());
+            void dispatch(fetchCurrentUser()).unwrap().catch(() => undefined);
+
             setShowSuccess(true);
             closeTimerRef.current = window.setTimeout(() => {
                 closeSuccessAndLeave();
@@ -167,23 +187,26 @@ export default function ProgressModal({
                     <h2 className={styles.title}>Мой прогресс</h2>
 
                     <div className={styles.formList}>
-                        {workout?.exercises.map((ex: WorkoutExercise) => (
+                        {loadError ? (
+                            <div className={styles.errorText}>{loadError}</div>
+                        ) : workout?.exercises.map((ex: WorkoutExercise) => (
                             <div key={ex._id} className={styles.formItem}>
                                 <label className={styles.label} htmlFor={`progress-${ex._id}`}>
                                     Сколько раз вы сделали {ex.name.toLowerCase()}?
                                 </label>
                                 <input
                                     id={`progress-${ex._id}`}
-                                className={styles.input}
-                                type="text"
-                                inputMode="numeric"
-                                placeholder="0"
-                                value={values[ex._id] ?? ""}
-                                onChange={e => onChange(ex._id, e.target.value)}
-                            />
+                                    className={styles.input}
+                                    type="text"
+                                    inputMode="numeric"
+                                    placeholder="0"
+                                    value={values[ex._id] ?? ""}
+                                    onChange={e => onChange(ex._id, e.target.value)}
+                                />
                             </div>
                         ))}
                     </div>
+
                     {saveError && <div className={styles.errorText}>{saveError}</div>}
 
                     <Button
@@ -191,12 +214,13 @@ export default function ProgressModal({
                         size="lg"
                         className={styles.saveButton}
                         onClick={onSave}
-                        disabled={loading || saving || !workout}
+                        disabled={loading || saving || !workout || Boolean(loadError)}
                     >
                         {saving ? "Сохранение..." : "Сохранить"}
                     </Button>
                 </div>
             )}
+
             {showSuccess && (
                 <div
                     className={styles.successOverlay}
