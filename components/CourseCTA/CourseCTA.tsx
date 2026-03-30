@@ -35,7 +35,6 @@ export function CourseCTA({ courseSlug }: Props) {
     return (
         <section className={styles.cta}>
             <div className={styles.card}>
-                {/* ✅ lineClip перенесён на уровень card, чтобы резало по краю карточки */}
                 <span className={styles.lineClip} aria-hidden>
                     <span className={styles.line}>
                         <Image
@@ -64,9 +63,7 @@ export function CourseCTA({ courseSlug }: Props) {
                             {hasCourse ? "Удалить курс из списка" : "Добавить курс"}
                         </button>
                     ) : (
-                        <Link href="/auth" className={styles.button}>
-                            Войдите, чтобы добавить курс
-                        </Link>
+                        <Link href="/auth" className={styles.button}>Добавить курс</Link>
                     )}
                     {uiError && <div className={styles.errorText}>{uiError}</div>}
                 </div>

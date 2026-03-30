@@ -136,6 +136,51 @@
     font-size: 16px;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .heroTitle {
+        left: 24px;
+        top: 24px;
+        font-size: 42px;
+    }
+
+    .section {
+        margin-top: 48px;
+    }
+
+    .sectionTitle {
+        font-size: 32px;
+    }
+
+    .fittingGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .fittingCard:nth-child(2) {
+        transform: none;
+    }
+
+    .fittingIndex {
+        font-size: 56px;
+        height: auto;
+    }
+
+    .fittingText {
+        font-size: 20px;
+        line-height: 1.2;
+    }
+
+    .directions {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+        row-gap: 24px;
+    }
+
+    .directionChip {
+        font-size: 20px;
+    }
+}
+
 @media (max-width: 767px) {
     .hero {
         width: 100%;

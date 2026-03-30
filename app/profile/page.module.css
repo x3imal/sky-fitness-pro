@@ -162,6 +162,70 @@
     }
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .page {
+        padding: 12px 0 48px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0 32px;
+    }
+
+    .title {
+        margin-bottom: 32px;
+        font-size: 32px;
+    }
+
+    .userCard {
+        height: auto;
+        grid-template-columns: 160px 1fr;
+        gap: 24px;
+        padding: 24px;
+        margin-bottom: 40px;
+    }
+
+    .avatar {
+        width: 160px;
+        height: 160px;
+    }
+
+    .avatarBody {
+        width: 170px;
+        height: auto;
+        bottom: -12px;
+        left: -6px;
+    }
+
+    .avatarHead {
+        width: 56px;
+        height: 56px;
+        bottom: 82px;
+        right: 48px;
+    }
+
+    .userInfo {
+        gap: 20px;
+    }
+
+    .userName {
+        font-size: 28px;
+    }
+
+    .sectionTitle {
+        font-size: 32px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .skeletonCourseCard {
+        width: 100%;
+    }
+}
+
 @media (max-width: 767px) {
     .page {
         padding: 0 0 40px;

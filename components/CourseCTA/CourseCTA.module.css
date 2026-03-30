@@ -137,6 +137,49 @@
     z-index: 2;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .card {
+        width: 100%;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 16px;
+        padding: 28px 28px 30px;
+        margin-top: 72px;
+        overflow: visible;
+    }
+
+    .title {
+        max-width: 280px;
+        font-size: 34px;
+        line-height: 1.05;
+    }
+
+    .list {
+        padding-left: 20px;
+        font-size: 18px;
+        line-height: 1.35;
+    }
+
+    .button {
+        width: 100%;
+        max-width: 220px;
+        padding: 0 10px;
+    }
+
+    .imageWrap {
+        left: -60px;
+        width: 360px;
+        height: 430px;
+        transform: translateY(-118px);
+    }
+
+    .line {
+        width: 490px;
+        height: 280px;
+        right: -18px;
+        bottom: -50px;
+    }
+}
+
 @media (max-width: 767px) {
     .cta {
         margin-top: 28px;

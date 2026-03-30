@@ -75,6 +75,13 @@ h1 {
   overflow: hidden;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 32px;
+    padding-bottom: 48px;
+  }
+}
+
 @media (max-width: 767px) {
   .container {
     padding: 0 16px;

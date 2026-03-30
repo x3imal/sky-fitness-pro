@@ -103,6 +103,42 @@
     text-decoration: none;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        width: 100%;
+        padding: 0 32px;
+    }
+
+    .courseTitle {
+        font-size: 42px;
+        line-height: 1.1;
+    }
+
+    .video {
+        height: 360px;
+    }
+
+    .exercisesCard {
+        padding: 32px;
+    }
+
+    .exerciseGrid {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+        row-gap: 24px;
+    }
+
+    .exerciseName {
+        max-width: none;
+        white-space: normal;
+    }
+
+    .fillButton {
+        width: 100%;
+    }
+}
+
 @media (max-width: 767px) {
     .container {
         width: 343px;
